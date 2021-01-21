@@ -2,6 +2,7 @@ import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/parcela_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
 
@@ -73,6 +74,17 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                                         ),
                                     ],
                                 ),
+                                Row(
+                                    children: <Widget>[
+                                        Flexible(
+                                            child: _variedadCacao(),
+                                        ),
+                                        SizedBox(width: 20.0,),
+                                        Flexible(
+                                            child: _numeroPlanta(),
+                                        ),
+                                    ],
+                                ),
                                 SizedBox(height: 20.0,),
                                 _botonsubmit()
                             ],
@@ -84,13 +96,12 @@ class _AgregarParcelaState extends State<AgregarParcela> {
     
     }
     Widget _nombreParcela( String fincaid ){
-        
         //print('id de finca: $fincaid');
         return TextFormField(
             initialValue: parcela.nombreLote,
             //autofocus: true,
             decoration: InputDecoration(
-                labelText: 'Nombre de la Parcela'
+                labelText: 'Nombre de la parcela'
             ),
             validator: (value){
                 if(value.length < 3){
@@ -106,13 +117,14 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         );
         
     }
+    
     Widget _areaFinca(){
 
         return TextFormField(
             initialValue: parcela.areaLote.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
-                labelText: 'Area de la Parcela'
+                labelText: 'Área de la parcela'
             ),
             validator: (value) {
 
@@ -130,7 +142,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
     Widget _medicionFinca(){
         return SelectFormField(
             initialValue: parcela.tipoMedida.toString(),
-            labelText: 'Select',
+            labelText: 'Unidad',
             items: selectMap.dimenciones(),
             validator: (value){
                 if(value.length < 1){
@@ -143,6 +155,48 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             //onChanged: (val) => print(val),
             onSaved: (value) => parcela.tipoMedida = int.parse(value),
         );
+    }
+
+    Widget _variedadCacao(){
+        return SelectFormField(
+            initialValue: parcela.variedadCacao.toString(),
+            labelText: 'Variedad',
+            items: selectMap.variedadCacao(),
+            validator: (value){
+                if(value.length < 1){
+                    return 'Selecione variedad';
+                }else{
+                    return null;
+                } 
+            },
+
+            //onChanged: (val) => print(val),
+            onSaved: (value) => parcela.variedadCacao = int.parse(value),
+        );
+    }
+
+    Widget _numeroPlanta(){
+
+        return TextFormField(
+            initialValue: parcela.numeroPlanta.toString(),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+            ], 
+            decoration: InputDecoration(
+                labelText: 'Número de plantas'
+            ),
+            validator: (value) {
+
+                final isDigitsOnly = int.tryParse(value);
+                return isDigitsOnly == null
+                    ? 'Solo números enteros'
+                    : null;
+
+            },
+            onSaved: (value) => parcela.numeroPlanta = int.parse(value),
+        );
+
     }
 
     Widget  _botonsubmit(){

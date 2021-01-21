@@ -16,8 +16,33 @@ List<Map<String, dynamic>> dimenciones(){
     return medidaItem;
 }
 
-List<Map<String, dynamic>> fincas(){
-    final List<Map<String, dynamic>>  hola = [{'value': '1', 'label': 'finca numero uno editado'}];
+List<Map<String, dynamic>> variedadCacao(){
+    final List<Map<String, dynamic>>  hola = [
+            {
+                'value': '1', 
+                'label': 'CAT 1'
+            },
+            {
+                'value': '2', 
+                'label': 'CAT 2'
+            },
+            {
+                'value': '3', 
+                'label': 'CAT 3'
+            },
+            {
+                'value': '3', 
+                'label': 'CAT 3'
+            },
+            {
+                'value': '4', 
+                'label': 'CAT 4'
+            },
+            {
+                'value': '5', 
+                'label': 'CAT 5'
+            },
+        ];
 
     return hola;
 }

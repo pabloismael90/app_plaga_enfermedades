@@ -6,6 +6,7 @@ class Finca {
         this.nombreProductor = '',
         this.areaFinca = 0.0,
         this.tipoMedida = 1,
+        this.nombreTecnico = '',
     });
 
     String id;
@@ -14,6 +15,7 @@ class Finca {
     String nombreProductor;
     double areaFinca;
     int tipoMedida;
+    String nombreTecnico;
 
     factory Finca.fromJson(Map<String, dynamic> json) => Finca(
         id: json["id"],
@@ -22,6 +24,7 @@ class Finca {
         nombreProductor: json["nombreProductor"],
         areaFinca: json["areaFinca"].toDouble(),
         tipoMedida: json["tipoMedida"],
+        nombreTecnico: json["nombreTecnico"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -31,5 +34,6 @@ class Finca {
         "nombreProductor": nombreProductor,
         "areaFinca": areaFinca,
         "tipoMedida": tipoMedida,
+        "nombreTecnico": nombreTecnico,
     };
 }

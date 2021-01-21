@@ -45,7 +45,8 @@ class DBProvider {
                     ' nombreFinca TEXT,'
                     ' nombreProductor TEXT,'
                     ' areaFinca REAL,'
-                    ' tipoMedida INTEGER'
+                    ' tipoMedida INTEGER,'
+                    ' nombreTecnico TEXT'
                     ')'
                 );
 
@@ -55,7 +56,9 @@ class DBProvider {
                     ' idFinca TEXT,'
                     ' nombreLote TEXT,'
                     ' areaLote REAL,'
-                    ' tipoMedida INTEGER'
+                    ' tipoMedida INTEGER,'
+                    ' variedadCacao INTEGER,'
+                    ' numeroPlanta INTEGER'
                     ')'
                 );
 
@@ -65,7 +68,8 @@ class DBProvider {
                     ' idFinca TEXT,'
                     ' idLote TEXT,'
                     ' estaciones INTEGER,'
-                    ' fechaTest TEXT'
+                    ' fechaTest TEXT,'
+                    ' tipoMedida INTEGER'
                     ')'
                 );
 
@@ -175,6 +179,16 @@ class DBProvider {
         final res = await db.query('Parcela', where: 'idFinca = ?', whereArgs: [idFinca]);
         List<Parcela> list = res.isNotEmpty 
                     ? res.map( (c) => Parcela.fromJson(c) ).toList() 
+                    : [];
+
+        return list;            
+    }
+
+    Future<List<Planta>> getTodasPlantaIdPlaga(String idPlaga) async{
+        final db = await database;
+        final res = await db.query('Planta', where: 'idPlaga = ?', whereArgs: [idPlaga]);
+        List<Planta> list = res.isNotEmpty 
+                    ? res.map( (c) => Planta.fromJson(c) ).toList() 
                     : [];
 
         return list;            

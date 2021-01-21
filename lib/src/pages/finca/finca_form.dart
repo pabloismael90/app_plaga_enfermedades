@@ -52,8 +52,6 @@ class _AgregarFincaState extends State<AgregarFinca> {
                             children: <Widget>[
                                 _nombreFinca(),
                                 SizedBox(height: 20.0,),
-                                _nombreProductor(),
-                                SizedBox(height: 20.0,),
                                 Row(
                                     children: <Widget>[
                                         Flexible(
@@ -65,6 +63,10 @@ class _AgregarFincaState extends State<AgregarFinca> {
                                         ),
                                     ],
                                 ),
+                                SizedBox(height: 20.0,),
+                                _nombreProductor(),
+                                SizedBox(height: 20.0,),
+                                _nombreTecnico(),
                                 SizedBox(height: 20.0,),
                                 _botonsubmit()
                             ],
@@ -99,7 +101,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
             initialValue: finca.nombreProductor,
             autofocus: true,
             decoration: InputDecoration(
-                labelText: 'Nombre del Productor'
+                labelText: 'Nombre de productor'
             ),
             validator: (value){
                 if(value.length < 3){
@@ -137,7 +139,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
     Widget _medicionFinca(){
         return SelectFormField(
             initialValue: finca.tipoMedida.toString(),
-            labelText: 'Dimensión',
+            labelText: 'Unidad',
             items: selectMap.dimenciones(),
             validator: (value){
                 if(value.length < 1){
@@ -164,6 +166,27 @@ class _AgregarFincaState extends State<AgregarFinca> {
             label: Text('Guardar'),
             onPressed:(_guardando) ? null : _submit,
         );
+    }
+
+    Widget _nombreTecnico(){
+        return TextFormField(
+            initialValue: finca.nombreTecnico,
+            autofocus: true,
+            decoration: InputDecoration(
+                labelText: 'Nombre del Técnico'
+            ),
+            validator: (value){
+                return null;  
+            },
+            onSaved: (value){
+                if(value.length < 1){
+                    finca.nombreTecnico = 'Sin Nombre';
+                }else{
+                    finca.nombreTecnico = value;
+                }
+            } 
+        );
+        
     }
 
 

@@ -374,7 +374,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-                Expanded(child: Text('Deficiencia', style:TextStyle(fontWeight: FontWeight.bold))),
+                Expanded(child: Text('Producción', style:TextStyle(fontWeight: FontWeight.bold))),
                 Radio(
                     value: 1,
                     groupValue: planta.produccion,

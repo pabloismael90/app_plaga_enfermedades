@@ -7,7 +7,7 @@ import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 //import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 //import 'package:app_plaga_enfermedades/src/utils/validaciones.dart' as utils;
 import 'package:select_form_field/select_form_field.dart';
-//import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
+import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -45,12 +45,8 @@ class _AgregarTestState extends State<AgregarTest> {
         _inputfecha.text = _fecha;
         //plaga.estaciones = plaga.estaciones;
     }
-    //activar 
-    void _handleRadioValueChange1(int value) {
-        setState(() {
-            plaga.estaciones = value;
-        });
-    }
+    
+   
     @override
     Widget build(BuildContext context) {
 
@@ -87,7 +83,10 @@ class _AgregarTestState extends State<AgregarTest> {
                                             SizedBox(height: 20.0,),
                                             _date(context),
                                             SizedBox(height: 20.0,),
-                                            _estaciones(),
+                                            _medicionFinca(),
+                                            SizedBox(height: 20.0,),
+                                            Text('Estaciones: 3 estaciones'),
+                                            Text('Plantas por estaciones: 10 plantas'),
                                             SizedBox(height: 20.0,),
 
                                             _botonsubmit()
@@ -101,6 +100,67 @@ class _AgregarTestState extends State<AgregarTest> {
             },
         );        
     }
+
+    Widget _selectfinca(List<Map<String, dynamic>> _listitem){
+
+        bool _enableFinca = _listitem.isNotEmpty ? true : false;
+    
+        return SelectFormField(
+            labelText: 'Seleccione la finca',
+            items: _listitem,
+            enabled: _enableFinca,
+            validator: (value){
+                if(value.length < 1){
+                    return 'No se selecciono una finca';
+                }else{
+                    return null;
+                } 
+            },
+
+            onChanged: (val){
+                fincasBloc.selectParcela(val);
+                
+            },
+            onSaved: (value) => plaga.idFinca = value,
+        );
+    }
+
+    Widget _selectParcela(){
+        
+        return StreamBuilder(
+            stream: fincasBloc.parcelaSelect,
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+                if (!snapshot.hasData) {
+                    return SelectFormField(
+                        initialValue: '',
+                        enabled: false,
+                        labelText: 'Seleccione la parcela',
+                        items: [],
+                    );
+                }
+
+                //print(snapshot.data);
+                
+                return SelectFormField(
+                    initialValue: '',
+                    labelText: 'Seleccione la parcela',
+                    items: snapshot.data,
+                    validator: (value){
+                        if(value.length < 1){
+                            return 'Selecione un elemento';
+                        }else{
+                            return null;
+                        } 
+                    },
+                    
+                    onChanged: (val) => print(val),
+                    onSaved: (value) => plaga.idLote = value,
+                );
+            },
+        );
+    
+    }
+
 
     Widget _date(BuildContext context){
         return TextFormField(
@@ -142,111 +202,22 @@ class _AgregarTestState extends State<AgregarTest> {
         
     }
 
-    Widget _estaciones(){
-        return 
-        Row(
-            children: <Widget>[
-                Flexible(
-                    child:GestureDetector(
-                
-                    onTap: () {
-                    setState(() {
-                        plaga.estaciones = 3;
-                    });
-                    },
-                    child: ListTile(
-                        title: Text('3 Estaciones'),
-                        leading: Radio(
-                            value: 3,
-                            groupValue: plaga.estaciones,
-                            onChanged: _handleRadioValueChange1,
-                        ),
-                    ),
-                    
-                ),
-                ),
-                
-                Flexible(
-                    child: GestureDetector(
-                    onTap: () {
-                    setState(() {
-                        plaga.estaciones = 5;
-                    });
-                    },
-                    child: ListTile(
-                        title: Text('5 Estaciones'),
-                        leading: Radio(
-                            value: 5,
-                            groupValue: plaga.estaciones,
-                            onChanged: _handleRadioValueChange1,
-                        ),
-                    ),
-                ),
-                )
-            ],
-        );
-        
-    }
-
-    Widget _selectfinca(List<Map<String, dynamic>> _listitem){
-
-        bool _enableFinca = _listitem.isNotEmpty ? true : false;
-    
+    Widget _medicionFinca(){
         return SelectFormField(
-            labelText: 'Selecione Finca',
-            items: _listitem,
-            enabled: _enableFinca,
+            initialValue: plaga.tipoMedida.toString(),
+            labelText: 'Area de muestreo',
+            items: selectMap.dimenciones(),
             validator: (value){
                 if(value.length < 1){
-                    return 'No selecciona finca';
+                    return 'Dimensión';
                 }else{
                     return null;
                 } 
             },
-
-            onChanged: (val){
-                fincasBloc.selectParcela(val);
-                
-            },
-            onSaved: (value) => plaga.idFinca = value,
+            onSaved: (value) => plaga.tipoMedida = int.parse(value),
         );
     }
 
-    Widget _selectParcela(){
-        
-        return StreamBuilder(
-            stream: fincasBloc.parcelaSelect,
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-                if (!snapshot.hasData) {
-                    return SelectFormField(
-                        initialValue: '',
-                        enabled: false,
-                        labelText: 'Selecione Parcela',
-                        items: [],
-                    );
-                }
-
-                //print(snapshot.data);
-                
-                return SelectFormField(
-                    initialValue: '',
-                    labelText: 'Selecione Parcela',
-                    items: snapshot.data,
-                    validator: (value){
-                        if(value.length < 1){
-                            return 'Selecione un elemento';
-                        }else{
-                            return null;
-                        } 
-                    },
-                    
-                    onChanged: (val) => print(val),
-                    onSaved: (value) => plaga.idLote = value,
-                );
-            },
-        );
-    
-    }
 
     Widget  _botonsubmit(){
         return RaisedButton.icon(
@@ -268,6 +239,8 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
     void _submit(){
+
+        plaga.estaciones = 3;
 
         if  ( !formKey.currentState.validate() ){
             //Cuendo el form no es valido

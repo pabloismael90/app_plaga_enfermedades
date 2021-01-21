@@ -5,12 +5,8 @@ import 'package:flutter/material.dart';
 
 
 class FincasPage extends StatefulWidget {
-
-    
-    
-
-  @override
-  _FincasPageState createState() => _FincasPageState();
+    @override
+    _FincasPageState createState() => _FincasPageState();
 }
 
 final fincasBloc = new FincasBloc();
@@ -52,17 +48,6 @@ class _FincasPageState extends State<FincasPage> {
                     body: _listaDeFincas(snapshot.data, context),
                     floatingActionButton: _addFinca(context),
                 );
-
-                
-
-
-
-               
-                    
-                
-
-                    
-                
             },
         );
 

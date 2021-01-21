@@ -1,9 +1,3 @@
-import 'dart:convert';
-
-Parcela parcelaFromJson(String str) => Parcela.fromJson(json.decode(str));
-
-String parcelaToJson(Parcela data) => json.encode(data.toJson());
-
 class Parcela {
     Parcela({
         this.id,
@@ -11,6 +5,8 @@ class Parcela {
         this.nombreLote = '',
         this.areaLote = 0.0,
         this.tipoMedida = 1,
+        this.variedadCacao = 1,
+        this.numeroPlanta = 0,
     });
 
     String id;
@@ -18,6 +14,8 @@ class Parcela {
     String nombreLote;
     double areaLote;
     int tipoMedida;
+    int variedadCacao;
+    int numeroPlanta;
 
     factory Parcela.fromJson(Map<String, dynamic> json) => Parcela(
         id: json["id"],
@@ -25,6 +23,8 @@ class Parcela {
         nombreLote: json["nombreLote"],
         areaLote: json["areaLote"].toDouble(),
         tipoMedida: json["tipoMedida"],
+        variedadCacao: json["variedadCacao"],
+        numeroPlanta: json["numeroPlanta"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -33,5 +33,7 @@ class Parcela {
         "nombreLote": nombreLote,
         "areaLote": areaLote,
         "tipoMedida": tipoMedida,
+        "variedadCacao": variedadCacao,
+        "numeroPlanta": numeroPlanta,
     };
 } 

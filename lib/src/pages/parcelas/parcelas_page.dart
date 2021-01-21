@@ -10,14 +10,7 @@ class ParcelaPage extends StatefulWidget {
     @override
     _ParcelaPageState createState() => _ParcelaPageState();
 }
-Future otracosa(String id) async{
-    //print(id);
-    final parceladetalle = await DBProvider.db.getTodasParcelasIdFinca(id);
 
-    print(parceladetalle);
-    
-    return parceladetalle;
-}
 
 
 
@@ -28,8 +21,6 @@ class _ParcelaPageState extends State<ParcelaPage> {
     Widget build(BuildContext context) {
 
         final Finca fincaData = ModalRoute.of(context).settings.arguments;
-        //fincasBloc.obtenerParcelas();
-        //otracosa(fincaData.id);
         fincasBloc.obtenerParcelasIdFinca(fincaData.id);
 
 

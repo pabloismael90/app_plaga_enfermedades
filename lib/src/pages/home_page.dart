@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
                     GestureDetector(
                         child: ListTile(
                             leading: Icon(Icons.add_circle),
-                            title: Text('Agregar Finca'),
+                            title: Text('Mis fincas'),
                             trailing: Icon(Icons.keyboard_arrow_right),
                         ),
                         onTap:() => Navigator.pushNamed(context, 'fincas' ),
@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
                     GestureDetector(
                         child: ListTile(
                             leading: Icon(Icons.add_circle),
-                            title: Text('Hacer test plagas'),
+                            title: Text('Tomar datos'),
                             trailing: Icon(Icons.keyboard_arrow_right),
                         ),
                         onTap:() => Navigator.pushNamed(context, 'tests' ),

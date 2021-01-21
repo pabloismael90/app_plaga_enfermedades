@@ -23,6 +23,8 @@ class FincasBloc {
     final _parcelasController = StreamController<List<Parcela>>.broadcast();
     final _plagaController = StreamController<List<Testplaga>>.broadcast();
     final _plantaController = StreamController<List<Planta>>.broadcast();
+    final _countPlantaControl = StreamController<List<Planta>>.broadcast();
+    
 
     final _fincasSelectControl = StreamController<List<Map<String, dynamic>>>.broadcast();
     final _parcelaSelectControl = StreamController<List<Map<String, dynamic>>>.broadcast();
@@ -31,6 +33,7 @@ class FincasBloc {
     Stream<List<Parcela>> get parcelaStream => _parcelasController.stream;
     Stream<List<Testplaga>> get plagaStream => _plagaController.stream;
     Stream<List<Planta>> get plantaStream => _plantaController.stream;
+    Stream<List<Planta>> get countPlanta => _countPlantaControl.stream;
 
 
     Stream<List<Map<String, dynamic>>> get fincaSelect => _fincasSelectControl.stream;
@@ -90,8 +93,8 @@ class FincasBloc {
 
 
     //Plantas
-    obtenerPlantas() async {
-        _plantaController.sink.add( await DBProvider.db.getTodasPlantas() );
+    obtenerPlantas(String idPlaga) async {
+        _countPlantaControl.sink.add( await DBProvider.db.getTodasPlantaIdPlaga(idPlaga) );
     }
     obtenerPlantaIdPlaga(String idPlaga, int estacion) async {
         _plantaController.sink.add( await DBProvider.db.getTodasPlantasIdTest(idPlaga, estacion));
@@ -100,8 +103,14 @@ class FincasBloc {
     addPlata( Planta nuevaPlanta, String idPlaga, int estacion) async{
         await DBProvider.db.nuevoPlanta(nuevaPlanta);
         obtenerPlantaIdPlaga(idPlaga, estacion);
-
+        obtenerPlantas(idPlaga);
     }
+
+    // countPlantaId() async {
+    //     _countPlantaControl.sink.add( );
+    //     //int variable = await DBProvider.db.countPlanta(idPlaga, estacion);
+    //     //print('$variable Estacion $estacion');
+    // }
 
     //Cerrar stream
     dispose() {
@@ -111,6 +120,7 @@ class FincasBloc {
         _parcelaSelectControl?.close();
         _plagaController?.close();
         _plantaController?.close();
+        _countPlantaControl?.close();
     }
 
 //   borrarScan( int id ) async {
