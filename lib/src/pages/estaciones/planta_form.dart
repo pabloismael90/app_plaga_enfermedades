@@ -1,5 +1,7 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
+
+import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,6 +20,29 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     Planta planta = Planta();
     final fincasBloc = new FincasBloc();
+    
+    String _radioValue = '';
+
+    bool _cambio = false;
+    final List<Map<String, dynamic>>  itemPlagas = selectMap.plagasCacao();
+    final Map boleanos = {};
+    final Map radios = {};
+
+    void tratando(){
+        for(int i = 0 ; i < itemPlagas.length ; i ++){
+            
+        boleanos[itemPlagas[i]['label']+i.toString()] = false;
+        }
+    }
+
+    void tratando2(){
+        for(int i = 0 ; i < itemPlagas.length ; i ++){
+            
+        radios[itemPlagas[i]['label']+i.toString()] = radios[itemPlagas[i]['label']+i.toString()];
+        }
+    }
+
+   
 
     @override
     Widget build(BuildContext context) {
@@ -26,6 +51,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         
         planta.idPlaga = data[1];
         planta.estacion = data[0] ;
+        
 
         return Scaffold(
             key: scaffoldKey,
@@ -56,16 +82,18 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                         ),
                                     ],
                                 ),
-                                _monilia(),
-                                _mazorcaNegra(),
-                                _malDeMachete(),
-                                _ardilla(),
-                                _barrenador(),
-                                _chupadores(),
-                                _zompopos(),
-                                _bejuco(),
-                                _tanda(),
-                                _deficiencia(),
+                                _lista2(),
+                                _plagasList(),
+                                //_monilia(),
+                                // _mazorcaNegra(),
+                                // _malDeMachete(),
+                                // _ardilla(),
+                                // _barrenador(),
+                                // _chupadores(),
+                                // _zompopos(),
+                                // _bejuco(),
+                                // _tanda(),
+                                // _deficiencia(),
                                 Divider(),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -99,6 +127,95 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
         );
     }
+
+    Widget _lista2(){
+        List<Widget> lisItem = List<Widget>();
+        
+
+        for(int i = 0 ; i < itemPlagas.length ; i ++){
+            
+            lisItem.add(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                        Expanded(child: Text('${itemPlagas[i]['label']}', style:TextStyle(fontWeight: FontWeight.bold))),
+                        Checkbox(
+                            value: boleanos[itemPlagas[i]['label']+i.toString()], 
+                            onChanged: (bool value){
+                                setState(() {
+                                    boleanos[itemPlagas[i]['label']+i.toString()] = value;
+                                    print(boleanos[itemPlagas[i]['label']+i.toString()]);
+                                });
+                            }
+                        ),
+                        
+                       
+
+                    ],
+                )
+            );
+
+        }
+        //print(boleanos['Monilia0']);
+        return Column(children:lisItem,);
+    }
+
+    Widget _plagasList(){
+
+        final List<Map<String, dynamic>>  itemPlagas = selectMap.plagasCacao();
+       
+
+    
+        
+
+        return ListView.builder(
+            
+            itemBuilder: (BuildContext context, int index) {
+                
+                String labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$index', orElse: () => {"value": "1","label": "No data"})['label'];
+                int idPlaga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$index', orElse: () => {"value": "100","label": "No data"})['value']);
+             
+               
+                
+               
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                        Expanded(child: Text('$labelPlaga', style:TextStyle(fontWeight: FontWeight.bold))),
+                        Radio(
+                            value: labelPlaga+'1',
+                            groupValue: _radioValue,
+                            onChanged: (value){
+                                setState(() {
+                                    _radioValue = value;
+                                    print(_radioValue);
+                                });
+                            },
+                        ),
+                        Radio(
+                            value: labelPlaga+'2',
+                            groupValue: _radioValue,
+                            onChanged: (value){
+                                setState(() {
+                                
+                                    _radioValue = value;
+                                    print(_radioValue);
+                                });
+                            },
+                        ),
+                       
+
+                    ],
+                );
+        
+            },
+            shrinkWrap: true,
+            itemCount: itemPlagas.length,
+        );
+        
+    }
+
+
 
     Widget _monilia(){
         return Row(

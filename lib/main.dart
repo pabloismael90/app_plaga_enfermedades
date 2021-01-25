@@ -1,3 +1,4 @@
+import 'package:app_plaga_enfermedades/src/pages/decisiones/decisiones_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/estaciones/estaciones_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/finca/finca_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/finca/finca_page.dart';
@@ -46,6 +47,8 @@ class MyApp extends StatelessWidget {
                 'estaciones' : ( BuildContext context ) => EstacionesPage(),
                 'plantas' : ( BuildContext context ) => PlantaPage(),
                 'addPlanta' : ( BuildContext context ) => AgregarPlanta(),
+                //Decisiones
+                'decisiones' : ( BuildContext context ) => DesicionesPage(),
 
             },
             theme: ThemeData(

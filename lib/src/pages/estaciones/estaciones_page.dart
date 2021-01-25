@@ -1,7 +1,6 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
-import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 
 class EstacionesPage extends StatefulWidget {
@@ -20,48 +19,53 @@ class _EstacionesPageState extends State<EstacionesPage> {
         
         Testplaga plaga = ModalRoute.of(context).settings.arguments;
         fincasBloc.obtenerPlantas(plaga.id);
-        
-        return Scaffold(
-            appBar: AppBar(
-                title: Text('Lista de Estaciones'),
-            ),
-            body: Column(
-                children: [
-                    escabezadoEstacion( context, plaga ),
-                    SingleChildScrollView(
-                        child: _listaDeEstaciones( context, plaga ),
+
+       return StreamBuilder<List<Planta>>(
+            stream: fincasBloc.countPlanta,
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+                if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                }
+                List<Planta> plantas= snapshot.data;
+                //print(plantas.length);
+                
+                int estacion1 = 0;
+                int estacion2 = 0;
+                int estacion3 = 0;
+                List countEstaciones = [];
+
+                for (var item in plantas) {
+                    if (item.estacion == 1) {
+                        estacion1 ++;
+                    } else if (item.estacion == 2){
+                        estacion2 ++;
+                    }else{
+                        estacion3 ++;
+                    }
+                }
+                countEstaciones = [estacion1,estacion2,estacion3];
+                
+                return Scaffold(
+                    appBar: AppBar(
+                        title: Text('Lista de Estaciones3'),
                     ),
-                    _prueba()
-                ],
-            ),
-            bottomNavigationBar: BottomAppBar(
-                child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                        Expanded(
-                            child: _tomarDecisiones(),
-                        ),
-                        Expanded(
-                            child: _tomarDecisiones(),
-                        ),
-                    ],
-                ),
-            ),
+                    body: Column(
+                        children: [
+                            escabezadoEstacion( context, plaga ),
+                            SingleChildScrollView(
+                                child: _listaDeEstaciones( context, plaga, countEstaciones ),
+                            ),
+                        ],
+                    ),
+                    bottomNavigationBar: BottomAppBar(
+                        child: _tomarDecisiones(countEstaciones, plaga),
+                    ),
+                );
+            },
         );
     }
 
-    Widget _prueba(){
-        return StreamBuilder(
-          stream: fincasBloc.countPlanta,
-          builder: (BuildContext context, AsyncSnapshot snapshot){
-            List<Planta> plantas= snapshot.data;
-            print(plantas.length);
-            return Container(
-              
-            );
-          },
-        );
-    }
+
 
     Widget escabezadoEstacion( BuildContext context, Testplaga plaga ){
         return Container(
@@ -91,33 +95,30 @@ class _EstacionesPageState extends State<EstacionesPage> {
         );
     }
 
-    Widget  _listaDeEstaciones( BuildContext context, Testplaga plaga){
+    Widget  _listaDeEstaciones( BuildContext context, Testplaga plaga, List countEstaciones){
         return ListView.builder(
             itemBuilder: (context, index) {
-                
-                return FutureBuilder(
-                    future: DBProvider.db.countPlanta(plaga.id,index+1),
-                  
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) {
-                            return CircularProgressIndicator();
-                        }
-                        
-                        int value = snapshot.data;
-                        //print(value);
-                        return GestureDetector(
-                            child: ListTile(
-                                title: Column(
-                                    children: [
-                                        Text('Estacion ${index+1}'),
-                                        Text('$value / 10')
-                                    ],
-                                ),
-                                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
-                            ),
-                            onTap: () => Navigator.pushNamed(context, 'plantas', arguments: [plaga, index]),
-                        );
-                    },
+                String estadoConteo;
+                if (countEstaciones[index] >= 10){
+                    estadoConteo =  'Completo';
+                }else{
+                   estadoConteo =  'Incompleto'; 
+                }
+                return GestureDetector(
+                    child: ListTile(
+                        title: Column(
+                            children: [
+                                Text('Estacion ${index+1}'),
+                                
+                                Text(' ${countEstaciones[index]}/ 10'),
+                                Text(' $estadoConteo'),
+                                
+                                
+                            ],
+                        ),
+                        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
+                    ),
+                    onTap: () => Navigator.pushNamed(context, 'plantas', arguments: [plaga, index]),
                 );
                 
                
@@ -130,18 +131,27 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
     }
 
-    Widget  _tomarDecisiones(){
-        return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
+    Widget  _tomarDecisiones(List countEstaciones, Testplaga plaga){
+
+        if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Editar finca'),
-            onPressed: ()=> print('boton'),
-            //onPressed: () => Navigator.pushNamed(context, 'addFinca', arguments: finca),
-        );
+            return RaisedButton.icon(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                ),
+                color: Colors.deepPurple,
+                
+                icon:Icon(Icons.save),
+                textColor: Colors.white,
+                label: Text('Tomar de decisiones'),
+                onPressed: () => Navigator.pushNamed(context, 'decisiones', arguments: plaga),
+            );
+        }
+
+        return Text('Complete la toma de datos');
+        
+
+
+        
     }
 }

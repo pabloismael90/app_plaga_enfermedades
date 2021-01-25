@@ -174,6 +174,18 @@ class DBProvider {
 
 
     //REgistros por id
+    Future<Finca> getFincaId(String id) async{
+        final db = await database;
+        final res = await db.query('Finca', where: 'id = ?', whereArgs: [id]);
+        return res.isNotEmpty ? Finca.fromJson(res.first) : null;
+    }
+
+    Future<Parcela> getParcelaId(String id) async{
+        final db = await database;
+        final res = await db.query('Parcela', where: 'id = ?', whereArgs: [id]);
+        return res.isNotEmpty ? Parcela.fromJson(res.first) : null;
+    }
+
     Future<List<Parcela>> getTodasParcelasIdFinca(String idFinca) async{
         final db = await database;
         final res = await db.query('Parcela', where: 'idFinca = ?', whereArgs: [idFinca]);

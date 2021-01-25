@@ -137,13 +137,7 @@ class _PlantaPageState extends State<PlantaPage> {
                             ),
                         ),
                     );
-                }
-                
-                
-                
-                
-
-                
+                }                
             },
         );
     }

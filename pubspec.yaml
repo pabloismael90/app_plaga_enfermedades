@@ -31,8 +31,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  rxdart: ^0.24.1
   select_form_field: "^1.0.1"
+  flutter_swiper: ^1.1.6
+  group_radio_button: ^1.0.1
   # Base de datos
   uuid: ^2.2.2
   sqflite: ^1.1.5
