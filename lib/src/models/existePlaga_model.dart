@@ -3,10 +3,10 @@ class ExistePlaga {
         this.id,
         this.idPlaga,
         this.idPlanta,
-        this.existe,
+        this.existe = 1,
     });
 
-    int id;
+    String id;
     int idPlaga;
     String idPlanta;
     int existe;
