@@ -93,22 +93,22 @@ class FincasBloc {
 
 
     //Plantas
-    obtenerPlantas(String idPlaga) async {
-        _countPlantaControl.sink.add( await DBProvider.db.getTodasPlantaIdPlaga(idPlaga) );
+    obtenerPlantas(String idTest) async {
+        _countPlantaControl.sink.add( await DBProvider.db.getTodasPlantaIdTest(idTest) );
     }
-    obtenerPlantaIdPlaga(String idPlaga, int estacion) async {
-        _plantaController.sink.add( await DBProvider.db.getTodasPlantasIdTest(idPlaga, estacion));
+    obtenerPlantaIdTest(String idTest, int estacion) async {
+        _plantaController.sink.add( await DBProvider.db.getTodasPlantasIdTest(idTest, estacion));
     }
     
-    addPlata( Planta nuevaPlanta, String idPlaga, int estacion) async{
+    addPlata( Planta nuevaPlanta, String idTest, int estacion) async{
         await DBProvider.db.nuevoPlanta(nuevaPlanta);
-        obtenerPlantaIdPlaga(idPlaga, estacion);
-        obtenerPlantas(idPlaga);
+        obtenerPlantaIdTest(idTest, estacion);
+        obtenerPlantas(idTest);
     }
 
     // countPlantaId() async {
     //     _countPlantaControl.sink.add( );
-    //     //int variable = await DBProvider.db.countPlanta(idPlaga, estacion);
+    //     //int variable = await DBProvider.db.countPlanta(idTest, estacion);
     //     //print('$variable Estacion $estacion');
     // }
 

@@ -63,7 +63,7 @@ class DBProvider {
                 );
 
                 await db.execute(
-                    'CREATE TABLE Plaga ('
+                    'CREATE TABLE TestPlaga ('
                     ' id TEXT PRIMARY KEY,'
                     ' idFinca TEXT,'
                     ' idLote TEXT,'
@@ -76,19 +76,19 @@ class DBProvider {
                 await db.execute(
                     'CREATE TABLE Planta ('
                     'id TEXT PRIMARY KEY,'
-                    ' idPlaga TEXT,'
+                    ' idTest TEXT,'
                     ' estacion INTEGER,'
-                    ' monilia INTEGER,'
-                    ' mazorcaNegra INTEGER,'
-                    ' malDeMachete INTEGER,'
-                    ' ardillaRata INTEGER,'
-                    ' barrenador INTEGER,'
-                    ' chupadores INTEGER,'
-                    ' zompopos INTEGER,'
-                    ' bejuco INTEGER,'
-                    ' tanda INTEGER,'
                     ' deficiencia INTEGER,'
                     ' produccion INTEGER'
+                    ')'
+                );
+
+                await db.execute(
+                    'CREATE TABLE ExistePlaga ('
+                    'id TEXT PRIMARY KEY,'
+                    ' idPlaga INTEGER,'
+                    ' idPlanta INTEGER,'
+                    ' existe INTEGER'
                     ')'
                 );
             }
@@ -112,7 +112,7 @@ class DBProvider {
 
     nuevoTestPlaga( Testplaga nuevaPlaga ) async {
         final db  = await database;
-        final res = await db.insert('Plaga',  nuevaPlaga.toJson() );
+        final res = await db.insert('TestPlaga',  nuevaPlaga.toJson() );
         return res;
     }
 
@@ -152,7 +152,7 @@ class DBProvider {
     Future<List<Testplaga>> getTodasTestPlaga() async {
 
         final db  = await database;
-        final res = await db.query('Plaga');
+        final res = await db.query('TestPlaga');
 
         List<Testplaga> list = res.isNotEmpty 
                                 ? res.map( (c) => Testplaga.fromJson(c) ).toList()
@@ -196,9 +196,9 @@ class DBProvider {
         return list;            
     }
 
-    Future<List<Planta>> getTodasPlantaIdPlaga(String idPlaga) async{
+    Future<List<Planta>> getTodasPlantaIdTest(String idTest) async{
         final db = await database;
-        final res = await db.query('Planta', where: 'idPlaga = ?', whereArgs: [idPlaga]);
+        final res = await db.query('Planta', where: 'idTest = ?', whereArgs: [idTest]);
         List<Planta> list = res.isNotEmpty 
                     ? res.map( (c) => Planta.fromJson(c) ).toList() 
                     : [];
@@ -206,10 +206,10 @@ class DBProvider {
         return list;            
     }
     
-    Future<List<Planta>> getTodasPlantasIdTest(String idPlaga, int estacion) async{
+    Future<List<Planta>> getTodasPlantasIdTest(String idTest, int estacion) async{
         final db = await database;
-        final res = await db.rawQuery("SELECT * FROM Planta WHERE idPlaga = '$idPlaga' AND estacion = '$estacion'");
-        //final res = await db.query('Planta', where: 'idPlaga = ?', whereArgs: [idPlaga]);
+        final res = await db.rawQuery("SELECT * FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'");
+        //final res = await db.query('Planta', where: 'idTest = ?', whereArgs: [idTest]);
         List<Planta> list = res.isNotEmpty 
                     ? res.map( (c) => Planta.fromJson(c) ).toList() 
                     : [];
@@ -244,10 +244,10 @@ class DBProvider {
                     
     }
 
-     Future<int> countPlanta( String idPlaga, int estacion ) async {
+     Future<int> countPlanta( String idTest, int estacion ) async {
 
         final db = await database;
-        int count = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idPlaga = '$idPlaga' AND estacion = '$estacion'"));
+        int count = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
         return count;
 
     }
@@ -276,7 +276,7 @@ class DBProvider {
     Future<int> updateTestPlaga( Testplaga nuevaPlaga ) async {
 
         final db  = await database;
-        final res = await db.update('Plaga', nuevaPlaga.toJson(), where: 'id = ?', whereArgs: [nuevaPlaga.id] );
+        final res = await db.update('TestPlaga', nuevaPlaga.toJson(), where: 'id = ?', whereArgs: [nuevaPlaga.id] );
         return res;
 
     }

@@ -21,36 +21,32 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     Planta planta = Planta();
     final fincasBloc = new FincasBloc();
     
-    String _radioValue = '';
 
-    bool _cambio = false;
     final List<Map<String, dynamic>>  itemPlagas = selectMap.plagasCacao();
-    final Map boleanos = {};
     final Map radios = {};
 
-    void tratando(){
-        for(int i = 0 ; i < itemPlagas.length ; i ++){
-            
-        boleanos[itemPlagas[i]['label']+i.toString()] = false;
-        }
-    }
 
     void tratando2(){
         for(int i = 0 ; i < itemPlagas.length ; i ++){
             
-        radios[itemPlagas[i]['label']+i.toString()] = radios[itemPlagas[i]['label']+i.toString()];
+        radios[itemPlagas[i]['label']+i.toString()] = itemPlagas[i]['label']+i.toString();
         }
     }
 
-   
+    @override
+    void initState() {
+        super.initState();
+        tratando2();
+    }
 
     @override
     Widget build(BuildContext context) {
 
         List data = ModalRoute.of(context).settings.arguments;
         
-        planta.idPlaga = data[1];
+        planta.idTest = data[1];
         planta.estacion = data[0] ;
+        
         
 
         return Scaffold(
@@ -82,18 +78,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                         ),
                                     ],
                                 ),
-                                _lista2(),
                                 _plagasList(),
-                                //_monilia(),
-                                // _mazorcaNegra(),
-                                // _malDeMachete(),
-                                // _ardilla(),
-                                // _barrenador(),
-                                // _chupadores(),
-                                // _zompopos(),
-                                // _bejuco(),
-                                // _tanda(),
-                                // _deficiencia(),
                                 Divider(),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -128,45 +113,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         );
     }
 
-    Widget _lista2(){
-        List<Widget> lisItem = List<Widget>();
-        
-
-        for(int i = 0 ; i < itemPlagas.length ; i ++){
-            
-            lisItem.add(
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                        Expanded(child: Text('${itemPlagas[i]['label']}', style:TextStyle(fontWeight: FontWeight.bold))),
-                        Checkbox(
-                            value: boleanos[itemPlagas[i]['label']+i.toString()], 
-                            onChanged: (bool value){
-                                setState(() {
-                                    boleanos[itemPlagas[i]['label']+i.toString()] = value;
-                                    print(boleanos[itemPlagas[i]['label']+i.toString()]);
-                                });
-                            }
-                        ),
-                        
-                       
-
-                    ],
-                )
-            );
-
-        }
-        //print(boleanos['Monilia0']);
-        return Column(children:lisItem,);
-    }
 
     Widget _plagasList(){
-
-        final List<Map<String, dynamic>>  itemPlagas = selectMap.plagasCacao();
-       
-
-    
-        
 
         return ListView.builder(
             
@@ -183,23 +131,23 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                     children: <Widget>[
                         Expanded(child: Text('$labelPlaga', style:TextStyle(fontWeight: FontWeight.bold))),
                         Radio(
-                            value: labelPlaga+'1',
-                            groupValue: _radioValue,
+                            value: labelPlaga+'-1',
+                            groupValue: radios[itemPlagas[idPlaga]['label']+idPlaga.toString()],
                             onChanged: (value){
                                 setState(() {
-                                    _radioValue = value;
-                                    print(_radioValue);
+                                    radios[itemPlagas[idPlaga]['label']+idPlaga.toString()] = value;
+                                    print(value);
                                 });
                             },
                         ),
                         Radio(
-                            value: labelPlaga+'2',
-                            groupValue: _radioValue,
+                            value: labelPlaga+'-2',
+                            groupValue: radios[itemPlagas[idPlaga]['label']+idPlaga.toString()],
                             onChanged: (value){
                                 setState(() {
                                 
-                                    _radioValue = value;
-                                    print(_radioValue);
+                                    radios[itemPlagas[idPlaga]['label']+idPlaga.toString()] = value;
+                                    print(value);
                                 });
                             },
                         ),
@@ -211,278 +159,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             },
             shrinkWrap: true,
             itemCount: itemPlagas.length,
-        );
-        
-    }
-
-
-
-    Widget _monilia(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Monilia', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.monilia,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.monilia = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.monilia,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.monilia = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _mazorcaNegra(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Mazorca negra',  style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.mazorcaNegra,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.mazorcaNegra = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.mazorcaNegra,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.mazorcaNegra = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _malDeMachete(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Mal de machete', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.malDeMachete,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.malDeMachete = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.malDeMachete,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.malDeMachete = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _ardilla(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Ardilla/Rata', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.ardillaRata,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.ardillaRata = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.ardillaRata,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.ardillaRata = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _barrenador(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Barrenador', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.barrenador,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.barrenador = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.barrenador,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.barrenador = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _chupadores(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Chupadores', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.chupadores,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.chupadores = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.chupadores,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.chupadores = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _zompopos(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Zompopos', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.zompopos,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.zompopos = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.zompopos,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.zompopos = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _bejuco(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Bejuco', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.bejuco,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.bejuco = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.bejuco,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.bejuco = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _tanda(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Tanda', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.tanda,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.tanda = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.tanda,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.tanda = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
-    Widget _deficiencia(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Deficiencia', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.deficiencia,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.deficiencia = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.deficiencia,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.deficiencia = value;
-                    });
-                }),   
-
-            ],
         );
         
     }
@@ -522,6 +198,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         
     }
 
+    
 
     Widget  _botonsubmit(){
         return RaisedButton.icon(
@@ -540,16 +217,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     void _submit(){
         int variableVacias = 0;
-        planta.monilia == null ? variableVacias++ : print('');
-        planta.mazorcaNegra == null ? variableVacias++ : print('');
-        planta.malDeMachete == null ? variableVacias++ : print('');
-        planta.ardillaRata == null ? variableVacias++ : print('');
-        planta.barrenador == null ? variableVacias++ : print('');
-        planta.chupadores == null ? variableVacias++ : print('');
-        planta.zompopos == null ? variableVacias++ : print('');
-        planta.bejuco == null ? variableVacias++ : print('');
-        planta.tanda == null ? variableVacias++ : print('');
-        planta.deficiencia == null ? variableVacias++ : print('');
         planta.produccion == null ? variableVacias++ : print('');
 
         if  ( variableVacias !=  0){
@@ -579,7 +246,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
         if(planta.id == null){
             planta.id =  uuid.v1();
-            fincasBloc.addPlata(planta, planta.idPlaga, planta.estacion);
+            fincasBloc.addPlata(planta, planta.idTest, planta.estacion);
         }else{
             //fincasBloc.actualizarFinca(finca);
         }

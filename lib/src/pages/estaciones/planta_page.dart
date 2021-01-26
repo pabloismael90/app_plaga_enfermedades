@@ -26,7 +26,7 @@ class _PlantaPageState extends State<PlantaPage> {
         List dataEstaciones = ModalRoute.of(context).settings.arguments;
         Testplaga plaga = dataEstaciones[0];
         int indiceEstacion = dataEstaciones[1]+1;
-        fincasBloc.obtenerPlantaIdPlaga(plaga.id, indiceEstacion);
+        fincasBloc.obtenerPlantaIdTest(plaga.id, indiceEstacion);
 
         return Scaffold(
             appBar: AppBar(

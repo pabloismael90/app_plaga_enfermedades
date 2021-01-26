@@ -22,7 +22,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         Future _getdataFinca() async{
             Finca finca = await DBProvider.db.getFincaId(plagaTest.idFinca);
             Parcela parcela = await DBProvider.db.getParcelaId(plagaTest.idLote);
-            List<Planta> plantas = await DBProvider.db.getTodasPlantaIdPlaga(plagaTest.id);
+            List<Planta> plantas = await DBProvider.db.getTodasPlantaIdTest(plagaTest.id);
             
 
             return [finca, parcela, plantas];
@@ -195,7 +195,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         ],
                     ),
 
-                    _resultadosmonilia(plantas),
+                   
 
                 ],
             ),
@@ -203,25 +203,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
         );
     }
 
-    Widget _resultadosmonilia(List<Planta> plantas){
-        List<int> monilia1=[];
-
-        for (var item in plantas) {
-            if (item.estacion == 1) {
-                if (item.monilia == 1){
-                    monilia1.add(item.monilia);
-                }
-            }
-            
-        }
-        
-        print(monilia1.length);
-        
-
-        return Container(
-            child: Center(child: Text('Monilia'),),
-        );
-
-    }
+   
 
 }
