@@ -20,6 +20,7 @@ class ExistePlaga {
 
     Map<String, dynamic> toJson() => {
         "id": id,
+        "idPlaga":idPlaga,
         "idPlanta": idPlanta,
         "existe": existe,
     };

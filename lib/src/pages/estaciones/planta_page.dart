@@ -88,7 +88,7 @@ class _PlantaPageState extends State<PlantaPage> {
                         child: ListTile(
                             title: Text('Planta ${index+1}'),
                             //trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
-                            subtitle: Text('id ${planta[index].idPlaga}'),
+                            subtitle: Text('id ${planta[index].id}'),
                             
                         ),
                         //onTap: () => Navigator.pushNamed(context, 'addParcela', arguments: planta[index]),

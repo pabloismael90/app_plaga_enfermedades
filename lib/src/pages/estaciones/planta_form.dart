@@ -3,6 +3,7 @@ import 'package:app_plaga_enfermedades/src/models/existePlaga_model.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
+import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,6 +36,21 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         }
     }
 
+    Future<List<ExistePlaga>> verificaBdd() async{
+        String idprueba = '1b2cd450-60d7-11eb-bca3-c97616956b52';
+        List<ExistePlaga> verificaData = await DBProvider.db.getTodasPlagasIdPlanta(idprueba);
+
+        verificaData.forEach((item) {
+            print('id :${item.id}');
+            print('id Planta : ${item.idPlanta}');
+            print('id Plaga: ${item.idPlaga}');
+            print('id existe: ${item.existe}');
+        });
+        
+
+        return verificaData;
+    }
+
     @override
     void initState() {
         super.initState();
@@ -48,7 +64,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         
         planta.idTest = data[1];
         planta.estacion = data[0] ;
-        
+        //verificaBdd();
         
 
         return Scaffold(
@@ -137,7 +153,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                             onChanged: (value){
                                 setState(() {
                                     radios[itemPlagas[idPlaga]['value']] = value;
-                                    print(value);
+                                    //print(value);
                                     
                                 });
                             },
@@ -149,7 +165,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                 setState(() {
                                 
                                     radios[itemPlagas[idPlaga]['value']] = value;
-                                    print(value);
+                                    //print(value);
                                     
                                 });
                             },
@@ -221,18 +237,18 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     _listaPlagas(){
 
         radios.forEach((key, value) {
-            final ExistePlaga hola = ExistePlaga();
+            final ExistePlaga itemPlaga = ExistePlaga();
             // print('id: ${uuid.v1()}');
             // print('idPlanta: ${planta.id}');
             // print('idPlaga: ${int.parse(key)}' );
             // print('existe: ${int.parse(value)}');
-            hola.id = uuid.v1();
-            hola.idPlanta = planta.id;
-            hola.idPlaga = int.parse(key);
-            hola.existe = int.parse(value);
+            itemPlaga.id = uuid.v1();
+            itemPlaga.idPlanta = planta.id;
+            itemPlaga.idPlaga = int.parse(key);
+            itemPlaga.existe = int.parse(value);
 
 
-            listaPlagas.add(hola);
+            listaPlagas.add(itemPlaga);
         });
 
         //setState(() {_guardando = true;});
@@ -248,46 +264,61 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             } 
         });
 
+
+        if (planta.produccion == 0) {
+            variableVacias ++;
+        }
+        print(planta.produccion );
+
         if  ( variableVacias !=  0){
-            //print(variableVacias);
             mostrarSnackbar(variableVacias);
-            //return null;
+            return null;
         }
 
-        _listaPlagas();
+        setState(() {_guardando = true;});
+
+        
+        if(planta.id == null){
+            planta.id =  uuid.v1();
+            _listaPlagas();
+            fincasBloc.addPlata(planta, planta.idTest, planta.estacion);
+
+            listaPlagas.forEach((item) {
+                DBProvider.db.nuevoExistePlagas(item);
+            });
+
+        }
+        else{
+            //fincasBloc.actualizarFinca(finca);
+        }
+
+       
+        
         
         //variables Plagas
-        for (var item in listaPlagas) {
-            print('id :${item.id}');
-            print('id Planta : ${item.idPlanta}');
-            print('id Plaga: ${item.idPlaga}');
-            print('id Plaga: ${item.existe}');
-        }
+        // for (var item in listaPlagas) {
+        //     print('id :${item.id}');
+        //     print('id Planta : ${item.idPlanta}');
+        //     print('id Plaga: ${item.idPlaga}');
+        //     print('id Plaga: ${item.existe}');
+        // }
         
         //Variables Planta
-        //print('Id : ${planta.id}');
-        //print('Id Test: ${planta.idTest}');
-        //print('Estacion: ${planta.estacion}');
-        //print('Produccion: ${planta.produccion}');
+        // print('Id : ${planta.id}');
+        // print('Id Test: ${planta.idTest}');
+        // print('Estacion: ${planta.estacion}');
+        // print('Produccion: ${planta.produccion}');
 
 
         // formKey.currentState.save();
 
-        //setState(() {_guardando = true;});
+        
 
-
-        // if(planta.id == null){
-        //     planta.id =  uuid.v1();
-        //     fincasBloc.addPlata(planta, planta.idTest, planta.estacion);
-        // }else{
-        //     fincasBloc.actualizarFinca(finca);
-        // }
-
-       // setState(() {_guardando = false;});
+       setState(() {_guardando = false;});
         
 
 
-        //Navigator.pop(context, 'estaciones');
+        Navigator.pop(context, 'estaciones');
        
         
     }
@@ -298,7 +329,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             content: Text('Hay $variableVacias Campos Vacios, Favor llene todo los campos'),
             duration: Duration(seconds: 2),
         );
-
+        setState(() {_guardando = false;});
         scaffoldKey.currentState.showSnackBar(snackbar);
     }
 

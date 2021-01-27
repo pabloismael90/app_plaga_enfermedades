@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_plaga_enfermedades/src/models/existePlaga_model.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:path/path.dart';
@@ -122,6 +123,12 @@ class DBProvider {
         return res;
     }
 
+    nuevoExistePlagas( ExistePlaga existePlaga ) async {
+        final db  = await database;
+        final res = await db.insert('ExistePlaga',  existePlaga.toJson() );
+        return res;
+    }
+
 
 
 
@@ -171,6 +178,8 @@ class DBProvider {
         return list;
     }
 
+    
+
 
 
     //REgistros por id
@@ -215,6 +224,18 @@ class DBProvider {
                     : [];
 
         return list;           
+    }
+
+    Future<List<ExistePlaga>> getTodasPlagasIdPlanta(String idPlanta) async {
+
+        final db  = await database;
+        final res = await db.rawQuery("SELECT * FROM ExistePlaga WHERE idPlanta = '$idPlanta'");
+
+        List<ExistePlaga> list = res.isNotEmpty 
+                    ? res.map( (c) => ExistePlaga.fromJson(c) ).toList() 
+                    : [];
+
+        return list;
     }
 
 

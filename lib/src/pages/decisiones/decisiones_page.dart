@@ -82,6 +82,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
         return Container(
             padding: EdgeInsets.all(20.0),
+            width: MediaQuery.of(context).size.width*0.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -124,6 +125,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
         return Container(
             padding: EdgeInsets.all(20.0),
+            width: MediaQuery.of(context).size.width*0.5,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

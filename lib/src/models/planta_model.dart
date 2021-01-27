@@ -3,7 +3,7 @@ class Planta {
         this.id,
         this.idTest,
         this.estacion,
-        this.produccion,
+        this.produccion = 0,
     });
 
     String id;
