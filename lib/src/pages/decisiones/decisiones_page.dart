@@ -28,6 +28,12 @@ class _DesicionesPageState extends State<DesicionesPage> {
             return [finca, parcela, plantas];
         }
 
+        Future _analisisprueba() async{
+            await DBProvider.db.pruebainner(plagaTest.id, 1); 
+        }
+
+
+        _analisisprueba();
         
 
         return Scaffold(

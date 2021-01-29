@@ -3,7 +3,6 @@ import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
-//import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_swiper/flutter_swiper.dart';
 

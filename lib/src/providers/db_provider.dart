@@ -98,6 +98,21 @@ class DBProvider {
 
     }
 
+    Future pruebainner( String idTest, int estacion) async {
+
+        final db = await database;
+        //int res = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
+        //return count;
+        String query =  "SELECT COUNT(*)  FROM TestPlaga "+
+                        "INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
+                        "INNER JOIN ExistePlaga ON  Planta.id = ExistePlaga.idPlanta " +
+                        "WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
+
+        print(res);
+
+    }
+
     //ingresar Registros
     nuevoFinca( Finca nuevaFinca ) async {
         final db  = await database;
@@ -129,9 +144,6 @@ class DBProvider {
         return res;
     }
 
-
-
-
     //Obtener registros
     Future<List<Finca>> getTodasFincas() async {
 
@@ -143,7 +155,6 @@ class DBProvider {
                                 : [];
         return list;
     }
-
 
     Future<List<Parcela>> getTodasParcelas() async {
 
@@ -178,9 +189,14 @@ class DBProvider {
         return list;
     }
 
+    Future<int> countPlanta(String idTest,  int estacion ) async {
+
+        final db = await database;
+        int count = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
+        return count;
     
 
-
+    }
 
     //REgistros por id
     Future<Finca> getFincaId(String id) async{
@@ -239,8 +255,6 @@ class DBProvider {
     }
 
 
-
-
     //List SElect
     Future<List<Map<String, dynamic>>> getSelectFinca() async {
        
@@ -265,13 +279,7 @@ class DBProvider {
                     
     }
 
-     Future<int> countPlanta( String idTest, int estacion ) async {
-
-        final db = await database;
-        int count = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
-        return count;
-
-    }
+    
 
 
 
