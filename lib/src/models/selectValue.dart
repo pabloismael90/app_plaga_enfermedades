@@ -85,10 +85,7 @@ List<Map<String, dynamic>> plagasCacao(){
                 'value': '8', 
                 'label': 'Tanda'
             },
-            {
-                'value': '9', 
-                'label': 'Deficiencia'
-            },
+
         ];
 
     return plagasCacao;

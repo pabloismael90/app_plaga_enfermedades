@@ -133,7 +133,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
     Widget  _tomarDecisiones(List countEstaciones, Testplaga plaga){
 
-        if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
+        //if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
             
             return RaisedButton.icon(
                 shape: RoundedRectangleBorder(
@@ -146,9 +146,9 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 label: Text('Tomar de decisiones'),
                 onPressed: () => Navigator.pushNamed(context, 'decisiones', arguments: plaga),
             );
-        }
+        //}
 
-        return Text('Complete la toma de datos');
+        //return Text('Complete la toma de datos');
         
 
 

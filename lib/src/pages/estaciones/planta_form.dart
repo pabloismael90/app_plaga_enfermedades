@@ -98,6 +98,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                 ),
                                 _plagasList(),
                                 Divider(),
+                                _deficiencia(),
+                                Divider(),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -119,9 +121,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                         ),
                                     ],
                                 ),
-                                 _produccion(),
-                                 Divider(),
-                                 _botonsubmit()
+                                
+                                _produccion(),
+                                Divider(),
+                                _botonsubmit()
                             ],
                         ),
                     ),
@@ -181,6 +184,34 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         );
         
     }
+
+    Widget _deficiencia(){
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+                Expanded(child: Text('Deficiencia', style:TextStyle(fontWeight: FontWeight.bold))),
+                Radio(
+                    value: 1,
+                    groupValue: planta.deficiencia,
+                    onChanged: (value) {
+                    setState(() {
+                        planta.deficiencia = value;
+                    });
+                }),
+                Radio(
+                    value: 2,
+                    groupValue: planta.deficiencia,
+                    onChanged: (value) {
+                    setState(() {
+                        planta.deficiencia = value;
+                    });
+                }),   
+
+            ],
+        );
+        
+    }
+
 
     Widget _produccion(){
         return Row(
@@ -268,7 +299,11 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         if (planta.produccion == 0) {
             variableVacias ++;
         }
-        print(planta.produccion );
+
+        if (planta.deficiencia == 0) {
+            variableVacias ++;
+        }
+        //print(planta.produccion );
 
         if  ( variableVacias !=  0){
             mostrarSnackbar(variableVacias);

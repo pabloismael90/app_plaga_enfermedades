@@ -28,8 +28,16 @@ class _DesicionesPageState extends State<DesicionesPage> {
             return [finca, parcela, plantas];
         }
 
-        Future _analisisprueba() async{
-            await DBProvider.db.pruebainner(plagaTest.id, 1); 
+        Future<List<Map<String, dynamic>>> _analisisprueba() async{
+            final listadePlagas = await DBProvider.db.pruebainner(plagaTest.id);
+
+            //print(listadePlagas[0]);
+
+            for (var i = 0; i < listadePlagas.length; i++) {
+                print(listadePlagas[i]);
+            }
+            
+            return listadePlagas;
         }
 
 
