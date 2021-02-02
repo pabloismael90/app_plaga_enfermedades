@@ -98,20 +98,21 @@ class DBProvider {
 
     }
 
-        Future<List<Map<String, dynamic>>> pruebainner( String idTest) async {
+    Future<int> pruebainner( String idTest, int estacion, int idPlaga) async {
 
         final db = await database;
         //int res = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
         //return count;
-        String query =  "SELECT ExistePlaga.id, estacion, idPlaga, existe, deficiencia, produccion "+
-                        "FROM TestPlaga INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
+        String query =  "SELECT COUNT(*) FROM TestPlaga "+
+                        "INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
                         "INNER JOIN ExistePlaga ON  Planta.id = ExistePlaga.idPlanta " +
-                        "WHERE idTest = '$idTest'";
-        //int res = Sqflite.firstIntValue(await db.rawQuery(query));
-        final res = await db.rawQuery(query);
-        List<Map<String, dynamic>> list = res.isNotEmpty ? res : [];
+                        "WHERE idTest = '$idTest' AND estacion = '$estacion' AND idPlaga = '$idPlaga'";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
 
-        return list;
+        //final res = await db.rawQuery(query);
+        //List<Map<String, dynamic>> list = res.isNotEmpty ? res : [];
+        print(res);
+        return res;
 
     }
 

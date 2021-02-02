@@ -28,14 +28,14 @@ class _DesicionesPageState extends State<DesicionesPage> {
             return [finca, parcela, plantas];
         }
 
-        Future<List<Map<String, dynamic>>> _analisisprueba() async{
-            final listadePlagas = await DBProvider.db.pruebainner(plagaTest.id);
+        Future<int> _analisisprueba() async{
+            final listadePlagas = await DBProvider.db.pruebainner(plagaTest.id, 1 , 0);
 
             //print(listadePlagas[0]);
 
-            for (var i = 0; i < listadePlagas.length; i++) {
-                print(listadePlagas[i]);
-            }
+            // for (var i = 0; i < listadePlagas.length; i++) {
+            //     print(listadePlagas[i]);
+            // }
             
             return listadePlagas;
         }
