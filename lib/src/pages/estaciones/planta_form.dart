@@ -36,20 +36,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         }
     }
 
-    Future<List<ExistePlaga>> verificaBdd() async{
-        String idprueba = '1b2cd450-60d7-11eb-bca3-c97616956b52';
-        List<ExistePlaga> verificaData = await DBProvider.db.getTodasPlagasIdPlanta(idprueba);
 
-        verificaData.forEach((item) {
-            print('id :${item.id}');
-            print('id Planta : ${item.idPlanta}');
-            print('id Plaga: ${item.idPlaga}');
-            print('id existe: ${item.existe}');
-        });
-        
-
-        return verificaData;
-    }
 
     @override
     void initState() {
@@ -64,9 +51,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         
         planta.idTest = data[1];
         planta.estacion = data[0] ;
-        //verificaBdd();
         
-
+        //return Scaffold();
         return Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
@@ -323,35 +309,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             });
 
         }
-        else{
-            //fincasBloc.actualizarFinca(finca);
-        }
-
-       
-        
-        
-        //variables Plagas
-        // for (var item in listaPlagas) {
-        //     print('id :${item.id}');
-        //     print('id Planta : ${item.idPlanta}');
-        //     print('id Plaga: ${item.idPlaga}');
-        //     print('id Plaga: ${item.existe}');
-        // }
-        
-        //Variables Planta
-        // print('Id : ${planta.id}');
-        // print('Id Test: ${planta.idTest}');
-        // print('Estacion: ${planta.estacion}');
-        // print('Produccion: ${planta.produccion}');
-
-
-        // formKey.currentState.save();
-
-        
-
-       setState(() {_guardando = false;});
-        
-
+         
+        setState(() {_guardando = false;});
 
         Navigator.pop(context, 'estaciones');
        

@@ -98,7 +98,7 @@ class DBProvider {
 
     }
 
-    Future<int> pruebainner( String idTest, int estacion, int idPlaga) async {
+    Future<double> countPlagaEstacion( String idTest, int estacion, int idPlaga) async {
 
         final db = await database;
         //int res = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
@@ -106,13 +106,26 @@ class DBProvider {
         String query =  "SELECT COUNT(*) FROM TestPlaga "+
                         "INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
                         "INNER JOIN ExistePlaga ON  Planta.id = ExistePlaga.idPlanta " +
-                        "WHERE idTest = '$idTest' AND estacion = '$estacion' AND idPlaga = '$idPlaga'";
+                        "WHERE idTest = '$idTest' AND estacion = '$estacion' AND idPlaga = '$idPlaga' AND existe = 1";
         int res = Sqflite.firstIntValue(await db.rawQuery(query));
-
+        double value = res/10;
         //final res = await db.rawQuery(query);
         //List<Map<String, dynamic>> list = res.isNotEmpty ? res : [];
-        print(res);
-        return res;
+        //print(res);
+        return value;
+
+    }
+
+    Future<double> countPlagaTotal( String idTest, int idPlaga) async {
+
+        final db = await database;
+        String query =  "SELECT COUNT(*) FROM TestPlaga "+
+                        "INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
+                        "INNER JOIN ExistePlaga ON  Planta.id = ExistePlaga.idPlanta " +
+                        "WHERE idTest = '$idTest' AND idPlaga = '$idPlaga' AND existe = 1";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
+        double value = res/30;
+        return value;
 
     }
 
@@ -253,8 +266,19 @@ class DBProvider {
         List<ExistePlaga> list = res.isNotEmpty 
                     ? res.map( (c) => ExistePlaga.fromJson(c) ).toList() 
                     : [];
-
+        //print(list);
         return list;
+    }
+
+    Future<int> getPlagasIdPlanta(String idPlanta, int idplaga) async {
+        
+        final db  = await database;
+        String query = "SELECT existe FROM ExistePlaga WHERE idPlanta = '$idPlanta' AND idPlaga = '$idplaga'";
+        final  res = await db.rawQuery(query);
+        int value = res.isNotEmpty ? res[0]['existe'] : -1;
+        //print(value);
+
+        return value;
     }
 
 

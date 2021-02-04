@@ -16,10 +16,6 @@ class _PlantaPageState extends State<PlantaPage> {
 
     final fincasBloc = new FincasBloc();
 
-    
-    
-    
-
     @override
     Widget build(BuildContext context) {
         List dataEstaciones = ModalRoute.of(context).settings.arguments;
@@ -90,7 +86,8 @@ class _PlantaPageState extends State<PlantaPage> {
                             subtitle: Text('id ${planta[index].id}'),
                             
                         ),
-                        //onTap: () => Navigator.pushNamed(context, 'addParcela', arguments: planta[index]),
+                        //onTap: () => Navigator.pushNamed(context, 'addPlanta', arguments: [planta[index]]),
+                        //onTap: () => print(planta[index].idTest),
                     );
                     
                 }

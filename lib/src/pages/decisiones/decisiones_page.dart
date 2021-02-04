@@ -15,6 +15,18 @@ class DesicionesPage extends StatefulWidget {
 }
 
 class _DesicionesPageState extends State<DesicionesPage> {
+
+    final List<Map<String, dynamic>>  itemPlagas = selectMap.plagasCacao();
+
+    Future<double> _countPercentPlaga(String idTest, int estacion, int idPlaga) async{
+        double countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idPlaga);         
+        return countPalga*100;
+    }
+    Future<double> _countPercentTotal(String idTest,int idPlaga) async{
+        double countPalga = await DBProvider.db.countPlagaTotal(idTest, idPlaga);         
+        return countPalga*100;
+    }
+
     @override
     Widget build(BuildContext context) {
         Testplaga plagaTest = ModalRoute.of(context).settings.arguments;
@@ -23,26 +35,8 @@ class _DesicionesPageState extends State<DesicionesPage> {
             Finca finca = await DBProvider.db.getFincaId(plagaTest.idFinca);
             Parcela parcela = await DBProvider.db.getParcelaId(plagaTest.idLote);
             List<Planta> plantas = await DBProvider.db.getTodasPlantaIdTest(plagaTest.id);
-            
-
             return [finca, parcela, plantas];
         }
-
-        Future<int> _analisisprueba() async{
-            final listadePlagas = await DBProvider.db.pruebainner(plagaTest.id, 1 , 0);
-
-            //print(listadePlagas[0]);
-
-            // for (var i = 0; i < listadePlagas.length; i++) {
-            //     print(listadePlagas[i]);
-            // }
-            
-            return listadePlagas;
-        }
-
-
-        _analisisprueba();
-        
 
         return Scaffold(
             appBar: AppBar(
@@ -56,7 +50,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     }
                     Finca finca = snapshot.data[0];
                     Parcela parcela = snapshot.data[1];
-                    List<Planta> plantas= snapshot.data[2];
+                    //List<Planta> plantas= snapshot.data[2];
 
                     return Container(
                         decoration: BoxDecoration(
@@ -75,10 +69,25 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: _analisisData(plantas)
+                                        child: Container(
+                                            color: Colors.white,
+                                            child: Column(
+                                                children: [
+                                                    Text(
+                                                        '% de plantas afectadas', 
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 20.0
+                                                        ),
+                                                    ),
+                                                    _encabezadoTabla(),
+                                                    _countPlagas(plagaTest.id, 1),
+                                                    
+                                                ],
+                                            ),
+                                        ),
                                     ),
-                                ),
-                                
+                                )
                                 
                             ],
                         ),
@@ -171,54 +180,109 @@ class _DesicionesPageState extends State<DesicionesPage> {
         );
     }
 
-
-    Widget _analisisData(List<Planta> plantas){
-        return Container(
-            color: Colors.white,
-            child: Column(
-                children: [
-                    Text(
-                        '% de plantas afectadas', 
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0
-                        ),
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                            Expanded(child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                child: Text('Plaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                            ),),
-                            Container(
-                                width: 50.0,
-                                child: Text('1', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                            ),
-                            Container(
-                                width: 50.0,
-                                child: Text('2', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            Container(
-                                width: 50.0,
-                                child: Text('3', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            Container(
-                                width: 50.0,
-                                child: Text('Total', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
-                                //color: Colors.deepPurple,
-                            ),
-                        ],
-                    ),
-
-                   
-
-                ],
-            ),
-            
+    Widget _encabezadoTabla(){
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+                Expanded(child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text('Plaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                ),),
+                Container(
+                    width: 68.0,
+                    child: Text('1', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                ),
+                Container(
+                    width: 68.0,
+                    child: Text('2', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Container(
+                    width: 68.0,
+                    child: Text('3', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Container(
+                    width: 68.0,
+                    child: Text('Total', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
+                    //color: Colors.deepPurple,
+                ),
+            ],
         );
     }
 
-   
+    Widget _countPlagas(String idTest, int estacion){
+        List<Widget> lisItem = List<Widget>();
+
+        for (var i = 0; i < itemPlagas.length; i++) {
+            String labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            int idplga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
+            lisItem.add(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                        ),),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentPlaga(idTest, 1, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                    }
+                                    
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentPlaga(idTest, 2, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentPlaga(idTest, 3, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentTotal(idTest, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        
+                    ],
+                )
+            );
+        }
+        return Column(children:lisItem,);
+    }
+
+
 
 }
