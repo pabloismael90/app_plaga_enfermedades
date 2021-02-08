@@ -91,6 +91,40 @@ List<Map<String, dynamic>> plagasCacao(){
     return plagasCacao;
 }
 
+List<Map<String, dynamic>> situacionPlaga(){
+    final List<Map<String, dynamic>>  situacionPlaga = [
+        {
+            'value': '0',
+            'label': 'Varias plagas en todos los puntos'
+        },
+        {
+            'value': '1',
+            'label': 'Varias plagas en algunos puntos'
+        },
+        {
+            'value': '2',
+            'label': 'Pocas plagas en todos los puntos'
+        },
+        {
+            'value': '3',
+            'label': 'Pocas plagas en algunos puntos'
+        },
+        {
+            'value': '4',
+            'label': 'Una plaga en todos los puntos'
+        },
+        {
+            'value': '5',
+            'label': 'Una plaga en algunos puntos'
+        }
+
+    ];
+
+    return situacionPlaga;
+}
+
+
+
 
 
 

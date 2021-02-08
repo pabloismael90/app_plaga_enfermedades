@@ -129,6 +129,47 @@ class DBProvider {
 
     }
 
+    Future<double> countDeficiencia( String idTest, int estacion) async {
+
+        final db = await database;
+        String query =  "SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion' AND deficiencia = 1";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
+        double value = res/10;
+        return value;
+
+    }
+
+    Future<double> countTotalDeficiencia( String idTest ) async {
+
+        final db = await database;
+        String query =  "SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND deficiencia = 1";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
+        double value = res/30;
+        return value;
+
+    }
+
+    Future<double> countProduccion( String idTest, int estacion, int estado) async {
+
+        final db = await database;
+        String query =  "SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion' AND produccion = '$estado'";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
+        double value = res/10;
+        return value;
+
+    }
+
+    Future<double> countTotalProduccion( String idTest, int estado ) async {
+
+        final db = await database;
+        String query =  "SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND produccion = '$estado'";
+        int res = Sqflite.firstIntValue(await db.rawQuery(query));
+        double value = res/30;
+        return value;
+
+    }
+
+
     //ingresar Registros
     nuevoFinca( Finca nuevaFinca ) async {
         final db  = await database;
