@@ -4,7 +4,9 @@ import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 class DesicionesPage extends StatefulWidget {
     DesicionesPage({Key key}) : super(key: key);
@@ -18,26 +20,53 @@ class _DesicionesPageState extends State<DesicionesPage> {
     
     final List<Map<String, dynamic>>  itemPlagas = selectMap.plagasCacao();
     final List<Map<String, dynamic>>  itemSituacion = selectMap.situacionPlaga();
+    final List<Map<String, dynamic>>  itemProbSuelo = selectMap.problemasPlagaSuelo();
+    final List<Map<String, dynamic>>  itemProbSombra = selectMap.problemasPlagaSombra();
+    final List<Map<String, dynamic>>  itemProbManejo = selectMap.problemasPlagaManejo();
+    final List<Map<String, dynamic>>  _meses = selectMap.listMeses();
+    final List<Map<String, dynamic>>  listSoluciones = selectMap.solucionesXmes();
 
     Widget textFalse = Text('0.00%', textAlign: TextAlign.center);
     final Map checksPrincipales = {};
     final Map checksSituacion = {};
+    final Map checksSuelo = {};
+    final Map checksSombra = {};
+    final Map checksManejo = {};
+    final Map itemActividad = {};
+    final Map itemResultado = {};
+
     void checkKeys(){
         for(int i = 0 ; i < itemPlagas.length ; i ++){
             checksPrincipales[itemPlagas[i]['value']] = false;
         }
         for(int i = 0 ; i < itemSituacion.length ; i ++){
-            checksSituacion[itemSituacion[i]['value']] = false;
-            
+            checksSituacion[itemSituacion[i]['value']] = false; 
+        }
+        for(int i = 0 ; i < itemProbSuelo.length ; i ++){
+            checksSuelo[itemProbSuelo[i]['value']] = false;
+        }
+        for(int i = 0 ; i < itemProbSombra.length ; i ++){
+            checksSombra[itemProbSombra[i]['value']] = false;
         }
 
-        
+        for(int i = 0 ; i < itemProbManejo.length ; i ++){
+            checksManejo[itemProbManejo[i]['value']] = false;
+        }
+        for(int i = 0 ; i < listSoluciones.length ; i ++){
+            itemActividad[i] = [];
+            itemResultado[i] = '';
+        }
     }
+    
+
+
+    final formKey = new GlobalKey<FormState>();
 
     Future<double> _countPercentPlaga(String idTest, int estacion, int idPlaga) async{
         double countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idPlaga);         
         return countPalga*100;
     }
+    
     Future<double> _countPercentTotal(String idTest,int idPlaga) async{
         double countPalga = await DBProvider.db.countPlagaTotal(idTest, idPlaga);         
         return countPalga*100;
@@ -62,16 +91,19 @@ class _DesicionesPageState extends State<DesicionesPage> {
         double countProduccion = await DBProvider.db.countTotalProduccion(idTest, estado);
         return countProduccion*100;
     }
+    
     @override
     void initState() {
         super.initState();
         checkKeys();
     }
+
+
     @override
     Widget build(BuildContext context) {
         Testplaga plagaTest = ModalRoute.of(context).settings.arguments;
         
-
+       
         Future _getdataFinca() async{
             Finca finca = await DBProvider.db.getFincaId(plagaTest.idFinca);
             Parcela parcela = await DBProvider.db.getParcelaId(plagaTest.idLote);
@@ -98,12 +130,16 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     pageItem.add(_principalData(finca, parcela, plagaTest.id));
                     pageItem.add(_plagasPrincipales());   
                     pageItem.add(_situacionPlaga());   
+                    pageItem.add(_problemasSuelo());   
+                    pageItem.add(_problemasSombra());   
+                    pageItem.add(_problemasManejo());   
+                    pageItem.add(_accionesMeses());   
 
                     return Swiper(
                         itemBuilder: (BuildContext context, int index) {
                             return pageItem[index];
                         },
-                        itemCount: 3,
+                        itemCount: pageItem.length,
                         viewportFraction: 1,
                         scale: 1,
                     );
@@ -558,7 +594,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             )
             
         );
-        print(itemSituacion.length);
+        
 
         for (var i = 0; i < itemSituacion.length; i++) {
             String labelSituacion = itemSituacion.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
@@ -585,8 +621,181 @@ class _DesicionesPageState extends State<DesicionesPage> {
         return Column(children:listSituacionPlaga,);
     }
 
-    
+    Widget _problemasSuelo(){
+        List<Widget> listProblemasSuelo = List<Widget>();
 
+        listProblemasSuelo.add(
+            Column(
+                children: [
+                    SizedBox(height: 20,),
+                    Container( 
+                        child: Text('¿Porqué hay problemas de plagas?  Suelo', style: TextStyle(color: Colors.black,fontSize: 20.0))
+                    ),
+                    SizedBox(height: 20,),
+                ],
+            )
+            
+        );
+        
+
+        for (var i = 0; i < itemProbSuelo.length; i++) {
+            String labelProblemaSuelo = itemProbSuelo.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            
+            
+            listProblemasSuelo.add(
+
+                Container(
+                    child: CheckboxListTile(
+                        title: Text('$labelProblemaSuelo'),
+                        value: checksSuelo[itemProbSuelo[i]['value']], 
+                        onChanged: (value) {
+                            setState(() {
+                                checksSuelo[itemProbSuelo[i]['value']] = value;
+                                print(value);
+                            });
+                        },
+                    ),
+                )                  
+                    
+            );
+        }
+        
+        return Column(children:listProblemasSuelo,);
+    }
+
+    Widget _problemasSombra(){
+        List<Widget> listProblemasSombra = List<Widget>();
+
+        listProblemasSombra.add(
+            Column(
+                children: [
+                    SizedBox(height: 20,),
+                    Container( 
+                        child: Text('¿Porqué hay problemas de plagas?  Sombra', style: TextStyle(color: Colors.black,fontSize: 20.0))
+                    ),
+                    SizedBox(height: 20,),
+                ],
+            )
+            
+        );
+        
+
+        for (var i = 0; i < itemProbSombra.length; i++) {
+            String labelProblemaSombra = itemProbSombra.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            
+            
+            listProblemasSombra.add(
+
+                Container(
+                    child: CheckboxListTile(
+                        title: Text('$labelProblemaSombra'),
+                        value: checksSombra[itemProbSombra[i]['value']], 
+                        onChanged: (value) {
+                            setState(() {
+                                checksSombra[itemProbSombra[i]['value']] = value;
+                                print(value);
+                            });
+                        },
+                    ),
+                )                  
+                    
+            );
+        }
+        
+        return Column(children:listProblemasSombra,);
+    }
+
+    Widget _problemasManejo(){
+        List<Widget> listProblemasManejo = List<Widget>();
+
+        listProblemasManejo.add(
+            Column(
+                children: [
+                    SizedBox(height: 20,),
+                    Container( 
+                        child: Text('¿Porqué hay problemas de plagas?  Manejo', style: TextStyle(color: Colors.black,fontSize: 20.0))
+                    ),
+                    SizedBox(height: 20,),
+                ],
+            )
+            
+        );
+        
+
+        for (var i = 0; i < itemProbManejo.length; i++) {
+            String labelProblemaManejo = itemProbManejo.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            
+            
+            listProblemasManejo.add(
+
+                Container(
+                    child: CheckboxListTile(
+                        title: Text('$labelProblemaManejo'),
+                        value: checksManejo[itemProbManejo[i]['value']], 
+                        onChanged: (value) {
+                            setState(() {
+                                checksManejo[itemProbManejo[i]['value']] = value;
+                                print(value);
+                            });
+                        },
+                    ),
+                )
+            );
+        }
+        
+        return Column(children:listProblemasManejo,);
+    }
+
+    Widget _accionesMeses(){
+
+        List<Widget> listaprueba = List<Widget>();
+        for (var i = 0; i < listSoluciones.length; i++) {
+            String labelSoluciones = listSoluciones.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            
+            listaprueba.add(
+                Container(
+                    padding: EdgeInsets.all(16),
+                    child: MultiSelectFormField(
+                        autovalidate: false,
+                        chipBackGroundColor: Colors.deepPurple,
+                        chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                        checkBoxActiveColor: Colors.deepPurple,
+                        checkBoxCheckColor: Colors.white,
+                        dialogShapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12.0))
+                        ),
+                        title: Text(
+                            "$labelSoluciones",
+                            style: TextStyle(fontSize: 16),
+                        ),
+                        validator: (value) {
+                            if (value == null || value.length == 0) {
+                            return 'Seleccione una o mas opciones';
+                            }
+                            return null;
+                        },
+                        dataSource: _meses,
+                        textField: 'label',
+                        valueField: 'value',
+                        okButtonLabel: 'Aceptar',
+                        cancelButtonLabel: 'Cancelar',
+                        hintWidget: Text('Seleccione una o mas meses'),
+                        initialValue: itemActividad[i],
+                        onSaved: (value) {
+                            print(formKey);
+                            if (value == null) return;
+                                setState(() {
+                                itemActividad[i] = value;
+                            });
+                        },
+                    ),
+                )
+            );
+        }
+
+        return SingleChildScrollView(child: Column(children:listaprueba,));
+    }
 
 
     Widget  _botonsubmit(){
@@ -599,7 +808,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             icon:Icon(Icons.save),
             textColor: Colors.white,
             label: Text('Guardar'),
-            onPressed:null,
+            onPressed:_submit2,
             
         );
     }
@@ -609,6 +818,25 @@ class _DesicionesPageState extends State<DesicionesPage> {
             print('Esta es la key : $value');
             
         });
+    }
+
+    void _submit2(){
+        print('Pregunta uno:');
+        print(checksPrincipales);
+        print('Pregunta dos:');
+        print(checksSituacion);
+        print('Pregunta Tres:');
+        print(checksSuelo);
+        print('Pregunta Cuatro:');
+        print(checksSombra);
+        print('Pregunta Cinco:');
+        print(checksManejo);
+        print('Pregunta Seis:');
+        print(itemActividad);
+        
+
+
+
     }
 
 }
