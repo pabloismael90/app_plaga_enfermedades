@@ -34,6 +34,14 @@ class HomePage extends StatelessWidget {
                             trailing: Icon(Icons.keyboard_arrow_right),
                         ),
                         onTap:() => Navigator.pushNamed(context, 'tests' ),
+                    ),
+                    GestureDetector(
+                        child: ListTile(
+                            leading: Icon(Icons.add_circle),
+                            title: Text('Consultar registros'),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                        ),
+                        onTap:() => Navigator.pushNamed(context, 'registros' ),
                     )
                 ],
             ),
