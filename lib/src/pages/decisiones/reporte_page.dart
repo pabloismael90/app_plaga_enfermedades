@@ -450,7 +450,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 2) {
+            if (item.idPregunta == 1) {
                 String label= itemSituacion.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
@@ -497,7 +497,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 3) {
+            if (item.idPregunta == 2) {
                 String label= itemProbSuelo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
@@ -544,7 +544,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 4) {
+            if (item.idPregunta == 3) {
                 String label= itemProbSombra.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
