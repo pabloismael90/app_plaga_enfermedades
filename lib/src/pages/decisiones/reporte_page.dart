@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/decisiones_model.dart';
+import 'package:app_plaga_enfermedades/src/pages/decisiones/pdf_view.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
 
 class ReportePage extends StatefulWidget {
 
@@ -24,6 +31,19 @@ class _ReportePageState extends State<ReportePage> {
     Widget textFalse = Text('0.00%', textAlign: TextAlign.center);
 
     final Map checksPrincipales = {};
+
+    final pdf = pw.Document();
+    var headerPDF;
+
+    
+    Future savePDF() async {
+        Directory documentsDirectory = await getExternalStorageDirectory();
+        String documentPath = documentsDirectory.path;
+
+        File file = File("$documentPath/example.pdf");
+        await file.writeAsBytes(await pdf.save());
+        print("$documentPath/example.pdf");
+    }
 
     Future getdata(String idTest) async{
 
@@ -83,10 +103,12 @@ class _ReportePageState extends State<ReportePage> {
                     pageItem.add(_principalData(idTest));
                     
                     pageItem.add( _plagasPrincipales(snapshot.data[0]));
+                    _plagasPDF(idTest,1);
                     pageItem.add( _situacionPlaga(snapshot.data[0]));
                     pageItem.add( _problemasSuelo(snapshot.data[0]));
                     pageItem.add( _problemasSombra(snapshot.data[0]));
                     pageItem.add( _problemasManejo(snapshot.data[0]));
+                    pageItem.add( _accionesMeses(snapshot.data[1]));
 
                     return Swiper(
                         itemBuilder: (BuildContext context, int index) {
@@ -96,6 +118,19 @@ class _ReportePageState extends State<ReportePage> {
                         viewportFraction: 1,
                         scale: 1,
                     );
+                },
+            ),
+            floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.save_alt),
+                onPressed: ()async{
+                    writePDF();
+                    await savePDF();
+                    Directory documentsDirectory = await getExternalStorageDirectory();
+                    String documentPath = documentsDirectory.path;
+                    String fullPath = "$documentPath/example.pdf";
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => PDFView(fullPath)
+                    ));
                 },
             ),
         );
@@ -129,6 +164,8 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _encabezadoTabla(){
+        
+
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -151,6 +188,36 @@ class _ReportePageState extends State<ReportePage> {
                 Container(
                     width: 68.0,
                     child: Text('Total', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
+                    //color: Colors.deepPurple,
+                ),
+            ],
+        );
+
+        
+    }
+
+    _encabezadopdf(){
+        return pw.Row(
+            children: [
+                pw.Expanded(child: pw.Container(
+                    padding: pw.EdgeInsets.symmetric(horizontal: 20.0),
+                    child: pw.Text('Plaga', textAlign: pw.TextAlign.left, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
+                ),),
+                pw.Container(
+                    width: 68.0,
+                    child: pw.Text('1', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
+                ),
+                pw.Container(
+                    width: 68.0,
+                    child: pw.Text('2', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
+                ),
+                pw.Container(
+                    width: 68.0,
+                    child: pw.Text('3', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
+                ),
+                pw.Container(
+                    width: 68.0,
+                    child: pw.Text('Total', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
                     //color: Colors.deepPurple,
                 ),
             ],
@@ -230,6 +297,82 @@ class _ReportePageState extends State<ReportePage> {
         }
         return Column(children:lisItem,);
     }
+
+    Widget _plagasPDF(String idTest, int estacion){
+        List<Widget> lisItem = List<Widget>();
+
+        for (var i = 0; i < itemPlagas.length; i++) {
+            String labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            int idplga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
+            lisItem.add(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                        ),),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentPlaga(idTest, 1, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textFalse;
+                                    }
+                                    
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentPlaga(idTest, 2, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textFalse;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentPlaga(idTest, 3, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textFalse;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 68.0,
+                            child: FutureBuilder(
+                                future: _countPercentTotal(idTest, idplga),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textFalse;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        
+                    ],
+                )
+            );
+        }
+        return Column(children:lisItem,);
+    }
+
+
 
     Widget _countDeficiencia(String idTest){
         
@@ -450,7 +593,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 1) {
+            if (item.idPregunta == 2) {
                 String label= itemSituacion.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
@@ -467,8 +610,6 @@ class _ReportePageState extends State<ReportePage> {
                     
                 );
             }
-            
-            
             
         }
         
@@ -497,7 +638,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 2) {
+            if (item.idPregunta == 3) {
                 String label= itemProbSuelo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
@@ -544,7 +685,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 3) {
+            if (item.idPregunta == 4) {
                 String label= itemProbSombra.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
@@ -591,7 +732,7 @@ class _ReportePageState extends State<ReportePage> {
 
         for (var item in decisionesList) {
 
-            if (item.idPregunta == 4) {
+            if (item.idPregunta == 5) {
                 String label= itemProbManejo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
@@ -619,8 +760,78 @@ class _ReportePageState extends State<ReportePage> {
         
     }
 
+    Widget _accionesMeses(List<Acciones> listAcciones){
+        List<Widget> listPrincipales = List<Widget>();
 
+        listPrincipales.add(
+            Column(
+                children: [
+                    SizedBox(height: 20,),
+                    Container( 
+                        child: Text('¿Qué acciones vamos a realizar y cuando?', style: TextStyle(color: Colors.black,fontSize: 20.0))
+                    ),
+                    SizedBox(height: 20,),
+                ],
+            )
+            
+        );
+        
+        
+        for (var item in listAcciones) {
 
+                List<String> meses = [];
+                String label= listSoluciones.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                List listaMeses = jsonDecode(item.repuesta);
+                if (listaMeses.length==0) {
+                    meses.add('Sin aplicar');
+                }
+                for (var item in listaMeses) {
+                    String mes = _meses.firstWhere((e) => e['value'] == '$item', orElse: () => {"value": "1","label": "No data"})['label'];
+                    
+                    meses.add(mes);
+                }
+                
+
+                listPrincipales.add(
+
+                    ListTile(
+                        title: Text('$label'),
+                        subtitle: Text(meses.join(",")),
+                    )                 
+                    
+                );
+            
+            
+            
+            
+        }
+        return SingleChildScrollView(
+            child: Column(children:listPrincipales,)
+        );
+    }
+
+    writePDF(){
+        
+        pdf.addPage(
+            pw.Page(
+                pageFormat: PdfPageFormat.a4,
+                margin: pw.EdgeInsets.all(25),
+                
+                build: (pw.Context context) {
+                    
+                    return pw.Column(
+                        children: [
+                            pw.Header(),
+                            _encabezadopdf(),
+                        ],
+                        
+                    );
+                }
+            )
+        );
+    }
+
+    
 
 
 }

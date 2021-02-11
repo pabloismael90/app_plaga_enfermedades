@@ -1,5 +1,9 @@
 PODS:
+  - ext_storage (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
+  - flutter_full_pdf_viewer (1.0.1):
+    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -10,7 +14,9 @@ PODS:
     - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
+  - ext_storage (from `.symlinks/plugins/ext_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_full_pdf_viewer (from `.symlinks/plugins/flutter_full_pdf_viewer/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
@@ -19,15 +25,21 @@ SPEC REPOS:
     - FMDB
 
 EXTERNAL SOURCES:
+  ext_storage:
+    :path: ".symlinks/plugins/ext_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_full_pdf_viewer:
+    :path: ".symlinks/plugins/flutter_full_pdf_viewer/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  ext_storage: 4eaf3a84d5594106e2ebcc2502248cfde53c8fa1
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_full_pdf_viewer: 1b65139fc3236cde300ba6bea2a72669cb07f2e6
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904

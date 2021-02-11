@@ -759,11 +759,24 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     Widget _accionesMeses(){
 
-        List<Widget> listaprueba = List<Widget>();
+        List<Widget> listaAcciones = List<Widget>();
+        listaAcciones.add(
+            Column(
+                children: [
+                    SizedBox(height: 20,),
+                    Container( 
+                        child: Text('¿Qué acciones vamos a realizar y cuando?', style: TextStyle(color: Colors.black,fontSize: 20.0))
+                    ),
+                    SizedBox(height: 20,),
+                ],
+            )
+            
+        );
         for (var i = 0; i < listSoluciones.length; i++) {
             String labelSoluciones = listSoluciones.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             
-            listaprueba.add(
+            
+            listaAcciones.add(
                 Container(
                     padding: EdgeInsets.all(16),
                     child: MultiSelectFormField(
@@ -804,7 +817,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             );
         }
 
-        return SingleChildScrollView(child: Column(children:listaprueba,));
+        return SingleChildScrollView(child: Column(children:listaAcciones,));
     }
 
 
@@ -855,9 +868,10 @@ class _DesicionesPageState extends State<DesicionesPage> {
     void _submit(){
         setState(() {_guardando = true;});
         _listaDecisiones(checksPrincipales, 1);
-        _listaDecisiones(checksSuelo, 2);
-        _listaDecisiones(checksSombra, 3);
-        _listaDecisiones(checksManejo, 4);
+        _listaDecisiones(checksSituacion, 2);
+        _listaDecisiones(checksSuelo, 3);
+        _listaDecisiones(checksSombra, 4);
+        _listaDecisiones(checksManejo, 5);
         _listaAcciones();
 
         listaDecisiones.forEach((decision) {
