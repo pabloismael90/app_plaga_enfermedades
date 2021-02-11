@@ -19,6 +19,8 @@ class AgregarParcela extends StatefulWidget {
   _AgregarParcelaState createState() => _AgregarParcelaState();
 }
 
+
+
 class _AgregarParcelaState extends State<AgregarParcela> {
 
     final formKey = GlobalKey<FormState>();
@@ -28,18 +30,31 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
     bool _guardando = false;
     var uuid = Uuid();
+    
+
+
+    Future getparcelas(String idFinca) async{
+        List<Parcela> parcelas = await DBProvider.db.getTodasParcelasIdFinca(idFinca);
+
+        Finca finca = await DBProvider.db.getFincaId(idFinca);
+
+        return [finca, parcelas];
+    }
+    
 
     @override
     Widget build(BuildContext context) {
 
 
         String fincaid ;
+        Finca finca = Finca();
         var dataRoute = ModalRoute.of(context).settings.arguments;
 
         //print(dataRoute);
 
-        if (dataRoute.runtimeType == String) {
-            fincaid = dataRoute;
+        if (dataRoute.runtimeType == Finca) {
+            finca = dataRoute;
+            fincaid = finca.id;
         } else {
             if (dataRoute != null){
                 parcela = dataRoute;
@@ -66,7 +81,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                                 Row(
                                     children: <Widget>[
                                         Flexible(
-                                            child: _areaFinca(),
+                                            child: _areaFinca(finca,fincaid),
                                         ),
                                         SizedBox(width: 20.0,),
                                         Flexible(
@@ -118,23 +133,55 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         
     }
     
-    Widget _areaFinca(){
+    Widget _areaFinca(Finca finca, String fincaid){
 
-        return TextFormField(
-            initialValue: parcela.areaLote.toString(),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(
-                labelText: 'Área de la parcela'
-            ),
-            validator: (value) {
-
-                if (utils.isNumeric(value)){
-                    return null;
-                }else{
-                    return 'Solo números';
+        return FutureBuilder(
+            future: getparcelas(fincaid),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
                 }
+                double sumaParcelas = 0.0;
+                double valorsuma = 0.0; 
+                finca = snapshot.data[0];
+                List<Parcela> listParcela = snapshot.data[1];
+
+                for (var item in listParcela) {
+                    sumaParcelas = sumaParcelas+item.areaLote;
+                }
+                
+                sumaParcelas = sumaParcelas - parcela.areaLote;
+
+                //print(listParcela.length);
+                //print(sumaParcelas);
+
+                //print(finca.toJson());
+
+                return TextFormField(
+                    initialValue: parcela.areaLote.toString(),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                        labelText: 'Área de la parcela'
+                    ),
+                    validator: (value) {
+                        
+                        if (utils.isNumeric(value)){
+
+                            valorsuma = double.parse(value) + sumaParcelas;
+                            print(valorsuma);
+                            print(finca.areaFinca);
+                            if (valorsuma <= finca.areaFinca) {
+                                return null;
+                            } else {
+                                return 'Area parcelas mayor a Finca';
+                            }
+                        }else{
+                            return 'Solo números';
+                        }
+                    },
+                    onSaved: (value) => parcela.areaLote = double.parse(value),
+                );
             },
-            onSaved: (value) => parcela.areaLote = double.parse(value),
         );
 
     }
@@ -189,9 +236,16 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             validator: (value) {
 
                 final isDigitsOnly = int.tryParse(value);
-                return isDigitsOnly == null
-                    ? 'Solo números enteros'
-                    : null;
+                if (isDigitsOnly == null) {
+                    return 'Solo números enteros';
+                }
+                if (isDigitsOnly <= 0) {
+                    return 'Valor invalido';
+                }else{
+                    return null;
+                }
+                 
+                    
 
             },
             onSaved: (value) => parcela.numeroPlanta = int.parse(value),

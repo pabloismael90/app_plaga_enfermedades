@@ -12,8 +12,6 @@ class ParcelaPage extends StatefulWidget {
 }
 
 
-
-
 final fincasBloc = new FincasBloc();
 class _ParcelaPageState extends State<ParcelaPage> {
 
@@ -95,7 +93,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
                                 ),
                             ),
                             Divider(),
-                            Expanded(child: _listaDeParcelas(snapshot.data, context),)
+                            Expanded(child: _listaDeParcelas(snapshot.data, fincaData, context),)
                             
                         ],
                     ),
@@ -141,12 +139,12 @@ class _ParcelaPageState extends State<ParcelaPage> {
             textColor: Colors.white,
             label: Text('Agregar parcela'),
             //onPressed:(_guardando) ? null : _submit,
-            onPressed:() => Navigator.pushNamed(context, 'addParcela', arguments: finca.id),
+            onPressed:() => Navigator.pushNamed(context, 'addParcela', arguments: finca),
         );
     }
 
 
-    Widget  _listaDeParcelas(List parcelas, BuildContext context){
+    Widget  _listaDeParcelas(List parcelas, Finca finca, BuildContext context){
         return ListView.builder(
             itemBuilder: (context, index) {
                 return GestureDetector(

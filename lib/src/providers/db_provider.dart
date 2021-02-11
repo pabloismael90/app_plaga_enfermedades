@@ -266,12 +266,13 @@ class DBProvider {
     }
 
     Future<List<Parcela>> getTodasParcelasIdFinca(String idFinca) async{
+
         final db = await database;
         final res = await db.query('Parcela', where: 'idFinca = ?', whereArgs: [idFinca]);
         List<Parcela> list = res.isNotEmpty 
                     ? res.map( (c) => Parcela.fromJson(c) ).toList() 
                     : [];
-
+        
         return list;            
     }
 
