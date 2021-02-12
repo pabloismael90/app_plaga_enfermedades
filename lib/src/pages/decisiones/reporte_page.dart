@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/decisiones_model.dart';
-import 'package:app_plaga_enfermedades/src/pages/decisiones/pdf_view.dart';
+//import 'package:app_plaga_enfermedades/src/pages/decisiones/pdf_view.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:flutter/material.dart';
@@ -120,19 +120,19 @@ class _ReportePageState extends State<ReportePage> {
                     );
                 },
             ),
-            floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.save_alt),
-                onPressed: ()async{
-                    writePDF();
-                    await savePDF();
-                    Directory documentsDirectory = await getExternalStorageDirectory();
-                    String documentPath = documentsDirectory.path;
-                    String fullPath = "$documentPath/example.pdf";
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => PDFView(fullPath)
-                    ));
-                },
-            ),
+            // floatingActionButton: FloatingActionButton(
+            //     child: Icon(Icons.save_alt),     
+            //     onPressed: ()async{
+            //         writePDF();
+            //         await savePDF();
+            //         Directory documentsDirectory = await getExternalStorageDirectory();
+            //         String documentPath = documentsDirectory.path;
+            //         String fullPath = "$documentPath/example.pdf";
+            //         Navigator.push(context, MaterialPageRoute(
+            //             builder: (context) => PDFView(fullPath)
+            //         ));
+            //     },
+            // ),
         );
     }
 

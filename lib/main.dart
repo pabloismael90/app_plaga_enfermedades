@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
  
 import 'package:app_plaga_enfermedades/src/pages/home_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -57,8 +58,12 @@ class MyApp extends StatelessWidget {
 
             },
             theme: ThemeData(
+                textTheme: GoogleFonts.latoTextTheme(
+                    Theme.of(context).textTheme,
+                ),
                 primaryColor: Colors.deepPurple,
             ),
+            
         );
     }
 }
