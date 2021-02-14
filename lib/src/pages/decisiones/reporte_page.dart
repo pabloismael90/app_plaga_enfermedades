@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/decisiones_model.dart';
@@ -8,9 +7,6 @@ import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
 
 class ReportePage extends StatefulWidget {
 
@@ -32,18 +28,8 @@ class _ReportePageState extends State<ReportePage> {
 
     final Map checksPrincipales = {};
 
-    final pdf = pw.Document();
-    var headerPDF;
-
     
-    Future savePDF() async {
-        Directory documentsDirectory = await getExternalStorageDirectory();
-        String documentPath = documentsDirectory.path;
-
-        File file = File("$documentPath/example.pdf");
-        await file.writeAsBytes(await pdf.save());
-        print("$documentPath/example.pdf");
-    }
+    
 
     Future getdata(String idTest) async{
 
@@ -196,33 +182,7 @@ class _ReportePageState extends State<ReportePage> {
         
     }
 
-    _encabezadopdf(){
-        return pw.Row(
-            children: [
-                pw.Expanded(child: pw.Container(
-                    padding: pw.EdgeInsets.symmetric(horizontal: 20.0),
-                    child: pw.Text('Plaga', textAlign: pw.TextAlign.left, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
-                ),),
-                pw.Container(
-                    width: 68.0,
-                    child: pw.Text('1', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
-                ),
-                pw.Container(
-                    width: 68.0,
-                    child: pw.Text('2', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
-                ),
-                pw.Container(
-                    width: 68.0,
-                    child: pw.Text('3', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
-                ),
-                pw.Container(
-                    width: 68.0,
-                    child: pw.Text('Total', textAlign: pw.TextAlign.center, style: pw.TextStyle(fontWeight: pw.FontWeight.bold) ,),
-                    //color: Colors.deepPurple,
-                ),
-            ],
-        );
-    }
+    
 
     Widget _countPlagas(String idTest, int estacion){
         List<Widget> lisItem = List<Widget>();
@@ -810,26 +770,7 @@ class _ReportePageState extends State<ReportePage> {
         );
     }
 
-    writePDF(){
-        
-        pdf.addPage(
-            pw.Page(
-                pageFormat: PdfPageFormat.a4,
-                margin: pw.EdgeInsets.all(25),
-                
-                build: (pw.Context context) {
-                    
-                    return pw.Column(
-                        children: [
-                            pw.Header(),
-                            _encabezadopdf(),
-                        ],
-                        
-                    );
-                }
-            )
-        );
-    }
+   
 
     
 

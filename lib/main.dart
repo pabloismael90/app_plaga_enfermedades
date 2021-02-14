@@ -13,17 +13,21 @@ import 'package:app_plaga_enfermedades/src/pages/estaciones/planta_page.dart';
 import 'package:flutter/material.dart';
  
 import 'package:app_plaga_enfermedades/src/pages/home_page.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
 
-        
+        SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+        ]);
         return MaterialApp(
             debugShowCheckedModeBanner: false,
+            
             localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
@@ -58,9 +62,7 @@ class MyApp extends StatelessWidget {
 
             },
             theme: ThemeData(
-                textTheme: GoogleFonts.latoTextTheme(
-                    Theme.of(context).textTheme,
-                ),
+            
                 primaryColor: Colors.deepPurple,
             ),
             
