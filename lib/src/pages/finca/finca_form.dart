@@ -124,7 +124,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                 labelText: 'Area de la finca'
             ),
             validator: (value) {
-
+                
                 if (utils.isNumeric(value)){
                     return null;
                 }else{

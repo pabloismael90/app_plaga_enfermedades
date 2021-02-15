@@ -10,6 +10,7 @@ import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/estaciones/planta_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/estaciones/planta_page.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
  
 import 'package:app_plaga_enfermedades/src/pages/home_page.dart';
@@ -62,8 +63,10 @@ class MyApp extends StatelessWidget {
 
             },
             theme: ThemeData(
-            
-                primaryColor: Colors.deepPurple,
+                fontFamily: "Cairo",
+                scaffoldBackgroundColor: kBackgroundColor,
+                textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor),
+                primaryColor:kRedColor,
             ),
             
         );

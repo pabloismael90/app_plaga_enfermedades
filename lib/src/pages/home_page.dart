@@ -1,6 +1,6 @@
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:app_plaga_enfermedades/src/utils/category_cart.dart';
-
+import 'package:app_plaga_enfermedades/src/utils/widget/category_cart.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -21,65 +21,56 @@ class HomePage extends StatelessWidget {
                         children: [
                             SizedBox(height: size.height * 0.31,),
                             Expanded(
-                        child:GridView.count(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: .85,
-                                      crossAxisSpacing: 20,
-                                      mainAxisSpacing: 20,
-                                      children: <Widget>[
-                                          CategoryCard(
-                                          title: "Diet Recommendation",
-                                          svgSrc: "assets/icons/Hamburger.svg",
-                                          press: () {},
-                                          ),
-                                          CategoryCard(
-                                          title: "Kegel Exercises",
-                                          press: () {},
-                                          ),
-                                          CategoryCard(
-                                          title: "Meditation",
-                                          svgSrc: "assets/icons/Meditation.svg",
-                                          press: () {
-                                             
-                                          },
-                                          ),
-                                          CategoryCard(
-                                          title: "Yoga",
-                                          svgSrc: "assets/icons/yoga.svg",
-                                          press: () {},
-                                          ),
-                                          CategoryCard(
-                                          title: "Yoga",
-                                          svgSrc: "assets/icons/yoga.svg",
-                                          press: () {},
-                                          ),
-                                          CategoryCard(
-                                          title: "Yoga",
-                                          svgSrc: "assets/icons/yoga.svg",
-                                          press: () {},
-                                          ),
-                                      ],
-                            ),
+                                child:GridView.count(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: .85,
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 20,
+                                        children: <Widget>[
+                                            CategoryCard(
+                                                title: "Mis Fincas",
+                                                svgSrc: "assets/icons/finca.svg",
+                                                press:() => Navigator.pushNamed(context, 'fincas' ),
+                                            ),
+                                            CategoryCard(
+                                                title: "Tomar datos y decisiones",
+                                                svgSrc: "assets/icons/test.svg",
+                                                press: () => Navigator.pushNamed(context, 'tests' ),
+                                            ),
+                                            CategoryCard(
+                                                title: "Consultar registro",
+                                                svgSrc: "assets/icons/report.svg",
+                                                press: () => Navigator.pushNamed(context, 'registros' ),
+                                            ),
+                                            CategoryCard(
+                                                title: "Instructivo",
+                                                svgSrc: "assets/icons/manual.svg",
+                                                press: () {},
+                                            ),
+                                            CategoryCard(
+                                                title: "Imágenes",
+                                                svgSrc: "assets/icons/galeria.svg",
+                                                press: () {},
+                                            ),
+                                            
+                                        ],
+                                ),
+                                
                             
-                        
-                        ),
+                            ),
                       
                         ],
                     ),
-                    ClipPath(
-                        clipper: MyHeaderClipper(),
-                        child: Container(
+                    Container(
                               height: size.height * 0.35,
                               decoration: BoxDecoration(
-                                  //color: Color.fromRGBO(115, 32, 2, 1),
-                                  color: Color.fromRGBO(228, 218, 209, 1),
+                                  color: kBackgroundColor,
                                   image: DecorationImage(
                                       image: AssetImage("assets/images/cacao_bg.png"),
                                       fit: BoxFit.fitWidth
                                   )
                               ),
                           
-                      ),
                     ),
                     SafeArea(
                         child: Padding(
@@ -88,13 +79,10 @@ class HomePage extends StatelessWidget {
                                 children: [
                                     SizedBox(height: size.height * 0.10,),
                                     Text(
-                                        "Plaga y enfermedades de Cacao",
-                                        style: TextStyle(
-                                            fontSize: 35.0,
-                                            fontWeight: FontWeight.w900,
-                                            //color: Colors.white
-                                            color: Colors.black87
-                                        ),
+                                        "Plaga y\nenfermedades\nde Cacao",
+                                        style: Theme.of(context).textTheme
+                                            .headline4
+                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
                                     ),
                                 ],
                             ),
@@ -106,57 +94,6 @@ class HomePage extends StatelessWidget {
 
         );
     }
-
-    // Widget _appBar() {
-    //     CustomScrollView(
-    //             slivers: <Widget>[
-    //                 SliverAppBar(
-    //                 expandedHeight: 250,
-    //                 floating: false,
-    //                 pinned: true,
-    //                 elevation: 0.0,
-    //                 flexibleSpace: SafeArea(
-    //                     child:FlexibleSpaceBar(
-    //                     background: ClipPath(
-    //                         clipper: MyHeaderClipper(),
-    //                         child: Container(
-    //                           decoration: BoxDecoration(
-    //                                 //color: Color.fromRGBO(115, 32, 2, 1),
-    //                                 color: Color.fromRGBO(228, 218, 209, 1),
-    //                                 image: DecorationImage(
-    //                                     image: AssetImage("assets/images/cacao_bg.png"),
-    //                                     fit: BoxFit.fitWidth
-    //                                 )
-    //                             ),
-    //                       ),
-    //                     ),
-    //                     collapseMode: CollapseMode.none,
-    //                     titlePadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
-    //                     title: Text('Plaga y Enfermedades de cacao',
-    //                         style: TextStyle(
-    //                             fontSize: 20.0,
-    //                             color: Colors.black,
-    //                             fontWeight: FontWeight.w900
-    //                         ),
-    //                     ),
-    //                     )
-    //                 )
-    //                 ),
-    //                 SliverList(
-    //                     delegate: SliverChildListDelegate(
-    //                         [
-    //                             SizedBox(height: 1000,),
-                                
-                                
-    //                         ]
-    //                     ),
-    //                 )
-    //             ],
-    //         ),
-    // // }
-
-    
-
    
 }
 

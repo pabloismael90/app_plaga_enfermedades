@@ -1,5 +1,6 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/finca_model.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/card_list.dart';
 import 'package:flutter/material.dart';
 
 
@@ -17,7 +18,7 @@ class _FincasPageState extends State<FincasPage> {
 
     @override
     Widget build(BuildContext context) {
-        
+        var size = MediaQuery.of(context).size;
         fincasBloc.obtenerFincas();
 
         return StreamBuilder<List<Finca>>(
@@ -45,7 +46,7 @@ class _FincasPageState extends State<FincasPage> {
                         title: Text("Lista de fincas"),
                     
                     ),
-                    body: _listaDeFincas(snapshot.data, context),
+                    body: _listaDeFincas(snapshot.data, context, size),
                     floatingActionButton: _addFinca(context),
                 );
             },
@@ -60,19 +61,14 @@ class _FincasPageState extends State<FincasPage> {
         );
     }
 
-    Widget  _listaDeFincas(List fincas, BuildContext context){
+    Widget  _listaDeFincas(List fincas, BuildContext context, Size size){
         return ListView.builder(
             itemBuilder: (context, index) {
                 return GestureDetector(
-                    child: ListTile(
-                        title:Column(
-                            children: [
-                                Text(fincas[index].nombreFinca),
-                                Text(fincas[index].nombreProductor),
-                            ],
-                        ), 
-                        subtitle: Text(fincas[index].id),
-                        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
+                    child: CardList(
+                        size: size, 
+                        finca: fincas[index],
+                        icon:'assets/icons/finca.svg'
                     ),
                     onTap: () => Navigator.pushNamed(context, 'parcelas', arguments: fincas[index]),
                 );
@@ -86,3 +82,4 @@ class _FincasPageState extends State<FincasPage> {
 
     }
 }
+
