@@ -73,6 +73,11 @@ class MyApp extends StatelessWidget {
                 scaffoldBackgroundColor: kBackgroundColor,
                 textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor),
                 primaryColor:kRedColor,
+                inputDecorationTheme: InputDecorationTheme(
+                    labelStyle: TextStyle(
+                        fontFamily:  "Cairo",
+                    )
+                )
             ),
             
         );
