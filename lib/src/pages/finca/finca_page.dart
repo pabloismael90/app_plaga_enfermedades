@@ -90,8 +90,12 @@ class _FincasPageState extends State<FincasPage> {
             color: Colors.deepPurple,
             icon:Icon(Icons.add_circle_outline_outlined),
             textColor: Colors.white,
-            label: Text('Nueva finca'),
-            padding:EdgeInsets.all(10),
+            label: Text('Nueva finca',
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.all(13),
             onPressed:() => Navigator.pushNamed(context, 'addFinca'),
         );
     }

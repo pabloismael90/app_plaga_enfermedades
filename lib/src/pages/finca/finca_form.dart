@@ -1,3 +1,4 @@
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
@@ -33,9 +34,16 @@ class _AgregarFincaState extends State<AgregarFinca> {
     Widget build(BuildContext context) {
 
         final fincaData = ModalRoute.of(context).settings.arguments;    
+        String tituloForm;
+        String tituloBtn;
+        
+        tituloForm = 'Agregar nueva finca';
+        tituloBtn = 'Guardar';
 
         if (fincaData != null){
             finca = fincaData;
+            tituloForm = 'Editar Finca';
+            tituloBtn = 'Actualizar';
         }
 
         return Scaffold(
@@ -43,36 +51,51 @@ class _AgregarFincaState extends State<AgregarFinca> {
             appBar: AppBar(
                 title: Text('Agregar Finca'),
             ),
-            body: SingleChildScrollView(
-                child: Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: Form(
-                        key: formKey,
-                        child: Column(
-                            children: <Widget>[
-                                _nombreFinca(),
-                                SizedBox(height: 20.0,),
-                                Row(
+            body: Column(
+                children: [
+                    Container(
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child:Text(
+                                tituloForm,
+                                style: Theme.of(context).textTheme
+                                    .headline5
+                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                            ),
+                        )
+                    ),
+                    SingleChildScrollView(
+                        child: Container(
+                            padding: EdgeInsets.all(15.0),
+                            child: Form(
+                                key: formKey,
+                                child: Column(
                                     children: <Widget>[
-                                        Flexible(
-                                            child: _areaFinca(),
+                                        _nombreFinca(),
+                                        SizedBox(height: 40.0,),
+                                        Row(
+                                            children: <Widget>[
+                                                Flexible(
+                                                    child: _areaFinca(),
+                                                ),
+                                                SizedBox(width: 20.0,),
+                                                Flexible(
+                                                    child: _medicionFinca(),
+                                                ),
+                                            ],
                                         ),
-                                        SizedBox(width: 20.0,),
-                                        Flexible(
-                                            child: _medicionFinca(),
-                                        ),
+                                        SizedBox(height: 40.0,),
+                                        _nombreProductor(),
+                                        SizedBox(height: 40.0,),
+                                        _nombreTecnico(),
+                                        SizedBox(height: 60.0,),
+                                        _botonsubmit(tituloBtn)
                                     ],
                                 ),
-                                SizedBox(height: 20.0,),
-                                _nombreProductor(),
-                                SizedBox(height: 20.0,),
-                                _nombreTecnico(),
-                                SizedBox(height: 20.0,),
-                                _botonsubmit()
-                            ],
+                            ),
                         ),
                     ),
-                ),
+                ],
             ),
         );
     }
@@ -82,7 +105,10 @@ class _AgregarFincaState extends State<AgregarFinca> {
             initialValue: finca.nombreFinca,
             autofocus: true,
             decoration: InputDecoration(
-                labelText: 'Nombre de la finca'
+                labelText: 'Nombre de la finca',
+                labelStyle: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 18)
             ),
             validator: (value){
                 if(value.length < 3){
@@ -101,7 +127,10 @@ class _AgregarFincaState extends State<AgregarFinca> {
             initialValue: finca.nombreProductor,
             autofocus: true,
             decoration: InputDecoration(
-                labelText: 'Nombre de productor'
+                labelText: 'Nombre de productor',
+                labelStyle: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 18)
             ),
             validator: (value){
                 if(value.length < 3){
@@ -121,7 +150,10 @@ class _AgregarFincaState extends State<AgregarFinca> {
             initialValue: finca.areaFinca.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
-                labelText: 'Area de la finca'
+                labelText: 'Area de la finca',
+                labelStyle: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 24)
             ),
             validator: (value) {
                 
@@ -139,6 +171,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
     Widget _medicionFinca(){
         return SelectFormField(
             initialValue: finca.tipoMedida.toString(),
+            
             labelText: 'Unidad',
             items: selectMap.dimenciones(),
             validator: (value){
@@ -154,16 +187,20 @@ class _AgregarFincaState extends State<AgregarFinca> {
         );
     }
 
-    Widget  _botonsubmit(){
+    Widget  _botonsubmit(tituloBtn){
         return RaisedButton.icon(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+                borderRadius: BorderRadius.circular(13.0),
             ),
             color: Colors.deepPurple,
+            icon:Icon(Icons.save, color: Colors.white,),
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Guardar'),
+            label: Text(tituloBtn,
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
             onPressed:(_guardando) ? null : _submit,
         );
     }
