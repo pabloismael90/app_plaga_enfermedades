@@ -28,34 +28,38 @@ class CardList extends StatelessWidget {
 
 
         return Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             width: double.infinity,
-            height: 150,
-            child: Stack(
-                children: <Widget>[
-                    Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                left: 24,
-                                top: 24,
-                                right: size.width * .35,
-                            ),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(38.5),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                        Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: SvgPicture.asset('assets/icons/finca.svg', height:60,),
+                        ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                             
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(38.5),
-                            ),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                
-                                Text(
+                                Padding(
+                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                    child: Text(
                                     "${finca.nombreFinca}",
                                     style: Theme.of(context).textTheme.headline6,
+                                ),
                                 ),
                                 Text(
                                     "${finca.nombreProductor}",
@@ -65,27 +69,16 @@ class CardList extends StatelessWidget {
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Row(
-                                    children: <Widget>[
-                                        Text(
-                                            "${finca.areaFinca} $labelMedida",
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
-                                        
-                                    ],
+                                    child: Text(
+                                        "${finca.areaFinca} $labelMedida",
+                                        style: TextStyle(color: kLightBlackColor),
                                     ),
                                 ),
-                                ],
-                            ),
+                            ],
                         ),
-                    ),
-                    Positioned(
-                        right: 0,
-                        top: 0,
-                        child: SvgPicture.asset(icon, height: 100,),
-                    ),
-                ],
-            ),
+                        
+                    ],
+                ),
         );
     }
 }

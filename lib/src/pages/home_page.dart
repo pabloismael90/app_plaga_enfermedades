@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
                     
                     Column(
                         children: [
-                            SizedBox(height: size.height * 0.31,),
+                            SizedBox(height: size.height * 0.35,),
                             Expanded(
                                 child:GridView.count(
                                         crossAxisCount: 2,
