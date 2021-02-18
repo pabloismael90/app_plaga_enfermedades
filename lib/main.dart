@@ -74,9 +74,17 @@ class MyApp extends StatelessWidget {
                 textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor),
                 primaryColor:kRedColor,
                 inputDecorationTheme: InputDecorationTheme(
-                    labelStyle: TextStyle(
-                        fontFamily:  "Cairo",
-                    )
+                    labelStyle: Theme.of(context).textTheme
+                                .headline6
+                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 18),
+                ),
+                buttonTheme: ButtonThemeData(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    textTheme: ButtonTextTheme.primary,
+                    buttonColor: Color(0xFFBF2431),
+                   
                 )
             ),
             

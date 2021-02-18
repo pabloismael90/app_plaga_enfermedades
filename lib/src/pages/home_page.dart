@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                                         "Plaga y\nenfermedades\nde Cacao",
                                         style: Theme.of(context).textTheme
                                             .headline4
-                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                            .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 18)
                                     ),
                                 ],
                             ),

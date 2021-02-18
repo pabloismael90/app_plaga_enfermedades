@@ -1,7 +1,10 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/finca_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 
 class ParcelaPage extends StatefulWidget {
@@ -19,141 +22,142 @@ class _ParcelaPageState extends State<ParcelaPage> {
     Widget build(BuildContext context) {
 
         final Finca fincaData = ModalRoute.of(context).settings.arguments;
+        var size = MediaQuery.of(context).size;
         fincasBloc.obtenerParcelasIdFinca(fincaData.id);
 
-
-
-        return StreamBuilder(
-            stream: fincasBloc.parcelaStream,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-
-                if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                }
-
-                final parcela = snapshot.data;
-
-                if (parcela.length == 0) {
-                    return Scaffold(
-                        appBar: AppBar(
-                            title: Text('Registro de parcelas'),
-                        ),
-                        body: Column(
-                            children: [
-                                Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.deepPurple
-                                    ),
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.all(20.0),
-                                    child: Text(
-                                        fincaData.nombreFinca, 
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0
-                                        ),
-                                    ),
-                                ),
-                                Divider()
-                            ],
-                        ),
-                        bottomNavigationBar: BottomAppBar(
-                            child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                    Expanded(
-                                        child: _editarFinca(fincaData),
-                                    ),
-                                    Expanded(child: _addParcela(fincaData),),
-                                ],
-                            ),
-                        ),
-                    );
-                  
-                }
-
-                return Scaffold(
-                    appBar: AppBar(
-                        title: Text('Registro de parcelas'),
-                    ),
+        return Scaffold(
+                    appBar: AppBar(),
                     body: Column(
                         children: [
                             Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.deepPurple
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(20.0),
-                                child: Text(
-                                    fincaData.nombreFinca, 
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Column(
+                                        children: [
+                                        
+                                            Text(
+                                                "${fincaData.nombreFinca}",
+                                                style: Theme.of(context).textTheme
+                                                    .headline5
+                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                            ),
+                                        ],
                                     ),
-                                ),
+                                )
                             ),
                             Divider(),
-                            Expanded(child: _listaDeParcelas(snapshot.data, fincaData, context),)
+                            Container(
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Column(
+                                        children: [
+                                        
+                                            Text(
+                                                "Listas de Parcelas",
+                                                style: Theme.of(context).textTheme
+                                                    .headline5
+                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                            ),
+                                        ],
+                                    ),
+                                )
+                            ),
+                            
+                            Expanded(
+                                child: StreamBuilder(
+                                    stream: fincasBloc.parcelaStream,
+                                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+                                        if (!snapshot.hasData) {
+                                            return Center(child: CircularProgressIndicator());
+                                        }
+
+                                        final parcela = snapshot.data;
+
+                                        return _listaDeParcelas(parcela, fincaData, size, context);
+
+                                        
+                                        
+                                    },
+                                )
+                            )
                             
                         ],
                     ),
+
+                    
                     bottomNavigationBar: BottomAppBar(
-                        child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                                Expanded(
-                                    child: _editarFinca(fincaData),
+                        child: Container(
+                            color: kBackgroundColor,
+                            child: Padding(
+                                padding: EdgeInsets.symmetric( vertical: 10),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 5),
+                                            child: _editarFinca(fincaData),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 5),
+                                            child: _addParcela(fincaData),
+                                        ),
+                                    ],
                                 ),
-                                Expanded(child: _addParcela(fincaData),),
-                            ],
+                            ),
                         ),
                     ),
                 );
-            },
-        );
+                
+
+        
     }
 
     Widget  _editarFinca(Finca finca){
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Editar finca'),
-            //onPressed:(_guardando) ? null : _submit,
+            icon:Icon(Icons.edit_rounded),
+            
+            label: Text('Editar Finca',
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.all(13),
             onPressed: () => Navigator.pushNamed(context, 'addFinca', arguments: finca),
         );
     }
 
     Widget  _addParcela( Finca finca ){
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
             
-            icon:Icon(Icons.save),
+            icon:Icon(Icons.add_circle_outline_outlined),
             textColor: Colors.white,
-            label: Text('Agregar parcela'),
-            //onPressed:(_guardando) ? null : _submit,
+            label: Text('Nueva Parcela',
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.all(13),
+            
             onPressed:() => Navigator.pushNamed(context, 'addParcela', arguments: finca),
         );
     }
 
 
-    Widget  _listaDeParcelas(List parcelas, Finca finca, BuildContext context){
+    Widget  _listaDeParcelas(List parcelas, Finca finca, Size size, BuildContext context){
+        String labelMedida;
+        String labelVariedad;
+
         return ListView.builder(
             itemBuilder: (context, index) {
+                final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${parcelas[index].tipoMedida}');
+                labelMedida  = item['label'];
+                final item2 = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcelas[index].variedadCacao}');
+                labelVariedad  = item2['label'];
+
                 return GestureDetector(
-                    child: ListTile(
-                        title: Text(parcelas[index].nombreLote),
-                        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
-                        subtitle: Text(' id ${parcelas[index].id} -- idfinca ${parcelas[index].idFinca} '),
-                        
-                    ),
+                    child: _cardParcela(size, parcelas[index], labelMedida, labelVariedad),
                     onTap: () => Navigator.pushNamed(context, 'addParcela', arguments: parcelas[index]),
                 );
                
@@ -164,6 +168,78 @@ class _ParcelaPageState extends State<ParcelaPage> {
             controller: ScrollController(keepScrollOffset: false),
         );
 
+    }
+
+    Widget _cardParcela(Size size, Parcela parcela, String labelMedida, String labelVariedad){
+        return Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(38.5),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                        Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: SvgPicture.asset('assets/icons/parcela.svg', height:80,),
+                        ),
+                        Flexible(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                        child: Text(
+                                            "${parcela.nombreLote}",
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: Theme.of(context).textTheme.headline6,
+                                        ),
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only( bottom: 10.0),
+                                        child: Text(
+                                            "Variedad: $labelVariedad",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(color: kLightBlackColor),
+                                        ),
+                                    ),
+                                    Text(
+                                        'N Plantas: ${parcela.numeroPlanta}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(color: kLightBlackColor),
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                        child: Text(
+                                            "${parcela.areaLote} $labelMedida",
+                                            style: TextStyle(color: kLightBlackColor),
+                                        ),
+                                    ),
+                                ],  
+                            ),
+                        ),
+                        
+                        
+                        
+                    ],
+                ),
+        );
     }
    
 }

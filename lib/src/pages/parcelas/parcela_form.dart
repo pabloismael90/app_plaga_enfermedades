@@ -1,6 +1,7 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/parcela_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -50,15 +51,23 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         Finca finca = Finca();
         var dataRoute = ModalRoute.of(context).settings.arguments;
 
-        //print(dataRoute);
+        String tituloForm;
+        String tituloBtn;
+        
+        
+        tituloBtn = 'Guardar';
 
         if (dataRoute.runtimeType == Finca) {
             finca = dataRoute;
             fincaid = finca.id;
+            tituloForm = 'Agregar nueva parcela';
+            tituloBtn = 'Guardar';
         } else {
             if (dataRoute != null){
                 parcela = dataRoute;
                 fincaid = parcela.idFinca;
+                tituloForm = 'Actualizar parcela';
+                tituloBtn = 'Actualizar';
             }
             
         }
@@ -66,45 +75,60 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         //print(fincaid);
         
         return Scaffold(
-            appBar: AppBar(
-                title: Text('Agregar Parcela'),
-            ),
+            appBar: AppBar(),
             body: SingleChildScrollView(
-                child: Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: Form(
-                        key: formKey,
-                        child: Column(
-                            children: <Widget>[
-                                _nombreParcela(fincaid),
-                                SizedBox(height: 20.0,),
-                                Row(
-                                    children: <Widget>[
-                                        Flexible(
-                                            child: _areaFinca(finca,fincaid),
-                                        ),
-                                        SizedBox(width: 20.0,),
-                                        Flexible(
-                                            child: _medicionFinca(),
-                                        ),
-                                    ],
+                
+                child: Column(
+                    children: [
+                        Container(
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child:Text(
+                                    tituloForm,
+                                    style: Theme.of(context).textTheme
+                                        .headline5
+                                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
                                 ),
-                                Row(
-                                    children: <Widget>[
-                                        Flexible(
-                                            child: _variedadCacao(),
-                                        ),
-                                        SizedBox(width: 20.0,),
-                                        Flexible(
-                                            child: _numeroPlanta(),
-                                        ),
-                                    ],
-                                ),
-                                SizedBox(height: 20.0,),
-                                _botonsubmit()
-                            ],
+                            )
                         ),
-                    ),
+                        Container(
+                        padding: EdgeInsets.all(15.0),
+                            child: Form(
+                                key: formKey,
+                                child: Column(
+                                    children: <Widget>[
+                                        _nombreParcela(fincaid),
+                                        SizedBox(height: 40.0,),
+                                        Row(
+                                            children: <Widget>[
+                                                Flexible(
+                                                    child: _areaFinca(finca,fincaid),
+                                                ),
+                                                SizedBox(width: 20.0,),
+                                                Flexible(
+                                                    child: _medicionFinca(),
+                                                ),
+                                            ],
+                                        ),
+                                        SizedBox(height: 40.0,),
+                                        Row(
+                                            children: <Widget>[
+                                                Flexible(
+                                                    child: _variedadCacao(),
+                                                ),
+                                                SizedBox(width: 20.0,),
+                                                Flexible(
+                                                    child: _numeroPlanta(),
+                                                ),
+                                            ],
+                                        ),
+                                        SizedBox(height: 60.0,),
+                                        _botonsubmit(tituloBtn)
+                                    ],
+                                ),
+                            ),
+                        ),
+                    ],
                 ),
             ),
         );
@@ -253,17 +277,17 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
     }
 
-    Widget  _botonsubmit(){
+    Widget  _botonsubmit(String tituloBtn){
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Guardar'),
-            //onPressed: null,
+            icon:Icon(Icons.save, color: Colors.white,),
+            
+            label: Text(tituloBtn,
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
             onPressed:(_guardando) ? null : _submit,
            // onPressed: _submit,
         );

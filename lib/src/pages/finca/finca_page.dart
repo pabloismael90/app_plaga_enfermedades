@@ -84,12 +84,9 @@ class _FincasPageState extends State<FincasPage> {
     Widget _addFinca(BuildContext context){
     
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13.0),
-            ),
-            color: Colors.deepPurple,
+            
             icon:Icon(Icons.add_circle_outline_outlined),
-            textColor: Colors.white,
+            
             label: Text('Nueva finca',
                 style: Theme.of(context).textTheme
                     .headline6
@@ -101,53 +98,6 @@ class _FincasPageState extends State<FincasPage> {
     }
 
     Widget  _listaDeFincas(List fincas, BuildContext context, Size size){
-
-
-        // return GridView.builder(
-        //     itemCount: fincas.length,
-        //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //         crossAxisCount: 2,
-        //         childAspectRatio: 1.5,
-        //         crossAxisSpacing: 20,
-        //         mainAxisSpacing: 20,
-        //     ),
-        //     itemBuilder: (context, index){
-        //         return Container(
-        //             decoration: BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.circular(13),
-        //                 boxShadow: [
-        //                 BoxShadow(
-        //                         color: Color(0xFF3A5160)
-        //                             .withOpacity(0.05),
-        //                         offset: const Offset(1.1, 1.1),
-        //                         blurRadius: 17.0),
-        //                 ],
-        //             ),
-        //             child: GestureDetector(
-        //                 onTap: (){},
-        //                 child: Padding(
-        //                 padding: const EdgeInsets.all(10.0),
-        //                     child: Column(
-        //                         crossAxisAlignment: CrossAxisAlignment.start,
-        //                         children: <Widget>[
-                                    
-        //                             SvgPicture.asset('assets/icons/finca.svg',
-        //                                 height: 50.0,
-        //                             ),
-                                    
-        //                             Text(
-        //                                 fincas[index].nombreFinca,
-        //                                 textAlign: TextAlign.center,
-        //                                 style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.w500)
-        //                             )
-        //                         ],
-        //                     ),
-        //                 ),
-        //             ),
-        //         );
-        //     },
-        // );
         return ListView.builder(
             itemBuilder: (context, index) {
                 return GestureDetector(

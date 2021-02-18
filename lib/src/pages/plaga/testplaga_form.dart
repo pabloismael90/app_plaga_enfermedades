@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
@@ -66,34 +67,72 @@ class _AgregarTestState extends State<AgregarTest> {
                     List<Map<String, dynamic>> _listitem = snapshot.data;
                     return Scaffold(
                         key: scaffoldKey,
-                        appBar: AppBar(
-                            title: Text('Agregar Prueba'),
-                        ),
-                        body: SingleChildScrollView(
-                            child: Container(
-                                padding: EdgeInsets.all(15.0),
-                                child: Form(
-                                    key: formKey,
-                                    child: Column(
-                                        children: <Widget>[
-                                            
-                                            _selectfinca(_listitem),
-                                            SizedBox(height: 20.0,),
-                                            _selectParcela(),
-                                            SizedBox(height: 20.0,),
-                                            _date(context),
-                                            SizedBox(height: 20.0,),
-                                            _medicionFinca(),
-                                            SizedBox(height: 20.0,),
-                                            Text('Estaciones: 3 estaciones'),
-                                            Text('Plantas por estaciones: 10 plantas'),
-                                            SizedBox(height: 20.0,),
+                        appBar: AppBar(),
+                        body: Column(
+                            children: [
+                                Container(
+                                    child: Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                        child:Text(
+                                            'Tomar Datos',
+                                            style: Theme.of(context).textTheme
+                                                .headline5
+                                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                        ),
+                                    )
+                                ),
+                                Divider(),
+                                Container(
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
 
-                                            _botonsubmit()
+                                            Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                child:Text(
+                                                    '3 Estaciones',
+                                                    style: Theme.of(context).textTheme
+                                                        .headline6
+                                                        .copyWith(fontSize: 16)
+                                                ),
+                                            ),
+                                            Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                child:Text(
+                                                    '10 Plantas por estaciones',
+                                                    style: Theme.of(context).textTheme
+                                                        .headline6
+                                                        .copyWith(fontSize: 16)
+                                                ),
+                                            ),
                                         ],
+                                    )
+                                ),
+                                Divider(),
+                                SingleChildScrollView(
+                                    child: Container(
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Form(
+                                            key: formKey,
+                                            child: Column(
+                                                children: <Widget>[
+                                                    
+                                                    _selectfinca(_listitem),
+                                                    SizedBox(height: 40.0),
+                                                    _selectParcela(),
+                                                    SizedBox(height: 40.0),
+                                                    _date(context),
+                                                    SizedBox(height: 40.0),
+                                                    _medicionFinca(),
+                                                    SizedBox(height: 60.0),
+
+                                                    _botonsubmit()
+                                                ],
+                                            ),
+                                        ),
                                     ),
                                 ),
-                            ),
+                            ],
                         ),
                     );
                 }
@@ -221,14 +260,14 @@ class _AgregarTestState extends State<AgregarTest> {
 
     Widget  _botonsubmit(){
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
+            icon:Icon(Icons.save, color: Colors.white,),
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Guardar'),
+            label: Text('Guardar',
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
             onPressed:(_guardando) ? null : _submit,
             //onPressed: clearTextInput,
         );

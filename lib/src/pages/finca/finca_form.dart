@@ -106,9 +106,6 @@ class _AgregarFincaState extends State<AgregarFinca> {
             autofocus: true,
             decoration: InputDecoration(
                 labelText: 'Nombre de la finca',
-                labelStyle: Theme.of(context).textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 18)
             ),
             validator: (value){
                 if(value.length < 3){
@@ -128,9 +125,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
             autofocus: true,
             decoration: InputDecoration(
                 labelText: 'Nombre de productor',
-                labelStyle: Theme.of(context).textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 18)
+                
             ),
             validator: (value){
                 if(value.length < 3){
@@ -151,9 +146,8 @@ class _AgregarFincaState extends State<AgregarFinca> {
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
                 labelText: 'Area de la finca',
-                labelStyle: Theme.of(context).textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: kTextColor, fontSize: 24)
+                hintText: 'ejem: 200.0',
+                
             ),
             validator: (value) {
                 
@@ -170,8 +164,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
 
     Widget _medicionFinca(){
         return SelectFormField(
-            initialValue: finca.tipoMedida.toString(),
-            
+            initialValue: finca.tipoMedida.toString(),            
             labelText: 'Unidad',
             items: selectMap.dimenciones(),
             validator: (value){
@@ -187,23 +180,6 @@ class _AgregarFincaState extends State<AgregarFinca> {
         );
     }
 
-    Widget  _botonsubmit(tituloBtn){
-        return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13.0),
-            ),
-            color: Colors.deepPurple,
-            icon:Icon(Icons.save, color: Colors.white,),
-            
-            label: Text(tituloBtn,
-                style: Theme.of(context).textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-            onPressed:(_guardando) ? null : _submit,
-        );
-    }
 
     Widget _nombreTecnico(){
         return TextFormField(
@@ -224,6 +200,21 @@ class _AgregarFincaState extends State<AgregarFinca> {
             } 
         );
         
+    }
+
+    Widget  _botonsubmit(tituloBtn){
+        return RaisedButton.icon(
+            
+            icon:Icon(Icons.save, color: Colors.white,),
+            
+            label: Text(tituloBtn,
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
+            onPressed:(_guardando) ? null : _submit,
+        );
     }
 
 

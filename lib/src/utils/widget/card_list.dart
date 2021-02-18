@@ -50,31 +50,33 @@ class CardList extends StatelessWidget {
                             padding: EdgeInsets.only(right: 20),
                             child: SvgPicture.asset('assets/icons/finca.svg', height:60,),
                         ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                            
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                    "${finca.nombreFinca}",
-                                    style: Theme.of(context).textTheme.headline6,
-                                ),
-                                ),
-                                Text(
-                                    "${finca.nombreProductor}",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: kLightBlackColor),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "${finca.areaFinca} $labelMedida",
+                        Flexible(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                        child: Text(
+                                            "${finca.nombreFinca}",
+                                            style: Theme.of(context).textTheme.headline6,
+                                        ),
+                                    ),
+                                    Text(
+                                        "${finca.nombreProductor}",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(color: kLightBlackColor),
                                     ),
-                                ),
-                            ],
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                        child: Text(
+                                            "${finca.areaFinca} $labelMedida",
+                                            style: TextStyle(color: kLightBlackColor),
+                                        ),
+                                    ),
+                                ],
+                            ),
                         ),
                         
                     ],
