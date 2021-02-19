@@ -176,9 +176,10 @@ class _ReportePageState extends State<ReportePage> {
                                                 padding: EdgeInsets.only(top: 20, bottom: 10),
                                                 child: Text(
                                                     "Porcentaje de plantas afectadas",
+                                                    textAlign: TextAlign.center,
                                                     style: Theme.of(context).textTheme
                                                         .headline5
-                                                        .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 22)
+                                                        .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 18)
                                                 ),
                                             )
                                         ),
@@ -270,7 +271,7 @@ class _ReportePageState extends State<ReportePage> {
                                         "${parcela.nombreLote}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                     ),
                                 ),
                                 Padding(
@@ -279,7 +280,7 @@ class _ReportePageState extends State<ReportePage> {
                                         "Productor ${finca.nombreProductor}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                     ),
                                 ),
 
@@ -293,14 +294,14 @@ class _ReportePageState extends State<ReportePage> {
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "Area Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "N de plantas: ${parcela.numeroPlanta}",
-                                                        style: TextStyle(color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                             ],
@@ -312,14 +313,14 @@ class _ReportePageState extends State<ReportePage> {
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "Area Parcela: $labelvariedad ",
-                                                        style: TextStyle(color: kTextColor, fontSize: 15, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                             ],
@@ -611,22 +612,24 @@ class _ReportePageState extends State<ReportePage> {
             
         }
         
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
+        return SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Column(children:listPrincipales,)
             ),
-            child: Column(children:listPrincipales,)
         );
         
     }
@@ -679,22 +682,24 @@ class _ReportePageState extends State<ReportePage> {
             
         }
         
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
+        return SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Column(children:listPrincipales,)
             ),
-            child: Column(children:listPrincipales,)
         );
         
     }
@@ -749,22 +754,24 @@ class _ReportePageState extends State<ReportePage> {
             
         }
         
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
+        return SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Column(children:listPrincipales,)
             ),
-            child: Column(children:listPrincipales,)
         );
         
     }
@@ -819,22 +826,24 @@ class _ReportePageState extends State<ReportePage> {
             
         }
         
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
+        return SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Column(children:listPrincipales,)
             ),
-            child: Column(children:listPrincipales,)
         );
         
     }
@@ -890,22 +899,24 @@ class _ReportePageState extends State<ReportePage> {
             
         }
         
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
+        return SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Column(children:listPrincipales,)
             ),
-            child: Column(children:listPrincipales,)
         );
         
     }

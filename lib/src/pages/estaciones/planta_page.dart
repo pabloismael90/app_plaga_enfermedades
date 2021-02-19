@@ -182,7 +182,7 @@ class _PlantaPageState extends State<PlantaPage> {
             label: Text('Agregar Planta',
                 style: Theme.of(context).textTheme
                     .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
             ),
             padding:EdgeInsets.all(13),
             onPressed:() => Navigator.pushNamed(context, 'addPlanta', arguments: [estacion,plaga.id]),
