@@ -4,6 +4,7 @@ import 'package:app_plaga_enfermedades/src/models/finca_model.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
+import 'package:app_plaga_enfermedades/src/pages/finca/finca_page.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -149,14 +150,28 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     return Column(
                         children: [
                             Container(
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Text(
-                                        "Toma de Decisiones",
-                                        style: Theme.of(context).textTheme
-                                            .headline5
-                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                    ),
+                                child: Column(
+                                    children: [
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 10),
+                                            child: Text(
+                                                "Toma de Decisiones",
+                                                style: Theme.of(context).textTheme
+                                                    .headline5
+                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                            ),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 10),
+                                            child: Text(
+                                                "Deslice hacia la derecha para continuar con el formulario",
+                                                textAlign: TextAlign.center,
+                                                style: Theme.of(context).textTheme
+                                                    .headline5
+                                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 16)
+                                            ),
+                                        ),
+                                    ],
                                 )
                             ),
                             Expanded(
@@ -1112,6 +1127,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         //     print("Id prueba: ${element.idTest}");
             DBProvider.db.nuevaAccion(accion);
         });
+        fincasBloc.obtenerDecisiones(idPlagaMain);
         setState(() {_guardando = false;});
 
         Navigator.pop(context, 'estaciones');

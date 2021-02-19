@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:app_plaga_enfermedades/src/models/decisiones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
@@ -24,6 +25,7 @@ class FincasBloc {
     final _plagaController = StreamController<List<Testplaga>>.broadcast();
     final _plantaController = StreamController<List<Planta>>.broadcast();
     final _countPlantaControl = StreamController<List<Planta>>.broadcast();
+    final _decisionesControl = StreamController<List<Decisiones>>.broadcast();
     
 
     final _fincasSelectControl = StreamController<List<Map<String, dynamic>>>.broadcast();
@@ -34,6 +36,7 @@ class FincasBloc {
     Stream<List<Testplaga>> get plagaStream => _plagaController.stream;
     Stream<List<Planta>> get plantaStream => _plantaController.stream;
     Stream<List<Planta>> get countPlanta => _countPlantaControl.stream;
+    Stream<List<Decisiones>> get decisionesStream => _decisionesControl.stream;
 
 
     Stream<List<Map<String, dynamic>>> get fincaSelect => _fincasSelectControl.stream;
@@ -106,6 +109,11 @@ class FincasBloc {
         obtenerPlantas(idTest);
     }
 
+    //deciones
+    obtenerDecisiones(String idTest) async {
+        _decisionesControl.sink.add( await DBProvider.db.getDecisionesIdTest(idTest) );
+    }
+
 
     //Cerrar stream
     dispose() {
@@ -116,6 +124,7 @@ class FincasBloc {
         _plagaController?.close();
         _plantaController?.close();
         _countPlantaControl?.close();
+        _decisionesControl?.close();
     }
 
 //   borrarScan( int id ) async {

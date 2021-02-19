@@ -24,6 +24,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
         Finca finca = await DBProvider.db.getFincaId(textPlaga.idFinca);
         Parcela parcela = await DBProvider.db.getParcelaId(textPlaga.idLote);
         List<Decisiones> desiciones = await DBProvider.db.getDecisionesIdTest(textPlaga.id);
+        
         return [finca, parcela, desiciones];
     }
 
@@ -32,6 +33,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
         
         Testplaga plaga = ModalRoute.of(context).settings.arguments;
         fincasBloc.obtenerPlantas(plaga.id);
+        
 
        return StreamBuilder<List<Planta>>(
             stream: fincasBloc.countPlanta,
@@ -41,7 +43,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 }
                 List<Planta> plantas= snapshot.data;
                 //print(plantas.length);
-                
+                fincasBloc.obtenerDecisiones(plaga.id);
                 int estacion1 = 0;
                 int estacion2 = 0;
                 int estacion3 = 0;
@@ -250,15 +252,15 @@ class _EstacionesPageState extends State<EstacionesPage> {
         
         if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
             
-            return FutureBuilder(
-                future: _getdataFinca(plaga),
+            return StreamBuilder(
+            stream: fincasBloc.decisionesStream ,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
                         return Center(child: CircularProgressIndicator());
                     }
-                    List<Decisiones> desiciones = snapshot.data[2];
+                    List<Decisiones> desiciones = snapshot.data;
 
-                    
+                    print(desiciones);
 
                     if (desiciones.length == 0){
 

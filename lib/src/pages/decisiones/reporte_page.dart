@@ -98,14 +98,28 @@ class _ReportePageState extends State<ReportePage> {
                     return Column(
                         children: [
                             Container(
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Text(
-                                        "Reporte de Decisiones",
-                                        style: Theme.of(context).textTheme
-                                            .headline5
-                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                    ),
+                                child: Column(
+                                    children: [
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 10),
+                                            child: Text(
+                                                "Reporte de Decisiones",
+                                                style: Theme.of(context).textTheme
+                                                    .headline5
+                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                            ),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 10),
+                                            child: Text(
+                                                "Deslice hacia la derecha para continuar con el reporte",
+                                                textAlign: TextAlign.center,
+                                                style: Theme.of(context).textTheme
+                                                    .headline5
+                                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 16)
+                                            ),
+                                        ),
+                                    ],
                                 )
                             ),
                             Expanded(
