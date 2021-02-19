@@ -374,33 +374,54 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
     
     Widget _encabezadoTabla(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+        return Column(
             children: [
-                Expanded(child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Plaga', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),),
-                Container(
-                    width: 64,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),),
+                        Container(
+                            width: 256,
+                            child: Text('Estaciones', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        
+                    ],
                 ),
-                Container(
-                    width: 64,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),
-                Container(
-                    width: 64,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
-                ),
-                Container(
-                    width: 64,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                Divider(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('Plagas', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),),
+                        Container(
+                            width: 64,
+                            child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                            width: 64,
+                            child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                            width: 64,
+                            child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                        ),
+                        Container(
+                            width: 64,
+                            child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                    ],
                 ),
             ],
         );

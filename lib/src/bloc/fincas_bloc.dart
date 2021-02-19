@@ -106,11 +106,6 @@ class FincasBloc {
         obtenerPlantas(idTest);
     }
 
-    // countPlantaId() async {
-    //     _countPlantaControl.sink.add( );
-    //     //int variable = await DBProvider.db.countPlanta(idTest, estacion);
-    //     //print('$variable Estacion $estacion');
-    // }
 
     //Cerrar stream
     dispose() {

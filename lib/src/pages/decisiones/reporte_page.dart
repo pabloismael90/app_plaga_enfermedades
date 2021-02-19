@@ -73,7 +73,7 @@ class _ReportePageState extends State<ReportePage> {
         String idTest = ModalRoute.of(context).settings.arguments;
 
         return Scaffold(
-            appBar: AppBar(title: Text('Reporte'),),
+            appBar: AppBar(),
             body: FutureBuilder(
                 future: getdata(idTest),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -101,7 +101,7 @@ class _ReportePageState extends State<ReportePage> {
                                 child: Padding(
                                     padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Text(
-                                        "Toma de Decisiones",
+                                        "Reporte de Decisiones",
                                         style: Theme.of(context).textTheme
                                             .headline5
                                             .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
@@ -324,33 +324,54 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _encabezadoTabla(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+        return Column(
             children: [
-                Expanded(child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Plaga', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),),
-                Container(
-                    width: 64,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),),
+                        Container(
+                            width: 256,
+                            child: Text('Estaciones', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        
+                    ],
                 ),
-                Container(
-                    width: 64,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),
-                Container(
-                    width: 64,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
-                ),
-                Container(
-                    width: 64,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                Divider(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('Plaga', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),),
+                        Container(
+                            width: 64,
+                            child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                            width: 64,
+                            child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                            width: 64,
+                            child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                        ),
+                        Container(
+                            width: 64,
+                            child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                    ],
                 ),
             ],
         );
