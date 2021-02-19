@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: Theme.of(context).textTheme
                                 .headline6
-                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 18),
+                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 16),
                 ),
             
                 buttonTheme: ButtonThemeData(

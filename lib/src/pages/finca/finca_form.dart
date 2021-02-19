@@ -48,24 +48,22 @@ class _AgregarFincaState extends State<AgregarFinca> {
 
         return Scaffold(
             key: scaffoldKey,
-            appBar: AppBar(
-                title: Text('Agregar Finca'),
-            ),
-            body: Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child:Text(
-                                tituloForm,
-                                style: Theme.of(context).textTheme
-                                    .headline5
-                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                            ),
-                        )
-                    ),
-                    SingleChildScrollView(
-                        child: Container(
+            appBar: AppBar(),
+            body: SingleChildScrollView(
+                child: Column(
+                    children: [
+                        Container(
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child:Text(
+                                    tituloForm,
+                                    style: Theme.of(context).textTheme
+                                        .headline5
+                                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                ),
+                            )
+                        ),
+                        Container(
                             padding: EdgeInsets.all(15.0),
                             child: Form(
                                 key: formKey,
@@ -94,8 +92,8 @@ class _AgregarFincaState extends State<AgregarFinca> {
                                 ),
                             ),
                         ),
-                    ),
-                ],
+                    ],
+                )
             ),
         );
     }

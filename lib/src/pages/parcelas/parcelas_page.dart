@@ -121,7 +121,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
             label: Text('Editar Finca',
                 style: Theme.of(context).textTheme
                     .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
             ),
             padding:EdgeInsets.all(13),
             onPressed: () => Navigator.pushNamed(context, 'addFinca', arguments: finca),
@@ -136,7 +136,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
             label: Text('Nueva Parcela',
                 style: Theme.of(context).textTheme
                     .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
             ),
             padding:EdgeInsets.all(13),
             

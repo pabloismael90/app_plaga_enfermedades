@@ -126,9 +126,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
 
         return Scaffold(
-            appBar: AppBar(
-                title: Text('Toma de Decisiones'),
-            ),
+            appBar: AppBar(),
             body: FutureBuilder(
                 future: _getdataFinca(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1015,50 +1013,48 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     Widget  _botonsubmit(String idplaga){
         idPlagaMain = idplaga;
-        return Center(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                height: 200,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(
-                    children: [
-                        Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 30),
-                            child: Text(
-                                "¿Ha Terminado todos los formularios de toda de desicion?",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor)
-                            ),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 60),
-                            child: RaisedButton.icon(
-                                icon:Icon(Icons.save),
-                                label: Text('Guardar',
-                                    style: Theme.of(context).textTheme
-                                        .headline6
-                                        .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-                                ),
-                                padding:EdgeInsets.all(13),
-                                onPressed:(_guardando) ? null : _submit,
-                                
-                            ),
-                        ),
+        return Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            height: 200,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                    BoxShadow(
+                            color: Color(0xFF3A5160)
+                                .withOpacity(0.05),
+                            offset: const Offset(1.1, 1.1),
+                            blurRadius: 17.0),
                     ],
-                ),
+            ),
+            child: Column(
+                children: [
+                    Padding(
+                        padding: EdgeInsets.only(top: 20, bottom: 30),
+                        child: Text(
+                            "¿Ha Terminado todos los formularios de toma de desición?",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme
+                                .headline5
+                                .copyWith(fontWeight: FontWeight.w600, color: kRedColor)
+                        ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 60),
+                        child: RaisedButton.icon(
+                            icon:Icon(Icons.save),
+                            label: Text('Guardar',
+                                style: Theme.of(context).textTheme
+                                    .headline6
+                                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                            ),
+                            padding:EdgeInsets.all(13),
+                            onPressed:(_guardando) ? null : _submit,
+                            
+                        ),
+                    ),
+                ],
             ),
         );
     }

@@ -208,7 +208,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                     Padding(
                                         padding: EdgeInsets.only(top: 10, bottom: 10.0),
                                         child: Text(
-                                            "Estacion $estacion",
+                                            "Estación $estacion",
                                             softWrap: true,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
@@ -269,7 +269,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                 child: RaisedButton.icon(
                                     icon:Icon(Icons.add_circle_outline_outlined),
                                     
-                                    label: Text('Tomar de decisiones',
+                                    label: Text('Toma de decisiones',
                                         style: Theme.of(context).textTheme
                                             .headline6
                                             .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
@@ -315,7 +315,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme
                         .headline5
-                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
                 ),
             ),
         );
