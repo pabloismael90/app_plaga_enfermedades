@@ -78,6 +78,7 @@ class MyApp extends StatelessWidget {
                                 .headline6
                                 .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 18),
                 ),
+            
                 buttonTheme: ButtonThemeData(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
@@ -86,7 +87,10 @@ class MyApp extends StatelessWidget {
                     buttonColor: Color(0xFFBF2431),
                    
                 )
+                
             ),
+             
+             
             
         );
     }

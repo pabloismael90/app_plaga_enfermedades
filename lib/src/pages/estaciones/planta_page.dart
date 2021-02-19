@@ -3,6 +3,7 @@ import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -24,9 +25,7 @@ class _PlantaPageState extends State<PlantaPage> {
         fincasBloc.obtenerPlantaIdTest(plaga.id, indiceEstacion);
 
         return Scaffold(
-            appBar: AppBar(
-                title: Text('Lista de Estaciones'),
-            ),
+            appBar: AppBar(),
             body: StreamBuilder<List<Planta>>(
                 //future: DBProvider.db.getTodasPlantas(),
                 stream: fincasBloc.plantaStream,
@@ -39,37 +38,48 @@ class _PlantaPageState extends State<PlantaPage> {
 
                     //return _listaDePlantas(planta, context);
                     
-                    return SingleChildScrollView(
-                        child: Column(
-                            children: [
-                                _datosTest(context, indiceEstacion),
-                                _listaDePlantas(planta, context, indiceEstacion),
-                                _countPlanta(plaga.id, indiceEstacion, plaga),
-                                //_addPlanta(context, indiceEstacion, plaga)
-                            ],
-                        ),
+                    return Column(
+                        children: [
+                            _datosTest(context, indiceEstacion),
+                            Divider(),                            
+                            Expanded(child: SingleChildScrollView(child: _listaDePlantas(planta, context, indiceEstacion))),
+                            
+                            
+                            //_addPlanta(context, indiceEstacion, plaga)
+                        ],
                     );
                 },
             ),
-           
+            bottomNavigationBar: BottomAppBar(
+                child: Container(
+                    color: kBackgroundColor,
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: _countPlanta(plaga.id, indiceEstacion, plaga)
+                    ),
+                ),
+            ),
         );
     }
 
     Widget _datosTest(BuildContext context, int indiceEstacion){
         return Container(
-            decoration: BoxDecoration(
-                color: Colors.deepPurple
-            ),
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(20.0),
-            child: Text(
-                'Estacion $indiceEstacion', 
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0
+            child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                    children: [
+                    
+                        Text(
+                            "Lista de plantas estacion $indiceEstacion",
+                            style: Theme.of(context).textTheme
+                                .headline5
+                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                        ),
+                    ],
                 ),
-            ),
+            )
         );
+        
     }
 
 
@@ -80,16 +90,39 @@ class _PlantaPageState extends State<PlantaPage> {
                 if (planta[index].estacion == numeroEstacion) {
 
                     return GestureDetector(
-                        child: ListTile(
-                            title: Text('Planta ${index+1}'),
-                            //trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
-                            subtitle: Text('id ${planta[index].id}'),
-                            
-                        ),
-                        //onTap: () => Navigator.pushNamed(context, 'addPlanta', arguments: [planta[index]]),
-                        //onTap: () => print(planta[index].idTest),
+                        child:Container(
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                                
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.5),
+                                    boxShadow: [
+                                        BoxShadow(
+                                            color: Color(0xFF3A5160)
+                                                .withOpacity(0.05),
+                                            offset: const Offset(1.1, 1.1),
+                                            blurRadius: 17.0),
+                                        ],
+                                ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                        
+                                        Padding(
+                                            padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                            child: Text(
+                                                "Planta ${index+1}",
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: Theme.of(context).textTheme.headline6,
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                        )
                     );
-                    
                 }
                 return Container();
             },
@@ -100,6 +133,8 @@ class _PlantaPageState extends State<PlantaPage> {
         );
 
     }
+
+    
 
     Widget  _countPlanta(String idPlaga,  int estacion, Testplaga plaga){
         return FutureBuilder(
@@ -112,17 +147,17 @@ class _PlantaPageState extends State<PlantaPage> {
                 int value = snapshot.data;
                 
                 if (value < 10) {
-                  return Column(
-                      children: [
-                        Text('$value / 10',
-                            style: TextStyle(
-                            color: Colors.deepPurple,
-                            fontSize: 20.0
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                            Text('Plantas: $value / 10',
+                                style: Theme.of(context).textTheme
+                                        .headline6
+                                        .copyWith(fontWeight: FontWeight.w600)
                             ),
-                        ),
-                           _addPlanta(context, estacion, plaga),
-                      ],
-                  );
+                            _addPlanta(context, estacion, plaga),
+                        ],
+                    );
                 }else{
                     return Container(
                         child: Text('$value / 10',
@@ -141,14 +176,15 @@ class _PlantaPageState extends State<PlantaPage> {
 
     Widget  _addPlanta(BuildContext context,  int estacion, Testplaga plaga){
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Agregar Planta'),
+            icon:Icon(Icons.add_circle_outline_outlined),
+            
+            label: Text('Agregar Planta',
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.all(13),
             onPressed:() => Navigator.pushNamed(context, 'addPlanta', arguments: [estacion,plaga.id]),
         );
     }

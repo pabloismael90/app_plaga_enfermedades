@@ -51,16 +51,11 @@ class _TestPageState extends State<TestPage> {
                                 Container(
                                     child: Padding(
                                         padding: EdgeInsets.symmetric(vertical: 20),
-                                        child: Column(
-                                            children: [
-                                            
-                                                Text(
-                                                    "Lista de toma de datos",
-                                                    style: Theme.of(context).textTheme
-                                                        .headline5
-                                                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                                ),
-                                            ],
+                                        child: Text(
+                                            "Lista de toma de datos",
+                                            style: Theme.of(context).textTheme
+                                                .headline5
+                                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
                                         ),
                                     )
                                 ),

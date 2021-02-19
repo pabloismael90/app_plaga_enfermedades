@@ -4,6 +4,7 @@ import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -55,9 +56,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         //return Scaffold();
         return Scaffold(
             key: scaffoldKey,
-            appBar: AppBar(
-                title: Text('Formulario Planta'),
-            ),
+            appBar: AppBar(),
             body: SingleChildScrollView(
                 child: Container(
                     padding: EdgeInsets.all(15.0),
@@ -65,52 +64,71 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         key: formKey,
                         child: Column(
                             children: <Widget>[
-                                Container(child: Center(child: Text('Estacion número ${planta.estacion}'),),),
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                        Expanded(child: Container(),),
-                                        Container(
-                                            width: 50.0,
-                                            child: Text('Si', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                                            //color: Colors.deepPurple,
+                                Container(
+                                    child: Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                        child: Text(
+                                            "Nueva Planta estacion ${planta.estacion}",
+                                            style: Theme.of(context).textTheme
+                                                .headline5
+                                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
                                         ),
-                                        Container(
-                                            width: 50.0,
-                                            child: Text('No', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
-                                            //color: Colors.deepPurple,
-                                        ),
-                                    ],
+                                    )
                                 ),
+                                Divider(),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                            Expanded(child: Text('Lista Plagas', style: Theme.of(context).textTheme.headline6
+                                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
+                                            Container(
+                                                width: 50,
+                                                child: Text('Si', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600,) ),
+                                            ),
+                                            Container(
+                                                width: 50,
+                                                child: Text('No', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                                            ),
+                                        ],
+                                    ),
+                                ),
+                                Divider(),
                                 _plagasList(),
                                 Divider(),
-                                _deficiencia(),
-                                Divider(),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                         Expanded(child: Container(),),
                                         Container(
-                                            width: 50.0,
-                                            child: Text('Alta', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                                            width: 50,
+                                            child: Text('Alta', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                                             //color: Colors.deepPurple,
                                         ),
                                         Container(
-                                            width: 50.0,
-                                            child: Text('Media', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                                            width: 50,
+                                            child: Text('Media', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                                             //color: Colors.deepPurple,
                                         ),
                                         Container(
-                                            width: 50.0,
-                                            child: Text('Baja', textAlign: TextAlign.center, style:TextStyle(fontWeight: FontWeight.bold)),
-                                            //color: Colors.deepPurple,
+                                            width: 50,
+                                            child: Text('Baja', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                                         ),
                                     ],
                                 ),
                                 
                                 _produccion(),
                                 Divider(),
-                                _botonsubmit()
+                                Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 30.0),
+                                    child: _botonsubmit()
+                                )
                             ],
                         ),
                     ),
@@ -132,102 +150,98 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                 
                 
                 
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                        Expanded(child: Text('$labelPlaga', style:TextStyle(fontWeight: FontWeight.bold))),
-                        Radio(
-                            value: '1',
-                            groupValue: radios[itemPlagas[idPlaga]['value']],
-                            onChanged: (value){
-                                setState(() {
-                                    radios[itemPlagas[idPlaga]['value']] = value;
-                                    //print(value);
-                                    
-                                });
-                            },
-                        ),
-                        Radio(
-                            value:'2',
-                            groupValue: radios[itemPlagas[idPlaga]['value']],
-                            onChanged: (value){
-                                setState(() {
-                                
-                                    radios[itemPlagas[idPlaga]['value']] = value;
-                                    //print(value);
-                                    
-                                });
-                            },
-                        ),
-                       
+                return Column(
+                    children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                                Expanded(child: Text('$labelPlaga', style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
+                                Transform.scale(
+                                    scale: 1.2,
+                                    child: Radio(
+                                        value: '1',
+                                        groupValue: radios[itemPlagas[idPlaga]['value']],
+                                        onChanged: (value){
+                                            setState(() {
+                                                radios[itemPlagas[idPlaga]['value']] = value;
+                                            });
+                                        },
+                                        activeColor: Colors.teal[900],
+                                    ),
+                                ),
+                                Transform.scale(
+                                    scale: 1.2,
+                                    child: Radio(
+                                        value:'2',
+                                        groupValue: radios[itemPlagas[idPlaga]['value']],
+                                        onChanged: (value){
+                                            setState(() {
+                                                radios[itemPlagas[idPlaga]['value']] = value;
+                                            });
+                                        },
+                                        activeColor: Colors.red[900],
+                                    ),
+                                ),
+                            
 
+                            ],
+                        ),
+                        Divider()
                     ],
                 );
         
             },
             shrinkWrap: true,
             itemCount: itemPlagas.length,
+            physics: NeverScrollableScrollPhysics(),
         );
         
     }
-
-    Widget _deficiencia(){
-        return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-                Expanded(child: Text('Deficiencia', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.deficiencia,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.deficiencia = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.deficiencia,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.deficiencia = value;
-                    });
-                }),   
-
-            ],
-        );
-        
-    }
-
 
     Widget _produccion(){
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
                 Expanded(child: Text('Producción', style:TextStyle(fontWeight: FontWeight.bold))),
-                Radio(
-                    value: 1,
-                    groupValue: planta.produccion,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.produccion = value;
-                    });
-                }),
-                Radio(
-                    value: 2,
-                    groupValue: planta.produccion,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.produccion = value;
-                    });
-                }),
-                Radio(
-                    value: 3,
-                    groupValue: planta.produccion,
-                    onChanged: (value) {
-                    setState(() {
-                        planta.produccion = value;
-                    });
-                }),   
+                Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                        value: 1,
+                        groupValue: planta.produccion,
+                        onChanged: (value) {
+                            setState(() {
+                                planta.produccion = value;
+                            });
+                        },
+                        activeColor: Colors.teal[900],
+                    ),
+                ),
+                Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                        value: 2,
+                        groupValue: planta.produccion,
+                        onChanged: (value) {
+                            setState(() {
+                                planta.produccion = value;
+                            });
+                        },
+                        activeColor: Colors.orange[900],
+                    ),
+                ),
+                Transform.scale(
+                    scale: 1.2,
+                        child: Radio(
+                        value: 3,
+                        groupValue: planta.produccion,
+                        onChanged: (value) {
+                            setState(() {
+                                planta.produccion = value;
+                            });
+                        },
+                        activeColor: Colors.red[900],
+                    ),
+                ),   
 
             ],
         );
@@ -238,14 +252,14 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     Widget  _botonsubmit(){
         return RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.deepPurple,
+            icon:Icon(Icons.save, color: Colors.white,),
             
-            icon:Icon(Icons.save),
-            textColor: Colors.white,
-            label: Text('Guardar'),
+            label: Text('Guardar',
+                style: Theme.of(context).textTheme
+                    .headline6
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+            ),
+            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
             onPressed:(_guardando) ? null : _submit,
         );
     }
@@ -255,10 +269,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
         radios.forEach((key, value) {
             final ExistePlaga itemPlaga = ExistePlaga();
-            // print('id: ${uuid.v1()}');
-            // print('idPlanta: ${planta.id}');
-            // print('idPlaga: ${int.parse(key)}' );
-            // print('existe: ${int.parse(value)}');
             itemPlaga.id = uuid.v1();
             itemPlaga.idPlanta = planta.id;
             itemPlaga.idPlaga = int.parse(key);
@@ -267,15 +277,12 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
             listaPlagas.add(itemPlaga);
         });
-
-        //setState(() {_guardando = true;});
         
     }
 
     void _submit(){
         variableVacias = 0;
         radios.forEach((key, value) {
-            //print('Esta es la key : $value');
             if (value == '-1') {
                 variableVacias ++;
             } 
@@ -286,10 +293,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             variableVacias ++;
         }
 
-        if (planta.deficiencia == 0) {
-            variableVacias ++;
-        }
-        //print(planta.produccion );
 
         if  ( variableVacias !=  0){
             mostrarSnackbar(variableVacias);
@@ -320,7 +323,9 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     void mostrarSnackbar(int variableVacias){
         final snackbar = SnackBar(
-            content: Text('Hay $variableVacias Campos Vacios, Favor llene todo los campos'),
+            content: Text('Hay $variableVacias Campos Vacios, Favor llene todo los campos',
+                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+            ),
             duration: Duration(seconds: 2),
         );
         setState(() {_guardando = false;});

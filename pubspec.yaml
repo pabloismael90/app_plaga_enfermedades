@@ -49,6 +49,8 @@ dependencies:
   google_fonts: ^1.1.2
   #imagenes
   flutter_svg: ^0.19.1
+  #Indicador Circular o lineal
+  percent_indicator: ^2.1.9+1
 
 
 dev_dependencies:

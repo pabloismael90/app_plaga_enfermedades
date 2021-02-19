@@ -81,7 +81,6 @@ class DBProvider {
                     'id TEXT PRIMARY KEY,'
                     ' idTest TEXT,'
                     ' estacion INTEGER,'
-                    ' deficiencia INTEGER,'
                     ' produccion INTEGER'
                     ')'
                 );

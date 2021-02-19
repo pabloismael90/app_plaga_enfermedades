@@ -1,7 +1,9 @@
 import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
+import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DesicionesList extends StatelessWidget {
     const DesicionesList({Key key}) : super(key: key);
@@ -28,16 +30,29 @@ class DesicionesList extends StatelessWidget {
     Widget build(BuildContext context) {
         
         return Scaffold(
-            appBar: AppBar(
-                title: Text('Registros'),
-            ),
+            appBar: AppBar(),
             body: FutureBuilder(
                 future: getRegistros(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                     }
-                    return _listaDePlagas(snapshot.data, context);
+                    return Column(
+                        children: [
+                            Container(
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Text(
+                                        "Reportes",
+                                        style: Theme.of(context).textTheme
+                                            .headline5
+                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                    ),
+                                )
+                            ),
+                            Expanded(child: _listaDePlagas(snapshot.data, context))
+                        ],
+                    );
 
                 },
             ),
@@ -58,16 +73,7 @@ class DesicionesList extends StatelessWidget {
                             Finca fincadata = snapshot.data[1];
                             Parcela parceladata = snapshot.data[2];
 
-                            return ListTile(
-                                title: Text('Finca ${fincadata.nombreFinca}'),
-                                subtitle: Column(
-                                    children: [
-                                        Text('Parcela: ${parceladata.nombreLote}'),
-                                        Text('Fecha de Datos : ${testplagadata.fechaTest}'),
-                                    ],
-                                ),
-                                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.deepPurple,),
-                            );
+                            return _cardDesiciones(testplagadata,fincadata,parceladata, context);
                         },
                     ),
                     
@@ -83,4 +89,72 @@ class DesicionesList extends StatelessWidget {
         );
 
     }
+
+    Widget _cardDesiciones(Testplaga textPlaga, Finca finca, Parcela parcela, BuildContext context){
+        return Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(38.5),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                        Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: SvgPicture.asset('assets/icons/report.svg', height:80,),
+                        ),
+                        Flexible(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                        child: Text(
+                                            "${finca.nombreFinca}",
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: Theme.of(context).textTheme.headline6,
+                                        ),
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only( bottom: 10.0),
+                                        child: Text(
+                                            "${parcela.nombreLote}",
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(color: kLightBlackColor),
+                                        ),
+                                    ),
+                                    
+                                    Padding(
+                                        padding: EdgeInsets.only( bottom: 10.0),
+                                        child: Text(
+                                            'Toma de datos: ${textPlaga.fechaTest}',
+                                            style: TextStyle(color: kLightBlackColor),
+                                        ),
+                                    ),
+                                ],  
+                            ),
+                        ),
+                        
+                        
+                        
+                    ],
+                ),
+        );
+    }
+   
 }

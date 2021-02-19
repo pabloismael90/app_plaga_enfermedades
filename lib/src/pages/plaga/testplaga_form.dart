@@ -192,7 +192,7 @@ class _AgregarTestState extends State<AgregarTest> {
                         } 
                     },
                     
-                    onChanged: (val) => print(val),
+                    //onChanged: (val) => print(val),
                     onSaved: (value) => plaga.idLote = value,
                 );
             },
@@ -290,7 +290,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
         setState(() {_guardando = true;});
 
-        //print(plaga.id);
+        // print(plaga.id);
         // print(plaga.idFinca);
         // print(plaga.idLote);
         // print(plaga.estaciones);
@@ -298,8 +298,6 @@ class _AgregarTestState extends State<AgregarTest> {
         if(plaga.id == null){
             plaga.id =  uuid.v1();
             fincasBloc.addPlaga(plaga);
-        }else{
-            //fincasBloc.actualizarFinca(finca);
         }
 
         setState(() {_guardando = false;});

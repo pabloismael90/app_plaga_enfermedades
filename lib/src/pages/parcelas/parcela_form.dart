@@ -192,8 +192,8 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                         if (utils.isNumeric(value)){
 
                             valorsuma = double.parse(value) + sumaParcelas;
-                            print(valorsuma);
-                            print(finca.areaFinca);
+                            //print(valorsuma);
+                            //print(finca.areaFinca);
                             if (valorsuma <= finca.areaFinca) {
                                 return null;
                             } else {
