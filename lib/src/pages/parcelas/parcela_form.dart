@@ -195,9 +195,13 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                             //print(valorsuma);
                             //print(finca.areaFinca);
                             if (valorsuma <= finca.areaFinca) {
-                                return null;
+                                if (double.parse(value) > 0) {
+                                    return null;
+                                } else {
+                                    return 'Área mayor a cero';
+                                }
                             } else {
-                                return 'Area parcelas mayor a Finca';
+                                return 'Área parcelas mayor a Finca';
                             }
                         }else{
                             return 'Solo números';

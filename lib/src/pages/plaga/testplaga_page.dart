@@ -2,6 +2,7 @@ import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -96,20 +97,28 @@ class _TestPageState extends State<TestPage> {
     Widget  _listaDePlagas(List textPlagas, Size size, BuildContext context){
         return ListView.builder(
             itemBuilder: (context, index) {
-                return GestureDetector(
-                    child: FutureBuilder(
-                        future: _getdataFinca(textPlagas[index]),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                                return Center(child: CircularProgressIndicator());
-                            }
-                            Finca finca = snapshot.data[0];
-                            Parcela parcela = snapshot.data[1];
+                return Dismissible(
+                    key: UniqueKey(),
+                    child: GestureDetector(
+                        child: FutureBuilder(
+                            future: _getdataFinca(textPlagas[index]),
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                if (!snapshot.hasData) {
+                                    return Center(child: CircularProgressIndicator());
+                                }
+                                Finca finca = snapshot.data[0];
+                                Parcela parcela = snapshot.data[1];
 
-                            return _cardTest(size, textPlagas[index], finca, parcela);
-                        },
+                                return _cardTest(size, textPlagas[index], finca, parcela);
+                            },
+                        ),
+                        onTap: () => Navigator.pushNamed(context, 'estaciones', arguments: textPlagas[index]),
                     ),
-                    onTap: () => Navigator.pushNamed(context, 'estaciones', arguments: textPlagas[index]),
+                    confirmDismiss: (direction) => confirmacionUser(direction, context),
+                    direction: DismissDirection.endToStart,
+                    background: backgroundTrash(context),
+                    movementDuration: Duration(milliseconds: 500),
+                    onDismissed: (direction) => fincasBloc.borrarTestPlaga(textPlagas[index].id),
                 );
                
             },

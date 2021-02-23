@@ -58,6 +58,11 @@ class FincasBloc {
         obtenerFincas();
     }
 
+    borrarFinca( String id ) async {
+        await DBProvider.db.deleteFinca(id);
+        obtenerFincas();
+    }
+
     selectFinca() async{
         _fincasSelectControl.sink.add( await DBProvider.db.getSelectFinca());
     }
@@ -82,6 +87,10 @@ class FincasBloc {
         await DBProvider.db.updateParcela(parcela);
         obtenerParcelasIdFinca(idFinca);
     }
+    borrarParcela( String id ) async {
+        await DBProvider.db.deleteParcela(id);
+        obtenerParcelas();
+    }
 
     //Plagas
     obtenerPlagas() async {
@@ -92,6 +101,11 @@ class FincasBloc {
         await DBProvider.db.nuevoTestPlaga(nuevaPlaga);
         obtenerPlagas();
         //obtenerParcelasIdFinca(idFinca);
+    }
+
+    borrarTestPlaga( String idTest) async{
+        await DBProvider.db.deleteTestPlaga(idTest);
+        obtenerPlagas();
     }
 
 
@@ -109,10 +123,19 @@ class FincasBloc {
         obtenerPlantas(idTest);
     }
 
+    borrarPlanta( Planta planta) async{
+        await DBProvider.db.deletePlanta(planta.id);
+        obtenerPlantaIdTest(planta.idTest, planta.estacion);
+    }
+
+
     //deciones
     obtenerDecisiones(String idTest) async {
         _decisionesControl.sink.add( await DBProvider.db.getDecisionesIdTest(idTest) );
     }
+
+
+    
 
 
     //Cerrar stream
@@ -127,10 +150,7 @@ class FincasBloc {
         _decisionesControl?.close();
     }
 
-//   borrarScan( int id ) async {
-//     await DBProvider.db.deleteScan(id);
-//     obtenerScans();
-//   }
+    
 
 //   borrarScanTODOS() async {
     

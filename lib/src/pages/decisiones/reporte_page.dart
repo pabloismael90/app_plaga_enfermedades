@@ -285,7 +285,7 @@ class _ReportePageState extends State<ReportePage> {
                                 ),
 
                                 Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                         Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,16 +310,16 @@ class _ReportePageState extends State<ReportePage> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                                 Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0),
+                                                    padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
                                                         "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
                                                         style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0),
+                                                    padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
-                                                        "Area Parcela: $labelvariedad ",
+                                                        "Variedad: $labelvariedad ",
                                                         style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
@@ -339,54 +339,33 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _encabezadoTabla(){
-        return Column(
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
-                                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                        ),),
-                        Container(
-                            width: 256,
-                            child: Text('Estaciones', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                        ),
-                        
-                    ],
+                Expanded(child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                ),),
+                Container(
+                    width: 64,
+                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
-                Divider(),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Plaga', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
-                                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                        ),),
-                        Container(
-                            width: 64,
-                            child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                        ),
-                        Container(
-                            width: 64,
-                            child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                        ),
-                        Container(
-                            width: 64,
-                            child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
-                        ),
-                        Container(
-                            width: 64,
-                            child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
-                                    .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                        ),
-                    ],
+                Container(
+                    width: 64,
+                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                ),
+                Container(
+                    width: 64,
+                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                ),
+                Container(
+                    width: 64,
+                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
             ],
         );
@@ -411,7 +390,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 1, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -419,12 +398,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 2, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -432,12 +411,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 3, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -445,12 +424,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentTotal(idTest, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -458,7 +437,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -501,7 +480,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text('%${nameProd[i]}', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentProduccion(idTest, 1, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -509,12 +488,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentProduccion(idTest, 2, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -522,12 +501,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentProduccion(idTest, 3, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -535,12 +514,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentTotalProduccion(idTest, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -548,7 +527,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -1015,7 +994,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 1, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1023,12 +1002,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 2, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1036,12 +1015,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 3, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1049,12 +1028,12 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
                         Container(
-                            width: 64.0,
+                            width: 50,
                             child: FutureBuilder(
                                 future: _countPercentTotal(idTest, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1062,7 +1041,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(2)}%', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
                         ),

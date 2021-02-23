@@ -36,10 +36,13 @@ class DBProvider {
 
         final path = join( documentsDirectory.path, 'herramienta.db' );
 
+        print(path);
+
         return await openDatabase(
             path,
             version: 1,
             onOpen: (db) {},
+            onConfigure: _onConfigure,
             onCreate: ( Database db, int version ) async {
                 await db.execute(
                     'CREATE TABLE Finca ('
@@ -61,7 +64,8 @@ class DBProvider {
                     ' areaLote REAL,'
                     ' tipoMedida INTEGER,'
                     ' variedadCacao INTEGER,'
-                    ' numeroPlanta INTEGER'
+                    ' numeroPlanta INTEGER,'
+                    'CONSTRAINT fk_parcela FOREIGN KEY(idFinca) REFERENCES Finca(id) ON DELETE CASCADE'
                     ')'
                 );
 
@@ -72,7 +76,9 @@ class DBProvider {
                     ' idLote TEXT,'
                     ' estaciones INTEGER,'
                     ' fechaTest TEXT,'
-                    ' tipoMedida INTEGER'
+                    ' tipoMedida INTEGER,'
+                    ' CONSTRAINT fk_fincaTest FOREIGN KEY(idFinca) REFERENCES Finca(id) ON DELETE CASCADE,'
+                    ' CONSTRAINT fk_parcelaTest FOREIGN KEY(idLote) REFERENCES Parcela(id) ON DELETE CASCADE'
                     ')'
                 );
 
@@ -81,7 +87,8 @@ class DBProvider {
                     'id TEXT PRIMARY KEY,'
                     ' idTest TEXT,'
                     ' estacion INTEGER,'
-                    ' produccion INTEGER'
+                    ' produccion INTEGER,'
+                    ' CONSTRAINT fk_testPlaga FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
                     ')'
                 );
 
@@ -90,7 +97,8 @@ class DBProvider {
                     'id TEXT PRIMARY KEY,'
                     ' idPlaga INTEGER,'
                     ' idPlanta INTEGER,'
-                    ' existe INTEGER'
+                    ' existe INTEGER,'
+                    ' CONSTRAINT fk_existePlaga FOREIGN KEY(idPlanta) REFERENCES Planta(id) ON DELETE CASCADE'
                     ')'
                 );
 
@@ -101,7 +109,8 @@ class DBProvider {
                     ' idPregunta INTEGER,'
                     ' idItem INTEGER,'
                     ' repuesta INTEGER,'
-                    ' idTest TEXT'
+                    ' idTest TEXT,'
+                    ' CONSTRAINT fk_decisiones FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
                     ')'
                 );
 
@@ -110,13 +119,18 @@ class DBProvider {
                     'id TEXT PRIMARY KEY,'
                     ' idItem INTEGER,'
                     ' repuesta TEXT,'
-                    ' idTest TEXT'
+                    ' idTest TEXT,'
+                    ' CONSTRAINT fk_acciones FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
                     ')'
                 );
             }
         
         );
 
+    }
+
+    static Future _onConfigure(Database db) async {
+        await db.execute('PRAGMA foreign_keys = ON');
     }
 
     
@@ -338,9 +352,6 @@ class DBProvider {
     }
 
 
-
-
-
     //List Select
     Future<List<Map<String, dynamic>>> getSelectFinca() async {
        
@@ -365,7 +376,6 @@ class DBProvider {
                     
     }
 
-    
 
     // Actualizar Registros
     Future<int> updateFinca( Finca nuevaFinca ) async {
@@ -458,6 +468,34 @@ class DBProvider {
         double value = res/30;
         return value;
 
+    }
+
+    // Eliminar registros
+    Future<int> deleteFinca( String idFinca ) async {
+
+        final db  = await database;
+        final res = await db.delete('Finca', where: 'id = ?', whereArgs: [idFinca]);
+        return res;
+    }
+    Future<int> deleteParcela( String idParcela ) async {
+
+        final db  = await database;
+        final res = await db.delete('Parcela', where: 'id = ?', whereArgs: [idParcela]);
+        return res;
+    }
+
+    Future<int> deleteTestPlaga( String idTest ) async {
+
+        final db  = await database;
+        final res = await db.delete('TestPlaga', where: 'id = ?', whereArgs: [idTest]);
+        return res;
+    }
+
+    Future<int> deletePlanta( String idPlanta ) async {
+
+        final db  = await database;
+        final res = await db.delete('Planta', where: 'id = ?', whereArgs: [idPlanta]);
+        return res;
     }
 
 

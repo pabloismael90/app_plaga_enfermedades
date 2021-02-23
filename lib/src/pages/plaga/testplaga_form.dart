@@ -38,6 +38,8 @@ class _AgregarTestState extends State<AgregarTest> {
     String _fecha = '';
     TextEditingController _inputfecha = new TextEditingController();
 
+    List<Testplaga> mainlistplagas ;
+
 
     @mustCallSuper
     // ignore: must_call_super
@@ -46,12 +48,15 @@ class _AgregarTestState extends State<AgregarTest> {
         _inputfecha.text = _fecha;
         //plaga.estaciones = plaga.estaciones;
     }
+
+    
     
    
     @override
     Widget build(BuildContext context) {
 
         fincasBloc.selectFinca();
+        
         fincasBloc.selectParcela(idFinca);
         
        
@@ -68,71 +73,71 @@ class _AgregarTestState extends State<AgregarTest> {
                     return Scaffold(
                         key: scaffoldKey,
                         appBar: AppBar(),
-                        body: Column(
-                            children: [
-                                Container(
-                                    child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 10),
-                                        child:Text(
-                                            'Tomar Datos',
-                                            style: Theme.of(context).textTheme
-                                                .headline5
-                                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                        ),
-                                    )
-                                ),
-                                Divider(),
-                                Container(
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
+                        body: SingleChildScrollView(
+                                                  child: Column(
+                              children: [
+                                  Container(
+                                      child: Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 10),
+                                          child:Text(
+                                              'Tomar Datos',
+                                              style: Theme.of(context).textTheme
+                                                  .headline5
+                                                  .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
+                                          ),
+                                      )
+                                  ),
+                                  Divider(),
+                                  Container(
+                                      child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
 
-                                            Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                child:Text(
-                                                    '3 Estaciones',
-                                                    style: Theme.of(context).textTheme
-                                                        .headline6
-                                                        .copyWith(fontSize: 16)
-                                                ),
-                                            ),
-                                            Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                child:Text(
-                                                    '10 Plantas por estaciones',
-                                                    style: Theme.of(context).textTheme
-                                                        .headline6
-                                                        .copyWith(fontSize: 16)
-                                                ),
-                                            ),
-                                        ],
-                                    )
-                                ),
-                                Divider(),
-                                SingleChildScrollView(
-                                    child: Container(
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Form(
-                                            key: formKey,
-                                            child: Column(
-                                                children: <Widget>[
-                                                    
-                                                    _selectfinca(_listitem),
-                                                    SizedBox(height: 40.0),
-                                                    _selectParcela(),
-                                                    SizedBox(height: 40.0),
-                                                    _date(context),
-                                                    SizedBox(height: 40.0),
-                                                    _medicionFinca(),
-                                                    SizedBox(height: 60.0),
+                                              Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                  child:Text(
+                                                      '3 Estaciones',
+                                                      style: Theme.of(context).textTheme
+                                                          .headline6
+                                                          .copyWith(fontSize: 16)
+                                                  ),
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                  child:Text(
+                                                      '10 Plantas por estaciones',
+                                                      style: Theme.of(context).textTheme
+                                                          .headline6
+                                                          .copyWith(fontSize: 16)
+                                                  ),
+                                              ),
+                                          ],
+                                      )
+                                  ),
+                                  Divider(),
+                                  Container(
+                                      padding: EdgeInsets.all(15.0),
+                                      child: Form(
+                                          key: formKey,
+                                          child: Column(
+                                              children: <Widget>[
+                                                  
+                                                  _selectfinca(_listitem),
+                                                  SizedBox(height: 40.0),
+                                                  _selectParcela(),
+                                                  SizedBox(height: 40.0),
+                                                  _date(context),
+                                                  SizedBox(height: 40.0),
+                                                  _medicionFinca(),
+                                                  SizedBox(height: 60.0),
 
-                                                    _botonsubmit()
-                                                ],
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ],
+                                                  _botonsubmit()
+                                              ],
+                                          ),
+                                      ),
+                                  ),
+                              ],
+                          ),
                         ),
                     );
                 }
@@ -259,18 +264,31 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
     Widget  _botonsubmit(){
-        return RaisedButton.icon(
-            icon:Icon(Icons.save, color: Colors.white,),
-            
-            label: Text('Guardar',
-                style: Theme.of(context).textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-            onPressed:(_guardando) ? null : _submit,
-            //onPressed: clearTextInput,
+        fincasBloc.obtenerPlagas();
+        return StreamBuilder(
+            stream: fincasBloc.plagaStream ,
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+                if (!snapshot.hasData) {
+                    return Container();
+                }
+                mainlistplagas = snapshot.data;
+                
+                return RaisedButton.icon(
+                    icon:Icon(Icons.save, color: Colors.white,),
+                    
+                    label: Text('Guardar',
+                        style: Theme.of(context).textTheme
+                            .headline6
+                            .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                    ),
+                    padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
+                    onPressed:(_guardando) ? null : _submit,
+                    //onPressed: clearTextInput,
+                );
+            },
         );
+
+        
     }
 
 
@@ -278,6 +296,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
     void _submit(){
+        bool checkRepetido = false;
 
         plaga.estaciones = 3;
 
@@ -285,8 +304,25 @@ class _AgregarTestState extends State<AgregarTest> {
             //Cuendo el form no es valido
             return null;
         }
-
         formKey.currentState.save();
+        
+        mainlistplagas.forEach((e) {
+            //print(plaga.fechaTest);
+            //print(e.fechaTest);
+            if (plaga.idFinca == e.idFinca && plaga.idLote == e.idLote && plaga.fechaTest == e.fechaTest) {
+                checkRepetido = true;
+            }
+        });
+
+        
+
+        if (checkRepetido == true) {
+            mostrarSnackbar('Ya existe un registros con los mismos valores');
+            return null;
+        }
+
+
+        
 
         setState(() {_guardando = true;});
 
@@ -304,7 +340,7 @@ class _AgregarTestState extends State<AgregarTest> {
         //mostrarSnackbar('Registro Guardado');
 
 
-        Navigator.pop(context, 'fincas');
+       Navigator.pop(context, 'fincas');
        
         
     }
@@ -313,7 +349,7 @@ class _AgregarTestState extends State<AgregarTest> {
     void mostrarSnackbar(String mensaje){
         final snackbar = SnackBar(
             content: Text(mensaje),
-            duration: Duration(microseconds: 1500),
+            duration: Duration(seconds: 2),
         );
 
         scaffoldKey.currentState.showSnackBar(snackbar);

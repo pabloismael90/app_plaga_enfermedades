@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                                         mainAxisSpacing: 20,
                                         children: <Widget>[
                                             CategoryCard(
-                                                title: "Mis Fincas",
+                                                title: "Mis Fincas y mis parcelas",
                                                 svgSrc: "assets/icons/finca.svg",
                                                 press:() => Navigator.pushNamed(context, 'fincas' ),
                                             ),

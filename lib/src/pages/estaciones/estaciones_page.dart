@@ -260,7 +260,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     }
                     List<Decisiones> desiciones = snapshot.data;
 
-                    print(desiciones);
+                    //print(desiciones);
 
                     if (desiciones.length == 0){
 

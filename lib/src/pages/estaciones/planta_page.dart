@@ -3,6 +3,7 @@ import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -88,39 +89,47 @@ class _PlantaPageState extends State<PlantaPage> {
             itemBuilder: (context, index) {
                 if (planta[index].estacion == numeroEstacion) {
 
-                    return GestureDetector(
-                        child:Container(
-                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                                
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.5),
-                                    boxShadow: [
-                                        BoxShadow(
-                                            color: Color(0xFF3A5160)
-                                                .withOpacity(0.05),
-                                            offset: const Offset(1.1, 1.1),
-                                            blurRadius: 17.0),
-                                        ],
-                                ),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                        
-                                        Padding(
-                                            padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                            child: Text(
-                                                "Planta ${index+1}",
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                style: Theme.of(context).textTheme.headline6,
+                    return Dismissible(
+                        key: UniqueKey(),
+                        child: GestureDetector(
+                            child:Container(
+                                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                                    
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10.5),
+                                        boxShadow: [
+                                            BoxShadow(
+                                                color: Color(0xFF3A5160)
+                                                    .withOpacity(0.05),
+                                                offset: const Offset(1.1, 1.1),
+                                                blurRadius: 17.0),
+                                            ],
+                                    ),
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                            
+                                            Padding(
+                                                padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                                child: Text(
+                                                    "Planta ${index+1}",
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    style: Theme.of(context).textTheme.headline6,
+                                                ),
                                             ),
-                                        ),
-                                    ],
-                                ),
-                        )
+                                        ],
+                                    ),
+                            )
+                        ),
+                        confirmDismiss: (direction) => confirmacionUser(direction, context),
+                        direction: DismissDirection.endToStart,
+                        background: backgroundTrash(context),
+                        movementDuration: Duration(milliseconds: 500),
+                        onDismissed: (direction) => fincasBloc.borrarPlanta(planta[index]),
                     );
                 }
                 return Container();

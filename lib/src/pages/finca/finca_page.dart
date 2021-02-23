@@ -1,7 +1,9 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/finca_model.dart';
+import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/card_list.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
 import 'package:flutter/material.dart';
 
 
@@ -13,12 +15,24 @@ class FincasPage extends StatefulWidget {
 
 final fincasBloc = new FincasBloc();
 
-class _FincasPageState extends State<FincasPage> {
+Future geparcelas() async{
 
+    List<Parcela> parcelas = await DBProvider.db.getTodasParcelas();
+
+    parcelas.forEach((element) {
+        print(element.nombreLote);
+    });
+}
+
+class _FincasPageState extends State<FincasPage> {
 
 
     @override
     Widget build(BuildContext context) {
+
+
+        geparcelas();
+
         var size = MediaQuery.of(context).size;
         fincasBloc.obtenerFincas();
         return Scaffold(
@@ -100,14 +114,25 @@ class _FincasPageState extends State<FincasPage> {
     Widget  _listaDeFincas(List fincas, BuildContext context, Size size){
         return ListView.builder(
             itemBuilder: (context, index) {
-                return GestureDetector(
-                    child: CardList(
-                        size: size, 
-                        finca: fincas[index],
-                        icon:'assets/icons/finca.svg'
+                return Dismissible(
+                    key: UniqueKey(),
+                    child: GestureDetector(
+                        child: CardList(
+                            size: size, 
+                            finca: fincas[index],
+                            icon:'assets/icons/finca.svg'
+                            
+                        ),
+                        
+                        onTap: () => Navigator.pushNamed(context, 'parcelas', arguments: fincas[index]),
                     ),
-                    onTap: () => Navigator.pushNamed(context, 'parcelas', arguments: fincas[index]),
+                    confirmDismiss: (direction) => confirmacionUser(direction, context),
+                    direction: DismissDirection.endToStart,
+                    background: backgroundTrash(context),
+                    movementDuration: Duration(milliseconds: 500),
+                    onDismissed: (direction) => fincasBloc.borrarFinca(fincas[index].id),
                 );
+                
                
             },
             shrinkWrap: true,

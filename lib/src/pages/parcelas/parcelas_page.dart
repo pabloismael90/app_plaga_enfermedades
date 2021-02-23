@@ -3,6 +3,7 @@ import 'package:app_plaga_enfermedades/src/models/finca_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
+import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -156,9 +157,17 @@ class _ParcelaPageState extends State<ParcelaPage> {
                 final item2 = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcelas[index].variedadCacao}');
                 labelVariedad  = item2['label'];
 
-                return GestureDetector(
-                    child: _cardParcela(size, parcelas[index], labelMedida, labelVariedad),
-                    onTap: () => Navigator.pushNamed(context, 'addParcela', arguments: parcelas[index]),
+                return Dismissible(
+                    key: UniqueKey(),
+                    child: GestureDetector(
+                        child: _cardParcela(size, parcelas[index], labelMedida, labelVariedad),
+                        onTap: () => Navigator.pushNamed(context, 'addParcela', arguments: parcelas[index]),
+                    ),
+                    confirmDismiss: (direction) => confirmacionUser(direction, context),
+                    direction: DismissDirection.endToStart,
+                    background: backgroundTrash(context),
+                    movementDuration: Duration(milliseconds: 500),
+                    onDismissed: (direction) => fincasBloc.borrarParcela(parcelas[index].id),
                 );
                
             },
