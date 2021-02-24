@@ -4,6 +4,7 @@ import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -27,88 +28,68 @@ class _ParcelaPageState extends State<ParcelaPage> {
         fincasBloc.obtenerParcelasIdFinca(fincaData.id);
 
         return Scaffold(
-                    appBar: AppBar(),
-                    body: Column(
+            appBar: AppBar(),
+            body: StreamBuilder(
+                stream: fincasBloc.parcelaStream,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+                    if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                    }
+
+                    final parcela = snapshot.data;
+
+                    if (parcela.length == 0) {
+                        return Column(
+                            children: [
+                                TitulosPages(titulo: 'Parcelas de ${fincaData.nombreFinca}'),
+                                Divider(),
+                                Expanded(child: Center(
+                                    child: Text('No hay datos: \nIngrese datos de parcela en la finca', 
+                                    textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headline6,
+                                        )
+                                    )
+                                )
+                            ],
+                        );
+                    }
+
+                    return Column(
                         children: [
-                            Container(
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Column(
-                                        children: [
-                                        
-                                            Text(
-                                                "${fincaData.nombreFinca}",
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                            ),
-                                        ],
-                                    ),
-                                )
-                            ),
-                            Divider(),
-                            Container(
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Column(
-                                        children: [
-                                        
-                                            Text(
-                                                "Listas de Parcelas",
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                            ),
-                                        ],
-                                    ),
-                                )
-                            ),
-                            
+                            TitulosPages(titulo: 'Parcelas Finca ${fincaData.nombreFinca}'),
                             Expanded(
-                                child: StreamBuilder(
-                                    stream: fincasBloc.parcelaStream,
-                                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-
-                                        if (!snapshot.hasData) {
-                                            return Center(child: CircularProgressIndicator());
-                                        }
-
-                                        final parcela = snapshot.data;
-
-                                        return _listaDeParcelas(parcela, fincaData, size, context);
-
-                                        
-                                        
-                                    },
-                                )
+                                child: SingleChildScrollView(child: _listaDeParcelas(parcela, fincaData, size, context))
                             )
-                            
                         ],
-                    ),
-
+                    );
                     
-                    bottomNavigationBar: BottomAppBar(
-                        child: Container(
-                            color: kBackgroundColor,
-                            child: Padding(
-                                padding: EdgeInsets.symmetric( vertical: 10),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 5),
-                                            child: _editarFinca(fincaData),
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 5),
-                                            child: _addParcela(fincaData),
-                                        ),
-                                    ],
+                },
+            ),
+
+            
+            bottomNavigationBar: BottomAppBar(
+                child: Container(
+                    color: kBackgroundColor,
+                    child: Padding(
+                        padding: EdgeInsets.symmetric( vertical: 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: _editarFinca(fincaData),
                                 ),
-                            ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: _addParcela(fincaData),
+                                ),
+                            ],
                         ),
                     ),
-                );
+                ),
+            ),
+        );
                 
 
         
@@ -122,7 +103,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
             label: Text('Editar Finca',
                 style: Theme.of(context).textTheme
                     .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
             ),
             padding:EdgeInsets.all(13),
             onPressed: () => Navigator.pushNamed(context, 'addFinca', arguments: finca),
@@ -137,7 +118,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
             label: Text('Nueva Parcela',
                 style: Theme.of(context).textTheme
                     .headline6
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
+                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
             ),
             padding:EdgeInsets.all(13),
             
@@ -187,7 +168,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
                 
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(38.5),
+                    borderRadius: BorderRadius.circular(13),
                     boxShadow: [
                         BoxShadow(
                                 color: Color(0xFF3A5160)

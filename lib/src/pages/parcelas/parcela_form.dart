@@ -1,7 +1,7 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/parcela_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
-import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -80,17 +80,8 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 
                 child: Column(
                     children: [
-                        Container(
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child:Text(
-                                    tituloForm,
-                                    style: Theme.of(context).textTheme
-                                        .headline5
-                                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                ),
-                            )
-                        ),
+                        TitulosPages(titulo: tituloForm),
+                        Divider(),
                         Container(
                         padding: EdgeInsets.all(15.0),
                             child: Form(

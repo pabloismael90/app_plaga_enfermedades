@@ -14,81 +14,99 @@ class HomePage extends StatelessWidget {
         Size size = MediaQuery.of(context).size;
 
         return Scaffold(
-            body: Stack(
-                children:<Widget> [
-                    
-                    Column(
-                        children: [
-                            SizedBox(height: size.height * 0.35,),
-                            Expanded(
-                                child:GridView.count(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: .85,
-                                        crossAxisSpacing: 20,
-                                        mainAxisSpacing: 20,
-                                        children: <Widget>[
-                                            CategoryCard(
-                                                title: "Mis Fincas y mis parcelas",
-                                                svgSrc: "assets/icons/finca.svg",
-                                                press:() => Navigator.pushNamed(context, 'fincas' ),
-                                            ),
-                                            CategoryCard(
-                                                title: "Tomar datos y decisiones",
-                                                svgSrc: "assets/icons/test.svg",
-                                                press: () => Navigator.pushNamed(context, 'tests' ),
-                                            ),
-                                            CategoryCard(
-                                                title: "Consultar registro",
-                                                svgSrc: "assets/icons/report.svg",
-                                                press: () => Navigator.pushNamed(context, 'registros' ),
-                                            ),
-                                            CategoryCard(
-                                                title: "Instructivo",
-                                                svgSrc: "assets/icons/manual.svg",
-                                                press: () {},
-                                            ),
-                                            CategoryCard(
-                                                title: "Imágenes",
-                                                svgSrc: "assets/icons/galeria.svg",
-                                                press: () {},
-                                            ),
-                                            
-                                        ],
+            body: Column(
+                children: [
+                    Expanded(
+                        child: Stack(
+                            children:<Widget> [
+                                Container(
+                                    height: size.height * 0.25,
+                                    decoration: BoxDecoration(
+                                        color: kBackgroundColor,
+                                        image: DecorationImage(
+                                            image: AssetImage("assets/images/cacao_bg.png"),
+                                            fit: BoxFit.fitWidth
+                                        )
+                                    ),
+                                        
                                 ),
-                                
-                            
-                            ),
-                      
-                        ],
-                    ),
-                    Container(
-                              height: size.height * 0.35,
-                              decoration: BoxDecoration(
-                                  color: kBackgroundColor,
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/images/cacao_bg.png"),
-                                      fit: BoxFit.fitWidth
-                                  )
-                              ),
-                          
-                    ),
-                    SafeArea(
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                                children: [
-                                    SizedBox(height: size.height * 0.10,),
-                                    Text(
-                                        "Plaga y\nenfermedades\nde Cacao",
+                                Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+                                    child: Text(
+                                        "Plaga y enfermedades\nde Cacao",
                                         style: Theme.of(context).textTheme
                                             .headline4
-                                            .copyWith(fontWeight: FontWeight.w900, color: kTextColor, fontSize: 35)
+                                            .copyWith(fontWeight: FontWeight.w900, fontSize: 30)
                                     ),
-                                ],
-                            ),
-                        )
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    child: Column(
+                                        children: [
+                                            SizedBox(height: size.height * 0.18),
+                                            Expanded(
+                                                child:GridView.count(
+                                                        crossAxisCount: 2,
+                                                        crossAxisSpacing: 30,
+                                                        mainAxisSpacing:15,
+                                                        children: <Widget>[
+                                                            CategoryCard(
+                                                                title: "Mis Fincas y mis parcelas",
+                                                                svgSrc: "assets/icons/finca.svg",
+                                                                press:() => Navigator.pushNamed(context, 'fincas' ),
+                                                            ),
+                                                            CategoryCard(
+                                                                title: "Tomar datos y decisiones",
+                                                                svgSrc: "assets/icons/test.svg",
+                                                                press: () => Navigator.pushNamed(context, 'tests' ),
+                                                            ),
+                                                            CategoryCard(
+                                                                title: "Consultar registro",
+                                                                svgSrc: "assets/icons/report.svg",
+                                                                press: () => Navigator.pushNamed(context, 'registros' ),
+                                                            ),
+                                                            CategoryCard(
+                                                                title: "Instructivo",
+                                                                svgSrc: "assets/icons/manual.svg",
+                                                                press: () {},
+                                                            ),
+                                                            CategoryCard(
+                                                                title: "Imágenes",
+                                                                svgSrc: "assets/icons/galeria.svg",
+                                                                press: () {},
+                                                            ),
+                                                            
+                                                        ],
+                                                ),
+                                                
+                                            
+                                            ),
+                                        
+                                        ],
+                                    ),
+                                ),
+                                
+                                            
+                            ],
+                        ),
                     ),
-                              
+                    Container(
+                        color: Colors.white,
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                            child: Container(
+                                height: size.height * 0.08,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    image: DecorationImage(
+                                        image: AssetImage("assets/images/logos.png"),
+                                        fit: BoxFit.fitWidth
+                                    )
+                                ),
+                                    
+                            ),
+                        ),
+                    ),
                 ],
             ),
 
@@ -98,25 +116,7 @@ class HomePage extends StatelessWidget {
 }
 
 
-class MyHeaderClipper extends CustomClipper<Path> {
-    
-        @override
-        Path getClip(Size size) {
-          Path path = Path();
-            path.lineTo(0, size.height - 40);
-            path.quadraticBezierTo(
-                size.width / 2, size.height, 
-                size.width, size.height - 40
-            );
-            path.lineTo(size.width, 0);
-            path.close();
 
-            return path;
-        }
-    
-      @override
-      bool shouldReclip(CustomClipper<Path> oldClipper) => true;
-}
 
 
 

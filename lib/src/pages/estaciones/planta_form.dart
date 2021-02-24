@@ -4,7 +4,7 @@ import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
-import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,6 +20,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     bool _guardando = false;
     int variableVacias = 0;
+    int countPlanta = 0;
     var uuid = Uuid();
 
     Planta planta = Planta();
@@ -52,6 +53,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         
         planta.idTest = data[1];
         planta.estacion = data[0] ;
+        countPlanta = data[2]+1;
         
         //return Scaffold();
         return Scaffold(
@@ -64,17 +66,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         key: formKey,
                         child: Column(
                             children: <Widget>[
-                                Container(
-                                    child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 10),
-                                        child: Text(
-                                            "Nueva Planta estacion ${planta.estacion}",
-                                            style: Theme.of(context).textTheme
-                                                .headline5
-                                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                        ),
-                                    )
-                                ),
+                                TitulosPages(titulo: 'Planta $countPlanta estacion ${planta.estacion}'),
                                 Divider(),
                                 Padding(
                                     padding: EdgeInsets.symmetric(vertical: 10),

@@ -92,15 +92,14 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Cairo
+    - family: Museo
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-Regular.ttf
-        - asset: assets/fonts/Cairo/Cairo-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Cairo/Cairo-Bold.ttf
+        - asset: assets/fonts/Museo/Museo300.otf
+          weight: 300
+        - asset: assets/fonts/Museo/Museo500.otf
+          weight: 500
+        - asset: assets/fonts/Museo/Museo700.otf
           weight: 700
-        - asset: assets/fonts/Cairo/Cairo-Black.ttf
-          weight: 900
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -3,6 +3,7 @@ import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -46,21 +47,27 @@ class _TestPageState extends State<TestPage> {
                         }
 
                         List<Testplaga> textPlagas= snapshot.data;
-                        
+                        if (textPlagas.length == 0) {
+                            return Column(
+                                children: [
+                                    TitulosPages(titulo: 'Toma de datos'),
+                                    Divider(),
+                                    Expanded(child: Center(
+                                        child: Text('No hay datos: \nIngrese una toma de datos', 
+                                        textAlign: TextAlign.center,
+                                            style: Theme.of(context).textTheme.headline6,
+                                            )
+                                        )
+                                    )
+                                ],
+                            );
+                        }
                         return Column(
                             children: [
-                                Container(
-                                    child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 20),
-                                        child: Text(
-                                            "Lista de toma de datos",
-                                            style: Theme.of(context).textTheme
-                                                .headline5
-                                                .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                        ),
-                                    )
-                                ),
-                                Expanded(child: _listaDePlagas(textPlagas, size, context))
+
+                                TitulosPages(titulo: 'Toma de datos'),
+                                Divider(),
+                                Expanded(child: SingleChildScrollView(child: _listaDePlagas(textPlagas, size, context)))
                             ],
                         );
                         
@@ -138,7 +145,7 @@ class _TestPageState extends State<TestPage> {
                 
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(38.5),
+                    borderRadius: BorderRadius.circular(13),
                     boxShadow: [
                         BoxShadow(
                                 color: Color(0xFF3A5160)

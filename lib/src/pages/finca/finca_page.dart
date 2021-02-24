@@ -4,6 +4,7 @@ import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/card_list.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/dialogDelete.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 
@@ -15,23 +16,12 @@ class FincasPage extends StatefulWidget {
 
 final fincasBloc = new FincasBloc();
 
-Future geparcelas() async{
-
-    List<Parcela> parcelas = await DBProvider.db.getTodasParcelas();
-
-    parcelas.forEach((element) {
-        print(element.nombreLote);
-    });
-}
 
 class _FincasPageState extends State<FincasPage> {
 
 
     @override
     Widget build(BuildContext context) {
-
-
-        geparcelas();
 
         var size = MediaQuery.of(context).size;
         fincasBloc.obtenerFincas();
@@ -49,27 +39,23 @@ class _FincasPageState extends State<FincasPage> {
 
                     final fincas = snapshot.data;
                     if (fincas.length == 0) {
-                        Center(child: Text('No hay datos'),);
+                        return Column(
+                            children: [
+                                TitulosPages(titulo: 'Mis Fincas'),
+                                Expanded(child: Center(
+                                    child: Text('No hay datos: \nIngrese datos de parcela', 
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headline6,
+                                        )
+                                    )
+                                )
+                            ],
+                        );
                     }
                     
                     return Column(
                         children: [
-                            Container(
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Column(
-                                        children: [
-                                        
-                                            Text(
-                                                "Listas de Fincas",
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                            ),
-                                        ],
-                                    ),
-                                )
-                            ),
+                            TitulosPages(titulo: 'Mis Fincas'),
                             Expanded(child: SingleChildScrollView(
                                 child: _listaDeFincas(snapshot.data, context, size),
                             ))
@@ -101,7 +87,7 @@ class _FincasPageState extends State<FincasPage> {
             
             icon:Icon(Icons.add_circle_outline_outlined),
             
-            label: Text('Nueva finca',
+            label: Text('Agregar finca',
                 style: Theme.of(context).textTheme
                     .headline6
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white)

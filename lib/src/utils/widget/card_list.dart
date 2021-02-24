@@ -30,11 +30,11 @@ class CardList extends StatelessWidget {
         return Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                 
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(38.5),
+                    borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                         BoxShadow(
                                 color: Color(0xFF3A5160)

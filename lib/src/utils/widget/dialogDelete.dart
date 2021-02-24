@@ -40,3 +40,4 @@ Widget backgroundTrash(BuildContext context){
         )
     );
 }
+

@@ -1,12 +1,10 @@
 //import 'dart:html';
 
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
-import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
-//import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
-//import 'package:app_plaga_enfermedades/src/utils/validaciones.dart' as utils;
 import 'package:select_form_field/select_form_field.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:intl/intl.dart';
@@ -46,7 +44,6 @@ class _AgregarTestState extends State<AgregarTest> {
     void initState(){
         _fecha = formatter.format(_dateNow);
         _inputfecha.text = _fecha;
-        //plaga.estaciones = plaga.estaciones;
     }
 
     
@@ -74,70 +71,60 @@ class _AgregarTestState extends State<AgregarTest> {
                         key: scaffoldKey,
                         appBar: AppBar(),
                         body: SingleChildScrollView(
-                                                  child: Column(
-                              children: [
-                                  Container(
-                                      child: Padding(
-                                          padding: EdgeInsets.symmetric(vertical: 10),
-                                          child:Text(
-                                              'Tomar Datos',
-                                              style: Theme.of(context).textTheme
-                                                  .headline5
-                                                  .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                          ),
-                                      )
-                                  ),
-                                  Divider(),
-                                  Container(
-                                      child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: [
+                            child: Column(
+                                children: [
+                                    TitulosPages(titulo: 'Toma de datos'),
+                                    Divider(),
+                                    Container(
+                                        child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
 
-                                              Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                  child:Text(
-                                                      '3 Estaciones',
-                                                      style: Theme.of(context).textTheme
-                                                          .headline6
-                                                          .copyWith(fontSize: 16)
-                                                  ),
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                  child:Text(
-                                                      '10 Plantas por estaciones',
-                                                      style: Theme.of(context).textTheme
-                                                          .headline6
-                                                          .copyWith(fontSize: 16)
-                                                  ),
-                                              ),
-                                          ],
-                                      )
-                                  ),
-                                  Divider(),
-                                  Container(
-                                      padding: EdgeInsets.all(15.0),
-                                      child: Form(
-                                          key: formKey,
-                                          child: Column(
-                                              children: <Widget>[
-                                                  
-                                                  _selectfinca(_listitem),
-                                                  SizedBox(height: 40.0),
-                                                  _selectParcela(),
-                                                  SizedBox(height: 40.0),
-                                                  _date(context),
-                                                  SizedBox(height: 40.0),
-                                                  _medicionFinca(),
-                                                  SizedBox(height: 60.0),
+                                                Padding(
+                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                    child:Text(
+                                                        '3 Estaciones',
+                                                        style: Theme.of(context).textTheme
+                                                            .headline6
+                                                            .copyWith(fontSize: 16)
+                                                    ),
+                                                ),
+                                                Padding(
+                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                    child:Text(
+                                                        '10 Plantas por estaciones',
+                                                        style: Theme.of(context).textTheme
+                                                            .headline6
+                                                            .copyWith(fontSize: 16)
+                                                    ),
+                                                ),
+                                            ],
+                                        )
+                                    ),
+                                    Divider(),
+                                    Container(
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Form(
+                                            key: formKey,
+                                            child: Column(
+                                                children: <Widget>[
+                                                    
+                                                    _selectfinca(_listitem),
+                                                    SizedBox(height: 40.0),
+                                                    _selectParcela(),
+                                                    SizedBox(height: 40.0),
+                                                    _date(context),
+                                                    SizedBox(height: 40.0),
+                                                    _medicionFinca(),
+                                                    SizedBox(height: 60.0),
 
-                                                  _botonsubmit()
-                                              ],
-                                          ),
-                                      ),
-                                  ),
-                              ],
-                          ),
+                                                    _botonsubmit()
+                                                ],
+                                            ),
+                                        ),
+                                    ),
+                                ],
+                            ),
                         ),
                     );
                 }

@@ -6,6 +6,7 @@ import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -65,17 +66,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     body: Column(
                         children: [
                             escabezadoEstacion( context, plaga ),
-                            Container(
-                                child: Padding(
-                                    padding: EdgeInsets.only(top: 20, bottom: 5),
-                                    child: Text(
-                                        "Estaciones",
-                                        style: Theme.of(context).textTheme
-                                            .headline5
-                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                    ),
-                                )
-                            ),
+                            TitulosPages(titulo: 'Estaciones'),
                             Divider(),
                             SingleChildScrollView(
                                 child: _listaDeEstaciones( context, plaga, countEstaciones ),
@@ -189,7 +180,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(38.5),
+                    borderRadius: BorderRadius.circular(13),
                     boxShadow: [
                         BoxShadow(
                                 color: Color(0xFF3A5160)
@@ -250,7 +241,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
     Widget  _tomarDecisiones(List countEstaciones, Testplaga plaga){
         
-        if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
+        //if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
             
             return StreamBuilder(
             stream: fincasBloc.decisionesStream ,
@@ -305,21 +296,21 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                        
                 },  
             );
-        }
+        // }
         
 
-        return Container(
-            color: kBackgroundColor,
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Text(
-                    "Complete las estaciones",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme
-                        .headline5
-                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
-                ),
-            ),
-        );
+        // return Container(
+        //     color: kBackgroundColor,
+        //     child: Padding(
+        //         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        //         child: Text(
+        //             "Complete las estaciones",
+        //             textAlign: TextAlign.center,
+        //             style: Theme.of(context).textTheme
+        //                 .headline5
+        //                 .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
+        //         ),
+        //     ),
+        // );
     }
 }

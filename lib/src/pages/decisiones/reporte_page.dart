@@ -7,6 +7,7 @@ import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -100,15 +101,9 @@ class _ReportePageState extends State<ReportePage> {
                             Container(
                                 child: Column(
                                     children: [
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Text(
-                                                "Reporte de Decisiones",
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                            ),
-                                        ),
+                                        
+                                        TitulosPages(titulo: 'Reporte de Decisiones'),
+                                        Divider(),
                                         Padding(
                                             padding: EdgeInsets.symmetric(vertical: 10),
                                             child: Text(
@@ -116,7 +111,7 @@ class _ReportePageState extends State<ReportePage> {
                                                 textAlign: TextAlign.center,
                                                 style: Theme.of(context).textTheme
                                                     .headline5
-                                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 16)
+                                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
                                             ),
                                         ),
                                     ],
@@ -179,7 +174,7 @@ class _ReportePageState extends State<ReportePage> {
                                                     textAlign: TextAlign.center,
                                                     style: Theme.of(context).textTheme
                                                         .headline5
-                                                        .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 18)
+                                                        .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                                                 ),
                                             )
                                         ),
@@ -271,7 +266,7 @@ class _ReportePageState extends State<ReportePage> {
                                         "${parcela.nombreLote}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                 ),
                                 Padding(
@@ -280,7 +275,7 @@ class _ReportePageState extends State<ReportePage> {
                                         "Productor ${finca.nombreProductor}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                 ),
 
@@ -294,14 +289,14 @@ class _ReportePageState extends State<ReportePage> {
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "Area Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "N de plantas: ${parcela.numeroPlanta}",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                             ],
@@ -313,14 +308,14 @@ class _ReportePageState extends State<ReportePage> {
                                                     padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
                                                         "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
                                                         "Variedad: $labelvariedad ",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                             ],
@@ -555,7 +550,7 @@ class _ReportePageState extends State<ReportePage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -627,7 +622,7 @@ class _ReportePageState extends State<ReportePage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -697,7 +692,7 @@ class _ReportePageState extends State<ReportePage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -769,7 +764,7 @@ class _ReportePageState extends State<ReportePage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -842,7 +837,7 @@ class _ReportePageState extends State<ReportePage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -914,7 +909,7 @@ class _ReportePageState extends State<ReportePage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -946,7 +941,7 @@ class _ReportePageState extends State<ReportePage> {
                         title: Text('$label',
                             style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.bold, color: kRedColor, fontSize: 16)
+                                    .copyWith(fontWeight: FontWeight.bold, fontSize: 16)
                         ),
                         subtitle: Text(meses.join(","+" ")),
                     )                 

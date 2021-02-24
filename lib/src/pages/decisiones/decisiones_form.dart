@@ -7,6 +7,7 @@ import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/pages/finca/finca_page.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -152,15 +153,8 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             Container(
                                 child: Column(
                                     children: [
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Text(
-                                                "Toma de Decisiones",
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                            ),
-                                        ),
+                                        TitulosPages(titulo: 'Toma de Decisiones'),
+                                        Divider(),
                                         Padding(
                                             padding: EdgeInsets.symmetric(vertical: 10),
                                             child: Text(
@@ -168,7 +162,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                 textAlign: TextAlign.center,
                                                 style: Theme.of(context).textTheme
                                                     .headline5
-                                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 16)
+                                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
                                             ),
                                         ),
                                     ],
@@ -214,17 +208,33 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         color: Colors.white,
                                         child: Column(
                                             children: [
-                                                Container(
-                                                    child: Padding(
-                                                        padding: EdgeInsets.only(top: 20, bottom: 10),
-                                                        child: Text(
-                                                            "Porcentaje de plantas afectadas",
-                                                            textAlign: TextAlign.center,
-                                                            style: Theme.of(context).textTheme
-                                                                .headline5
-                                                                .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 18)
+                                                Padding(
+                                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                                    child: InkWell(
+                                                        child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                                Container(                                                                    
+                                                                    child: Text(
+                                                                        "Porcentaje de plantas afectadas",
+                                                                        textAlign: TextAlign.center,
+                                                                        style: Theme.of(context).textTheme
+                                                                            .headline5
+                                                                            .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                                                    ),
+                                                                ),
+                                                                Padding(
+                                                                    padding: EdgeInsets.only(left: 10, top: 5),
+                                                                    child: Icon(
+                                                                        Icons.info_outline_rounded,
+                                                                        color: Colors.green,
+                                                                        size: 25.0,
+                                                                    ),
+                                                                ),
+                                                            ],
                                                         ),
-                                                    )
+                                                        onTap: () => _dialogText(context),
+                                                    ),
                                                 ),
                                                 Divider(),
                                                 Container(
@@ -251,9 +261,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                         ],
                                                     ),
                                                 ),
-                                                
-                                                
-                                                
                                             ],
                                         ),
                                     ),
@@ -320,7 +327,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         "${parcela.nombreLote}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                 ),
                                 Padding(
@@ -329,7 +336,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         "Productor ${finca.nombreProductor}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                 ),
 
@@ -343,14 +350,14 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "Area Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
                                                         "N de plantas: ${parcela.numeroPlanta}",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                             ],
@@ -362,14 +369,14 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                     padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
                                                         "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
                                                         "Variedad: $labelvariedad ",
-                                                        style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
                                             ],
@@ -599,7 +606,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -666,7 +673,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -736,7 +743,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -804,7 +811,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -872,7 +879,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -940,7 +947,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, color: kRedColor, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
                     ),
@@ -1018,48 +1025,50 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     Widget  _botonsubmit(String idplaga){
         idPlagaMain = idplaga;
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            height: 200,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
-            ),
-            child: Column(
-                children: [
-                    Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 30),
-                        child: Text(
-                            "¿Ha Terminado todos los formularios de toma de desición?",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme
-                                .headline5
-                                .copyWith(fontWeight: FontWeight.w600, color: kRedColor)
-                        ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 60),
-                        child: RaisedButton.icon(
-                            icon:Icon(Icons.save),
-                            label: Text('Guardar',
+        return SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                height: 200,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                        BoxShadow(
+                                color: Color(0xFF3A5160)
+                                    .withOpacity(0.05),
+                                offset: const Offset(1.1, 1.1),
+                                blurRadius: 17.0),
+                        ],
+                ),
+                child: Column(
+                    children: [
+                        Padding(
+                            padding: EdgeInsets.only(top: 20, bottom: 30),
+                            child: Text(
+                                "¿Ha Terminado todos los formularios de toma de desición?",
+                                textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline6
-                                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                                    .headline5
+                                    .copyWith(fontWeight: FontWeight.w600)
                             ),
-                            padding:EdgeInsets.all(13),
-                            onPressed:(_guardando) ? null : _submit,
-                            
                         ),
-                    ),
-                ],
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60),
+                            child: RaisedButton.icon(
+                                icon:Icon(Icons.save),
+                                label: Text('Guardar',
+                                    style: Theme.of(context).textTheme
+                                        .headline6
+                                        .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
+                                ),
+                                padding:EdgeInsets.all(13),
+                                onPressed:(_guardando) ? null : _submit,
+                                
+                            ),
+                        ),
+                    ],
+                ),
             ),
         );
     }
@@ -1123,4 +1132,31 @@ class _DesicionesPageState extends State<DesicionesPage> {
         Navigator.pop(context, 'estaciones');
     }
 
+}
+
+Future<void> _dialogText(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+            return AlertDialog(
+                title: Text('Titulo'),
+                content: SingleChildScrollView(
+                    child: ListBody(
+                        children: <Widget>[
+                        Text('Texto para breve explicacion'),
+                        ],
+                    ),
+                ),
+                actions: <Widget>[
+                    TextButton(
+                        child: Text('Cerrar'),
+                        onPressed: () {
+                        Navigator.of(context).pop();
+                        },
+                    ),
+                ],
+            );
+        },
+    );
 }

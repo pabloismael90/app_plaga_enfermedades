@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness: Brightness.light, 
-            )
+            )        
         );
         return MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -69,14 +69,16 @@ class MyApp extends StatelessWidget {
 
             },
             theme: ThemeData(
-                fontFamily: "Cairo",
+                fontFamily: "Museo",
                 scaffoldBackgroundColor: kBackgroundColor,
-                textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor),
-                primaryColor:kRedColor,
+                textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor, fontFamily: 'Museo'),
+                appBarTheme: AppBarTheme(color: kbase,brightness: Brightness.dark),
+                primaryColor:kbase,
+                primaryIconTheme: IconThemeData(color: Colors.white),
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: Theme.of(context).textTheme
                                 .headline6
-                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 16),
+                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 18, fontFamily: 'Museo'),
                 ),
             
                 buttonTheme: ButtonThemeData(
@@ -84,7 +86,7 @@ class MyApp extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.0),
                     ),
                     textTheme: ButtonTextTheme.primary,
-                    buttonColor: Color(0xFFBF2431),
+                    buttonColor: Color(0xFF3f2a56),
                    
                 )
                 

@@ -1,4 +1,5 @@
-import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
@@ -52,17 +53,8 @@ class _AgregarFincaState extends State<AgregarFinca> {
             body: SingleChildScrollView(
                 child: Column(
                     children: [
-                        Container(
-                            child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child:Text(
-                                    tituloForm,
-                                    style: Theme.of(context).textTheme
-                                        .headline5
-                                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                ),
-                            )
-                        ),
+                        TitulosPages(titulo: tituloForm),
+                        Divider(),
                         Container(
                             padding: EdgeInsets.all(15.0),
                             child: Form(

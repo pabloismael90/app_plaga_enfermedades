@@ -2,6 +2,7 @@ import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -39,17 +40,8 @@ class DesicionesList extends StatelessWidget {
                     }
                     return Column(
                         children: [
-                            Container(
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Text(
-                                        "Reportes",
-                                        style: Theme.of(context).textTheme
-                                            .headline5
-                                            .copyWith(fontWeight: FontWeight.w900, color: kRedColor)
-                                    ),
-                                )
-                            ),
+                            TitulosPages(titulo: 'Reportes'),
+                            Divider(),
                             Expanded(child: _listaDePlagas(snapshot.data, context))
                         ],
                     );
@@ -98,7 +90,7 @@ class DesicionesList extends StatelessWidget {
                 
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(38.5),
+                    borderRadius: BorderRadius.circular(13),
                     boxShadow: [
                         BoxShadow(
                                 color: Color(0xFF3A5160)
