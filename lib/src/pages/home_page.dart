@@ -66,15 +66,16 @@ class HomePage extends StatelessWidget {
                                                                 press: () => Navigator.pushNamed(context, 'registros' ),
                                                             ),
                                                             CategoryCard(
+                                                                title: "Imágenes",
+                                                                svgSrc: "assets/icons/galeria.svg",
+                                                                press: () => Navigator.pushNamed(context, 'galeria' ),
+                                                            ),
+                                                            CategoryCard(
                                                                 title: "Instructivo",
                                                                 svgSrc: "assets/icons/manual.svg",
                                                                 press: () {},
                                                             ),
-                                                            CategoryCard(
-                                                                title: "Imágenes",
-                                                                svgSrc: "assets/icons/galeria.svg",
-                                                                press: () {},
-                                                            ),
+                                                            
                                                             
                                                         ],
                                                 ),

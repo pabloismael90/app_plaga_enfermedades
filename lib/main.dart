@@ -4,6 +4,8 @@ import 'package:app_plaga_enfermedades/src/pages/decisiones/reporte_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/estaciones/estaciones_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/finca/finca_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/finca/finca_page.dart';
+import 'package:app_plaga_enfermedades/src/pages/galeria/image.dart';
+import 'package:app_plaga_enfermedades/src/pages/galeria/list_galeria.dart';
 import 'package:app_plaga_enfermedades/src/pages/parcelas/parcela_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/parcelas/parcelas_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_form.dart';
@@ -65,6 +67,9 @@ class MyApp extends StatelessWidget {
                 'decisiones' : ( BuildContext context ) => DesicionesPage(),
                 'registros' : ( BuildContext context ) => DesicionesList(),
                 'reporte' : ( BuildContext context ) => ReportePage(),
+                //Galeria de imagenes
+                'galeria' : ( BuildContext context ) => GaleriaImagenes(),
+                'viewImg' : ( BuildContext context ) => ViewImage(),
                 
 
             },

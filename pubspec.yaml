@@ -51,6 +51,8 @@ dependencies:
   flutter_svg: ^0.19.1
   #Indicador Circular o lineal
   percent_indicator: ^2.1.9+1
+  #Visor img
+  photo_view: ^0.10.3
 
 
 dev_dependencies:
@@ -79,6 +81,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/galeria/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

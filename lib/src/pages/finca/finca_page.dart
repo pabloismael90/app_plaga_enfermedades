@@ -42,6 +42,7 @@ class _FincasPageState extends State<FincasPage> {
                         return Column(
                             children: [
                                 TitulosPages(titulo: 'Mis Fincas'),
+                                Divider(),
                                 Expanded(child: Center(
                                     child: Text('No hay datos: \nIngrese datos de parcela', 
                                         textAlign: TextAlign.center,
