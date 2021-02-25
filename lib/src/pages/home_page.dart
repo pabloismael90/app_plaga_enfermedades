@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
                                         
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+                                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                                     child: Text(
                                         "Plaga y enfermedades\nde Cacao",
                                         style: Theme.of(context).textTheme

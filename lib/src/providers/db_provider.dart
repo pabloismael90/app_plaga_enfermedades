@@ -372,6 +372,7 @@ class DBProvider {
             "SELECT id AS value, nombreLote AS label FROM Parcela WHERE idFinca = '$idFinca'"
         );
         List<Map<String, dynamic>> list = res.isNotEmpty ? res : [];
+
         return list;
                     
     }

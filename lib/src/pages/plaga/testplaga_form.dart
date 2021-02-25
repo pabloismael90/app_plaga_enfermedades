@@ -38,12 +38,16 @@ class _AgregarTestState extends State<AgregarTest> {
 
     List<Testplaga> mainlistplagas ;
 
+    List mainparcela;
+    TextEditingController _control;
 
     @mustCallSuper
     // ignore: must_call_super
     void initState(){
         _fecha = formatter.format(_dateNow);
         _inputfecha.text = _fecha;
+        
+        
     }
 
     
@@ -54,9 +58,8 @@ class _AgregarTestState extends State<AgregarTest> {
 
         fincasBloc.selectFinca();
         
-        fincasBloc.selectParcela(idFinca);
         
-       
+               
         return StreamBuilder(
             stream: fincasBloc.fincaSelect,
             //future: DBProvider.db.getSelectFinca(),
@@ -148,9 +151,8 @@ class _AgregarTestState extends State<AgregarTest> {
                 } 
             },
 
-            onChanged: (val){
+            onChanged: (val){   
                 fincasBloc.selectParcela(val);
-                
             },
             onSaved: (value) => plaga.idFinca = value,
         );
@@ -163,19 +165,20 @@ class _AgregarTestState extends State<AgregarTest> {
             builder: (BuildContext context, AsyncSnapshot snapshot){
                 if (!snapshot.hasData) {
                     return SelectFormField(
+                        controller: _control,
                         initialValue: '',
                         enabled: false,
                         labelText: 'Seleccione la parcela',
                         items: [],
                     );
                 }
-
-                //print(snapshot.data);
                 
+                mainparcela = snapshot.data;
                 return SelectFormField(
+                    controller: _control,
                     initialValue: '',
                     labelText: 'Seleccione la parcela',
-                    items: snapshot.data,
+                    items: mainparcela,
                     validator: (value){
                         if(value.length < 1){
                             return 'Selecione un elemento';
@@ -308,6 +311,14 @@ class _AgregarTestState extends State<AgregarTest> {
             return null;
         }
 
+        String checkParcela = mainparcela.firstWhere((e) => e['value'] == '${plaga.idLote}', orElse: () => {"value": "1","label": "No data"})['value'];
+
+        
+
+        if (checkParcela == '1') {
+            mostrarSnackbar('La parcela selecionada no pertenece a esa finca');
+            return null;
+        }
 
         
 
@@ -324,10 +335,10 @@ class _AgregarTestState extends State<AgregarTest> {
         }
 
         setState(() {_guardando = false;});
-        //mostrarSnackbar('Registro Guardado');
+        mostrarSnackbar('Registro Guardado');
 
 
-       Navigator.pop(context, 'fincas');
+        Navigator.pop(context, 'fincas');
        
         
     }

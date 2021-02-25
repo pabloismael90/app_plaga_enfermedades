@@ -70,7 +70,7 @@ class _FincasPageState extends State<FincasPage> {
                 child: Container(
                     color: kBackgroundColor,
                     child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 70, vertical: 10),
                         child: _addFinca(context)
                     ),
                 ),

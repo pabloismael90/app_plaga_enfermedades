@@ -68,8 +68,10 @@ class _EstacionesPageState extends State<EstacionesPage> {
                             escabezadoEstacion( context, plaga ),
                             TitulosPages(titulo: 'Estaciones'),
                             Divider(),
-                            SingleChildScrollView(
-                                child: _listaDeEstaciones( context, plaga, countEstaciones ),
+                            Expanded(
+                                child: SingleChildScrollView(
+                                    child: _listaDeEstaciones( context, plaga, countEstaciones ),
+                                ),
                             ),
                         ],
                     ),
@@ -241,7 +243,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
     Widget  _tomarDecisiones(List countEstaciones, Testplaga plaga){
         
-        if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
+        //if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
             
             return StreamBuilder(
             stream: fincasBloc.decisionesStream ,
@@ -296,21 +298,21 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                        
                 },  
             );
-        }
+        //}
         
 
-        return Container(
-            color: kBackgroundColor,
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Text(
-                    "Complete las estaciones",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme
-                        .headline5
-                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
-                ),
-            ),
-        );
+        // return Container(
+        //     color: kBackgroundColor,
+        //     child: Padding(
+        //         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        //         child: Text(
+        //             "Complete las estaciones",
+        //             textAlign: TextAlign.center,
+        //             style: Theme.of(context).textTheme
+        //                 .headline5
+        //                 .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
+        //         ),
+        //     ),
+        // );
     }
 }

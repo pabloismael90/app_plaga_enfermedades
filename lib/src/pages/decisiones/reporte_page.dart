@@ -281,6 +281,7 @@ class _ReportePageState extends State<ReportePage> {
 
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                         Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,24 +302,26 @@ class _ReportePageState extends State<ReportePage> {
                                                 ),
                                             ],
                                         ),
-                                        Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0, left: 20),
-                                                    child: Text(
-                                                        "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                        Flexible(
+                                            child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                    Padding(
+                                                        padding: EdgeInsets.only( bottom: 10.0, left: 20),
+                                                        child: Text(
+                                                            "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
+                                                            style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                                        ),
                                                     ),
-                                                ),
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0, left: 20),
-                                                    child: Text(
-                                                        "Variedad: $labelvariedad ",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                                    Padding(
+                                                        padding: EdgeInsets.only( bottom: 10.0, left: 20),
+                                                        child: Text(
+                                                            "Variedad: $labelvariedad",
+                                                            style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                                        ),
                                                     ),
-                                                ),
-                                            ],
+                                                ],
+                                            ),
                                         )
                                     ],
                                 )

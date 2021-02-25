@@ -1028,8 +1028,8 @@ class _DesicionesPageState extends State<DesicionesPage> {
         return SingleChildScrollView(
             child: Container(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                height: 200,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),

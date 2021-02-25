@@ -167,7 +167,7 @@ class _TestPageState extends State<TestPage> {
                                 children: <Widget>[
                                 
                                     Padding(
-                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                        padding: EdgeInsets.only(top: 10, bottom: 5.0),
                                         child: Text(
                                             "${finca.nombreFinca}",
                                             softWrap: true,
@@ -177,7 +177,7 @@ class _TestPageState extends State<TestPage> {
                                         ),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only( bottom: 10.0),
+                                        padding: EdgeInsets.only( bottom: 4.0),
                                         child: Text(
                                             "${parcela.nombreLote}",
                                             maxLines: 2,
