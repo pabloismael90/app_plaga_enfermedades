@@ -41,8 +41,15 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                         return CircularProgressIndicator();
                     }
                     String name;
+                    List<String> nameList = [];
 
                     someImages = snapshot.data;
+                    for (var item in someImages) {
+                        File file = new File(item);
+                        name = file.path.split('/').last.split(".")[0];
+                        nameList.add(name);
+                    }
+                    
 
                     return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -73,16 +80,15 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                                                     ),
                                                 ),
                                                 onTap: (){
-                                                    File file = new File(someImages[index]);
-                                                    name = file.path.split('/').last;
-                                                    //print(name);
-                                                    Navigator.pushNamed(context, 'viewImg', arguments: [name,someImages[index], index] );
+                                                    
+                                                    Navigator.pushNamed(context, 'viewImg', arguments: [someImages, index, nameList] );
                                                 },
                                             );
                                         },
                                     )
                                 
                                 ),
+                                
                             ],
                         ),
                     );
