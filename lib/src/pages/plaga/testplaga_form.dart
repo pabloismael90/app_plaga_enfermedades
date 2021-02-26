@@ -11,16 +11,16 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class AgregarTest extends StatefulWidget {
-    
+
   @override
   _AgregarTestState createState() => _AgregarTestState();
 }
 
 class _AgregarTestState extends State<AgregarTest> {
-    
+
     final formKey = GlobalKey<FormState>();
     final scaffoldKey = GlobalKey<ScaffoldState>();
- 
+
 
 
     Testplaga plaga = new Testplaga();
@@ -46,20 +46,20 @@ class _AgregarTestState extends State<AgregarTest> {
     void initState(){
         _fecha = formatter.format(_dateNow);
         _inputfecha.text = _fecha;
-        
-        
+
+
     }
 
-    
-    
-   
+
+
+
     @override
     Widget build(BuildContext context) {
 
         fincasBloc.selectFinca();
-        
-        
-               
+
+
+
         return StreamBuilder(
             stream: fincasBloc.fincaSelect,
             //future: DBProvider.db.getSelectFinca(),
@@ -68,7 +68,7 @@ class _AgregarTestState extends State<AgregarTest> {
                 if (!snapshot.hasData) {
                     return Scaffold(body: CircularProgressIndicator(),);
                 } else {
-                    
+
                     List<Map<String, dynamic>> _listitem = snapshot.data;
                     return Scaffold(
                         key: scaffoldKey,
@@ -111,7 +111,7 @@ class _AgregarTestState extends State<AgregarTest> {
                                             key: formKey,
                                             child: Column(
                                                 children: <Widget>[
-                                                    
+
                                                     _selectfinca(_listitem),
                                                     SizedBox(height: 40.0),
                                                     _selectParcela(),
@@ -132,13 +132,13 @@ class _AgregarTestState extends State<AgregarTest> {
                     );
                 }
             },
-        );        
+        );
     }
 
     Widget _selectfinca(List<Map<String, dynamic>> _listitem){
 
         bool _enableFinca = _listitem.isNotEmpty ? true : false;
-    
+
         return SelectFormField(
             labelText: 'Seleccione la finca',
             items: _listitem,
@@ -148,10 +148,10 @@ class _AgregarTestState extends State<AgregarTest> {
                     return 'No se selecciono una finca';
                 }else{
                     return null;
-                } 
+                }
             },
 
-            onChanged: (val){   
+            onChanged: (val){
                 fincasBloc.selectParcela(val);
             },
             onSaved: (value) => plaga.idFinca = value,
@@ -159,7 +159,7 @@ class _AgregarTestState extends State<AgregarTest> {
     }
 
     Widget _selectParcela(){
-        
+
         return StreamBuilder(
             stream: fincasBloc.parcelaSelect,
             builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -172,7 +172,7 @@ class _AgregarTestState extends State<AgregarTest> {
                         items: [],
                     );
                 }
-                
+
                 mainparcela = snapshot.data;
                 return SelectFormField(
                     controller: _control,
@@ -184,21 +184,21 @@ class _AgregarTestState extends State<AgregarTest> {
                             return 'Selecione un elemento';
                         }else{
                             return null;
-                        } 
+                        }
                     },
-                    
+
                     //onChanged: (val) => print(val),
                     onSaved: (value) => plaga.idLote = value,
                 );
             },
         );
-    
+
     }
 
 
     Widget _date(BuildContext context){
         return TextFormField(
-           
+
             //autofocus: true,
             controller: _inputfecha,
             enableInteractiveSelection: false,
@@ -213,7 +213,7 @@ class _AgregarTestState extends State<AgregarTest> {
             //validator: (value){},
             onSaved: (value){
                 plaga.fechaTest = value;
-            } 
+            }
         );
     }
 
@@ -221,8 +221,8 @@ class _AgregarTestState extends State<AgregarTest> {
         DateTime picked = await showDatePicker(
             context: context,
 
-            initialDate: new DateTime.now(), 
-            firstDate: new DateTime.now().subtract(Duration(days: 0)), 
+            initialDate: new DateTime.now(),
+            firstDate: new DateTime.now().subtract(Duration(days: 0)),
             lastDate:  new DateTime(2025),
             locale: Locale('es', 'ES')
         );
@@ -233,7 +233,7 @@ class _AgregarTestState extends State<AgregarTest> {
                 _inputfecha.text = _fecha;
             });
         }
-        
+
     }
 
     Widget _medicionFinca(){
@@ -246,7 +246,7 @@ class _AgregarTestState extends State<AgregarTest> {
                     return 'Dimensión';
                 }else{
                     return null;
-                } 
+                }
             },
             onSaved: (value) => plaga.tipoMedida = int.parse(value),
         );
@@ -262,10 +262,10 @@ class _AgregarTestState extends State<AgregarTest> {
                     return Container();
                 }
                 mainlistplagas = snapshot.data;
-                
+
                 return RaisedButton.icon(
                     icon:Icon(Icons.save, color: Colors.white,),
-                    
+
                     label: Text('Guardar',
                         style: Theme.of(context).textTheme
                             .headline6
@@ -278,11 +278,11 @@ class _AgregarTestState extends State<AgregarTest> {
             },
         );
 
-        
+
     }
 
 
-    
+
 
 
     void _submit(){
@@ -295,7 +295,7 @@ class _AgregarTestState extends State<AgregarTest> {
             return null;
         }
         formKey.currentState.save();
-        
+
         mainlistplagas.forEach((e) {
             //print(plaga.fechaTest);
             //print(e.fechaTest);
@@ -304,7 +304,7 @@ class _AgregarTestState extends State<AgregarTest> {
             }
         });
 
-        
+
 
         if (checkRepetido == true) {
             mostrarSnackbar('Ya existe un registros con los mismos valores');
@@ -313,14 +313,14 @@ class _AgregarTestState extends State<AgregarTest> {
 
         String checkParcela = mainparcela.firstWhere((e) => e['value'] == '${plaga.idLote}', orElse: () => {"value": "1","label": "No data"})['value'];
 
-        
+
 
         if (checkParcela == '1') {
             mostrarSnackbar('La parcela selecionada no pertenece a esa finca');
             return null;
         }
 
-        
+
 
         setState(() {_guardando = true;});
 
@@ -339,11 +339,11 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
         Navigator.pop(context, 'fincas');
-       
-        
+
+
     }
 
-    
+
     void mostrarSnackbar(String mensaje){
         final snackbar = SnackBar(
             content: Text(mensaje),

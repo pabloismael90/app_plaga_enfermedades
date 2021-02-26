@@ -27,6 +27,8 @@
 .pub/
 /build/
 .flutter-plugins-dependencies
+ios/Flutter/.last_build_id
+ios/Podfile.lock
 
 # Android related
 **/android/**/gradle-wrapper.jar
