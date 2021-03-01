@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:select_form_field/select_form_field.dart';
-import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -117,8 +116,6 @@ class _AgregarTestState extends State<AgregarTest> {
                                                     _selectParcela(),
                                                     SizedBox(height: 40.0),
                                                     _date(context),
-                                                    SizedBox(height: 40.0),
-                                                    _medicionFinca(),
                                                     SizedBox(height: 60.0),
 
                                                     _botonsubmit()
@@ -236,21 +233,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
     }
 
-    Widget _medicionFinca(){
-        return SelectFormField(
-            initialValue: plaga.tipoMedida.toString(),
-            labelText: 'Area de muestreo',
-            items: selectMap.dimenciones(),
-            validator: (value){
-                if(value.length < 1){
-                    return 'Dimensión';
-                }else{
-                    return null;
-                }
-            },
-            onSaved: (value) => plaga.tipoMedida = int.parse(value),
-        );
-    }
+  
 
 
     Widget  _botonsubmit(){

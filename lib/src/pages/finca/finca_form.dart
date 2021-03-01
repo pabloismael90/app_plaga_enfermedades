@@ -135,7 +135,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
             initialValue: finca.areaFinca.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
-                labelText: 'Area de la finca',
+                labelText: 'Área de la finca',
                 hintText: 'ejem: 200.0',
                 
             ),

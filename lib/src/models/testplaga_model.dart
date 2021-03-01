@@ -11,7 +11,6 @@ class Testplaga {
         this.idLote = '',
         this.estaciones = 3,
         this.fechaTest,
-        this.tipoMedida = 1,
     });
 
     String id;
@@ -19,7 +18,6 @@ class Testplaga {
     String idLote;
     int estaciones;
     String fechaTest;
-    int tipoMedida;
 
     factory Testplaga.fromJson(Map<String, dynamic> json) => Testplaga(
         id: json["id"],
@@ -27,7 +25,6 @@ class Testplaga {
         idLote: json["idLote"],
         estaciones: json["estaciones"],
         fechaTest: json["fechaTest"],
-        tipoMedida: json["tipoMedida"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -36,6 +33,5 @@ class Testplaga {
         "idLote": idLote,
         "estaciones": estaciones,
         "fechaTest": fechaTest,
-        "tipoMedida": tipoMedida,
     };
 }

@@ -277,16 +277,14 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     Widget _dataFincas( BuildContext context, Finca finca, Parcela parcela ){
         String labelMedidaFinca;
-        String labelMedidaParcela;
         String labelvariedad;
 
         final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
         labelMedidaFinca  = item['label'];
 
-        final item2 = selectMap.dimenciones().firstWhere((e) => e['value'] == '${parcela.tipoMedida}');
-        labelMedidaParcela  = item2['label'];
+        
 
-        final itemvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.tipoMedida}');
+        final itemvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}');
         labelvariedad  = itemvariedad['label'];
 
         return Container(
@@ -349,7 +347,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0),
                                                     child: Text(
-                                                        "Area Finca: ${finca.areaFinca} ($labelMedidaFinca)",
+                                                        "Área Finca: ${finca.areaFinca} ($labelMedidaFinca)",
                                                         style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),
@@ -368,7 +366,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                 Padding(
                                                     padding: EdgeInsets.only( bottom: 10.0, left: 20),
                                                     child: Text(
-                                                        "Area Parcela: ${parcela.areaLote} ($labelMedidaParcela)",
+                                                        "Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)",
                                                         style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
                                                     ),
                                                 ),

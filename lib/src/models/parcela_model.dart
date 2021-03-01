@@ -4,7 +4,6 @@ class Parcela {
         this.idFinca,
         this.nombreLote = '',
         this.areaLote = 0.0,
-        this.tipoMedida = 1,
         this.variedadCacao = 1,
         this.numeroPlanta = 0,
     });
@@ -13,7 +12,6 @@ class Parcela {
     String idFinca;
     String nombreLote;
     double areaLote;
-    int tipoMedida;
     int variedadCacao;
     int numeroPlanta;
 
@@ -22,7 +20,6 @@ class Parcela {
         idFinca: json["idFinca"],
         nombreLote: json["nombreLote"],
         areaLote: json["areaLote"].toDouble(),
-        tipoMedida: json["tipoMedida"],
         variedadCacao: json["variedadCacao"],
         numeroPlanta: json["numeroPlanta"],
     );
@@ -32,7 +29,6 @@ class Parcela {
         "idFinca": idFinca,
         "nombreLote": nombreLote,
         "areaLote": areaLote,
-        "tipoMedida": tipoMedida,
         "variedadCacao": variedadCacao,
         "numeroPlanta": numeroPlanta,
     };

@@ -71,8 +71,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             }
             
         }
-
-        //print(fincaid);
+        
+        String labelMedida;
+        final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
+        labelMedida  = item['label'];
         
         return Scaffold(
             appBar: AppBar(),
@@ -90,17 +92,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                                     children: <Widget>[
                                         _nombreParcela(fincaid),
                                         SizedBox(height: 40.0,),
-                                        Row(
-                                            children: <Widget>[
-                                                Flexible(
-                                                    child: _areaFinca(finca,fincaid),
-                                                ),
-                                                SizedBox(width: 20.0,),
-                                                Flexible(
-                                                    child: _medicionFinca(),
-                                                ),
-                                            ],
-                                        ),
+                                         _areaParcela(finca,fincaid, labelMedida),
                                         SizedBox(height: 40.0,),
                                         Row(
                                             children: <Widget>[
@@ -109,7 +101,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                                                 ),
                                                 SizedBox(width: 20.0,),
                                                 Flexible(
-                                                    child: _numeroPlanta(),
+                                                    child: _numeroPlanta(labelMedida),
                                                 ),
                                             ],
                                         ),
@@ -148,7 +140,9 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         
     }
     
-    Widget _areaFinca(Finca finca, String fincaid){
+    Widget _areaParcela(Finca finca, String fincaid, String labelMedida){
+
+        
 
         return FutureBuilder(
             future: getparcelas(fincaid),
@@ -167,16 +161,11 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 
                 sumaParcelas = sumaParcelas - parcela.areaLote;
 
-                //print(listParcela.length);
-                //print(sumaParcelas);
-
-                //print(finca.toJson());
-
                 return TextFormField(
                     initialValue: parcela.areaLote.toString(),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
-                        labelText: 'Área de la parcela'
+                        labelText: 'Área de la parcela ($labelMedida)'
                     ),
                     validator: (value) {
                         
@@ -205,23 +194,6 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
     }
 
-    Widget _medicionFinca(){
-        return SelectFormField(
-            initialValue: parcela.tipoMedida.toString(),
-            labelText: 'Unidad',
-            items: selectMap.dimenciones(),
-            validator: (value){
-                if(value.length < 1){
-                    return 'Dimensión';
-                }else{
-                    return null;
-                } 
-            },
-
-            //onChanged: (val) => print(val),
-            onSaved: (value) => parcela.tipoMedida = int.parse(value),
-        );
-    }
 
     Widget _variedadCacao(){
         return SelectFormField(
@@ -241,7 +213,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         );
     }
 
-    Widget _numeroPlanta(){
+    Widget _numeroPlanta(String labelMedida){
 
         return TextFormField(
             initialValue: parcela.numeroPlanta.toString(),
@@ -250,7 +222,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 FilteringTextInputFormatter.digitsOnly
             ], 
             decoration: InputDecoration(
-                labelText: 'Número de plantas'
+                labelText: 'Número de plantas x $labelMedida'
             ),
             validator: (value) {
 
@@ -304,11 +276,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
         setState(() {_guardando = true;});
 
-        // print(parcela.id);
-        // print(parcela.idFinca);
-        //print(parcela.nombreLote);
-        //print(parcela.areaLote);
-        //print(parcela.tipoMedida);
+        print(parcela.id);
+        print(parcela.idFinca);
+        print(parcela.nombreLote);
+        print(parcela.areaLote);
         if(parcela.id == null){
             parcela.id = uuid.v1();
             fincasBloc.addParcela(parcela, parcela.idFinca);

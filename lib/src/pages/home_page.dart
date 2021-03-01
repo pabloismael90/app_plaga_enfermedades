@@ -1,6 +1,14 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/category_cart.dart';
+
+
+const String _documentPath = 'assets/documentos/prueba.pdf';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -12,6 +20,18 @@ class HomePage extends StatelessWidget {
     Widget build(BuildContext context) {
         
         Size size = MediaQuery.of(context).size;
+        Future<String> prepareTestPdf() async {
+            final ByteData bytes =
+                await DefaultAssetBundle.of(context).load(_documentPath);
+            final Uint8List list = bytes.buffer.asUint8List();
+
+            final tempDir = await getTemporaryDirectory();
+            final tempDocumentPath = '${tempDir.path}/$_documentPath';
+
+            final file = await File(tempDocumentPath).create(recursive: true);
+            file.writeAsBytesSync(list);
+            return tempDocumentPath;
+        }
 
         return Scaffold(
             body: Column(
@@ -73,7 +93,15 @@ class HomePage extends StatelessWidget {
                                                             CategoryCard(
                                                                 title: "Instructivo",
                                                                 svgSrc: "assets/icons/manual.svg",
-                                                                press: () {},
+                                                                press: () {
+                                                                    prepareTestPdf().then((path) {
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            FadeRoute(
+                                                                                page:FullPdfViewerScreen(path)),
+                                                                        );
+                                                                    });
+                                                                },
                                                             ),
                                                             
                                                             
@@ -116,36 +144,48 @@ class HomePage extends StatelessWidget {
    
 }
 
+class FullPdfViewerScreen extends StatelessWidget {
+    final String pdfPath;
+
+    FullPdfViewerScreen(this.pdfPath);
+
+    @override
+    Widget build(BuildContext context) {
+        return PDFViewerScaffold(
+            appBar: AppBar(
+                title: Text("Manual", style: TextStyle(color: Colors.white),),
+            ),
+            path: pdfPath
+        );
+    }
+}
+
+
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+  FadeRoute({this.page})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+              transitionDuration: Duration(milliseconds: 100),
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+        );
+}
 
 
 
 
 
-// ListView(
-//                   children: [
-//                       GestureDetector(
-//                           child: ListTile(
-//                               leading: Icon(Icons.add_circle),
-//                               title: Text('Mis fincas'),
-//                               trailing: Icon(Icons.keyboard_arrow_right),
-//                           ),
-//                           onTap:() => Navigator.pushNamed(context, 'fincas' ),
-//                       ),
-//                       GestureDetector(
-//                           child: ListTile(
-//                               leading: Icon(Icons.add_circle),
-//                               title: Text('Tomar datos'),
-//                               trailing: Icon(Icons.keyboard_arrow_right),
-//                           ),
-//                           onTap:() => Navigator.pushNamed(context, 'tests' ),
-//                       ),
-//                       GestureDetector(
-//                           child: ListTile(
-//                               leading: Icon(Icons.add_circle),
-//                               title: Text('Consultar registros'),
-//                               trailing: Icon(Icons.keyboard_arrow_right),
-//                           ),
-//                           onTap:() => Navigator.pushNamed(context, 'registros' ),
-//                       )
-//                   ],
-//               ),

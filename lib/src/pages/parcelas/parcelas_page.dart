@@ -133,7 +133,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
 
         return ListView.builder(
             itemBuilder: (context, index) {
-                final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${parcelas[index].tipoMedida}');
+                final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
                 labelMedida  = item['label'];
                 final item2 = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcelas[index].variedadCacao}');
                 labelVariedad  = item2['label'];
