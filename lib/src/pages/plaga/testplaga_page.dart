@@ -13,7 +13,6 @@ final fincasBloc = new FincasBloc();
 class TestPage extends StatefulWidget {
 
     
-    
 
   @override
   _TestPageState createState() => _TestPageState();
@@ -22,7 +21,7 @@ class TestPage extends StatefulWidget {
 
 class _TestPageState extends State<TestPage> {
 
-
+    
     Future _getdataFinca(Testplaga textPlaga) async{
         Finca finca = await DBProvider.db.getFincaId(textPlaga.idFinca);
         Parcela parcela = await DBProvider.db.getParcelaId(textPlaga.idLote);
@@ -50,7 +49,7 @@ class _TestPageState extends State<TestPage> {
                         if (textPlagas.length == 0) {
                             return Column(
                                 children: [
-                                    TitulosPages(titulo: 'Toma de datos'),
+                                    TitulosPages(titulo: 'Parcelas'),
                                     Divider(),
                                     Expanded(child: Center(
                                         child: Text('No hay datos: \nIngrese una toma de datos', 
@@ -65,7 +64,7 @@ class _TestPageState extends State<TestPage> {
                         return Column(
                             children: [
 
-                                TitulosPages(titulo: 'Toma de datos'),
+                                TitulosPages(titulo: 'Parcelas'),
                                 Divider(),
                                 Expanded(child: SingleChildScrollView(child: _listaDePlagas(textPlagas, size, context)))
                             ],
@@ -91,7 +90,7 @@ class _TestPageState extends State<TestPage> {
         return RaisedButton.icon(
             icon:Icon(Icons.add_circle_outline_outlined),
             
-            label: Text('Tomar Datos',
+            label: Text('Escoger parcelas',
                 style: Theme.of(context).textTheme
                     .headline6
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
@@ -138,6 +137,7 @@ class _TestPageState extends State<TestPage> {
     }
 
     Widget _cardTest(Size size, Testplaga textPlaga, Finca finca, Parcela parcela){
+        
         return Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             width: double.infinity,
@@ -154,56 +154,66 @@ class _TestPageState extends State<TestPage> {
                                 blurRadius: 17.0),
                         ],
                 ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                child: Column(
                     children: [
-                        Padding(
-                            padding: EdgeInsets.only(right: 20),
-                            child: SvgPicture.asset('assets/icons/test.svg', height:80,),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                                Padding(
+                                    padding: EdgeInsets.only(right: 20),
+                                    child: SvgPicture.asset('assets/icons/test.svg', height:80,),
+                                ),
+                                Flexible(
+                                    child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                        
+                                            Padding(
+                                                padding: EdgeInsets.only(top: 10, bottom: 5.0),
+                                                child: Text(
+                                                    "${finca.nombreFinca}",
+                                                    softWrap: true,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    style: Theme.of(context).textTheme.headline6,
+                                                ),
+                                            ),
+                                            Padding(
+                                                padding: EdgeInsets.only( bottom: 4.0),
+                                                child: Text(
+                                                    "${parcela.nombreLote}",
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(color: kLightBlackColor),
+                                                ),
+                                            ),
+                                            
+                                            Padding(
+                                                padding: EdgeInsets.only( bottom: 10.0),
+                                                child: Text(
+                                                    'Fecha: ${textPlaga.fechaTest}',
+                                                    style: TextStyle(color: kLightBlackColor),
+                                                ),
+                                            ),
+                                        ],  
+                                    ),
+                                ),
+                            ],
                         ),
-                        Flexible(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 10, bottom: 5.0),
-                                        child: Text(
-                                            "${finca.nombreFinca}",
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: Theme.of(context).textTheme.headline6,
-                                        ),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only( bottom: 4.0),
-                                        child: Text(
-                                            "${parcela.nombreLote}",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
-                                    ),
-                                    
-                                    Padding(
-                                        padding: EdgeInsets.only( bottom: 10.0),
-                                        child: Text(
-                                            'Toma de datos: ${textPlaga.fechaTest}',
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
-                                    ),
-                                ],  
-                            ),
-                        ),
-                        
-                        
-                        
+                        Divider(),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                                Icon(Icons.touch_app, color: kRedColor,),
+                                Text(' Tocar para completar datos', style: TextStyle(color: kRedColor),)
+                            ],
+                        )
                     ],
                 ),
         );
     }
-   
+
 
 
 

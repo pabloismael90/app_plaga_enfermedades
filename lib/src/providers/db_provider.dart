@@ -293,10 +293,9 @@ class DBProvider {
         List<Planta> list = res.isNotEmpty 
                     ? res.map( (c) => Planta.fromJson(c) ).toList() 
                     : [];
-
         return list;            
     }
-    
+   
     Future<List<Planta>> getTodasPlantasIdTest(String idTest, int estacion) async{
         final db = await database;
         final res = await db.rawQuery("SELECT * FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'");
