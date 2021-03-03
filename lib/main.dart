@@ -1,3 +1,4 @@
+import 'package:app_plaga_enfermedades/src/pages/PDFView.dart';
 import 'package:app_plaga_enfermedades/src/pages/decisiones/decisiones_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/decisiones/decisiones_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/decisiones/reporte_page.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
                 //Galeria de imagenes
                 'galeria' : ( BuildContext context ) => GaleriaImagenes(),
                 'viewImg' : ( BuildContext context ) => ViewImage(),
+                'PDFview' : ( BuildContext context ) => PDFView(),
                 
 
             },
