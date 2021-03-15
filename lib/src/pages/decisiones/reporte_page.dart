@@ -342,22 +342,22 @@ class _ReportePageState extends State<ReportePage> {
                                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),),
                 Container(
-                    width: 64,
+                    width: 50,
                     child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
-                    width: 64,
+                    width: 50,
                     child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
-                    width: 64,
+                    width: 50,
                     child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                 ),
                 Container(
-                    width: 64,
+                    width: 50,
                     child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
@@ -392,7 +392,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -405,7 +405,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -418,7 +418,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -431,7 +431,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -442,6 +442,18 @@ class _ReportePageState extends State<ReportePage> {
             lisItem.add(Divider());
         }
         return Column(children:lisItem,);
+    }
+
+    Widget _labelColor(double valor){
+        if (valor >= 0 && valor <= 15) {
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.green[900]),);
+        } else if (valor >= 16 && valor <= 50){
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.orange[900]),);
+        }else{
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red[900]),);
+        }
+
+        
     }
 
     Widget _countProduccion(String idTest){
@@ -482,7 +494,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -495,7 +507,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -508,7 +520,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -521,7 +533,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
