@@ -448,7 +448,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -461,7 +461,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -474,7 +474,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -487,7 +487,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -537,7 +537,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
                                     
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -550,7 +550,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -563,7 +563,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -576,7 +576,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
+                                    return _labelColor(snapshot.data);
                                 },
                             ),
                         ),
@@ -587,6 +587,18 @@ class _DesicionesPageState extends State<DesicionesPage> {
             lisProd.add(Divider());
         }
         return Column(children:lisProd,);
+    }
+
+    Widget _labelColor(double valor){
+        if (valor >= 0 && valor <= 15) {
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.green[900]),);
+        } else if (valor >= 16 && valor <= 50){
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.orange[900]),);
+        }else{
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red[900]),);
+        }
+
+        
     }
 
 
