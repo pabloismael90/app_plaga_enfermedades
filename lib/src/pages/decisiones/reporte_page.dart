@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/decisiones_model.dart';
@@ -104,14 +105,36 @@ class _ReportePageState extends State<ReportePage> {
                                         
                                         TitulosPages(titulo: 'Reporte de Decisiones'),
                                         Divider(),
+                                        
                                         Padding(
                                             padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Text(
-                                                "Deslice hacia la derecha para continuar con el reporte",
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
+                                            child: Row(
+                                          
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                    Container(
+                                                        width: 200,
+                                                        child: Flexible(
+                                                        child: Text(
+                                                            "Deslice hacia la derecha para continuar con el reporte",
+                                                            textAlign: TextAlign.center,
+                                                            style: Theme.of(context).textTheme
+                                                                .headline5
+                                                                .copyWith(fontWeight: FontWeight.w600, fontSize: 14)
+                                                        )
+                                                    ),
+                                                    ),
+                                                    
+                                                    
+                                                    Transform.rotate(
+                                                        angle: 90 * math.pi / 180,
+                                                        child: Icon(
+                                                            Icons.arrow_circle_up_rounded,
+                                                            size: 25,
+                                                        ),
+                                                        
+                                                    ),
+                                                ],
                                             ),
                                         ),
                                     ],
@@ -133,19 +156,6 @@ class _ReportePageState extends State<ReportePage> {
                     );
                 },
             ),
-            // floatingActionButton: FloatingActionButton(
-            //     child: Icon(Icons.save_alt),     
-            //     onPressed: ()async{
-            //         writePDF();
-            //         await savePDF();
-            //         Directory documentsDirectory = await getExternalStorageDirectory();
-            //         String documentPath = documentsDirectory.path;
-            //         String fullPath = "$documentPath/example.pdf";
-            //         Navigator.push(context, MaterialPageRoute(
-            //             builder: (context) => PDFView(fullPath)
-            //         ));
-            //     },
-            // ),
         );
     }
 
@@ -494,7 +504,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
                                     
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
@@ -507,7 +517,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
@@ -520,7 +530,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
@@ -533,7 +543,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textFalse;
                                     }
 
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),

@@ -141,11 +141,11 @@ List<Map<String, dynamic>> plagasCacao(){
             },
             {
                 'value': '8', 
-                'label': 'Tanda'
+                'label': 'Tanda/Planta parasitaria'
             },
             {
                 'value': '9', 
-                'label': 'Deficiencia'
+                'label': 'Deficiencia de nutrientes'
             },
 
         ];
@@ -212,7 +212,7 @@ List<Map<String, dynamic>> problemasPlagaSuelo(){
         },
         {
             'value': '6',
-            'label': 'Suelo con poca MO'
+            'label': 'Suelo con poca Materia Orgánica'
         },
         {
             'value': '7',

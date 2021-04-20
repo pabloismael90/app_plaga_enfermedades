@@ -8,6 +8,7 @@ import 'package:app_plaga_enfermedades/src/pages/finca/finca_page.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -86,15 +87,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
         return countPalga*100;
     }
 
-    // Future<double> _countPercentDeficiencia(String idTest, int estacion) async{
-    //     double countDeficiencia = await DBProvider.db.countDeficiencia(idTest, estacion);      
-    //     return countDeficiencia*100;
-    // }
-
-    // Future<double> _countPercentTotalDeficiencia(String idTest) async{
-    //     double countDeficiencia = await DBProvider.db.countTotalDeficiencia(idTest);      
-    //     return countDeficiencia*100;
-    // }
 
     Future<double> _countPercentProduccion(String idTest, int estacion, int estado) async{
         double countProduccion = await DBProvider.db.countProduccion(idTest, estacion, estado);
@@ -157,14 +149,36 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         Divider(),
                                         Padding(
                                             padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Text(
-                                                "Deslice hacia la derecha para continuar con el formulario",
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context).textTheme
-                                                    .headline5
-                                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
+                                            child: Row(
+                                          
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                    Container(
+                                                        width: 200,
+                                                        child: Flexible(
+                                                        child: Text(
+                                                            "Deslice hacia la derecha para continuar con el formulario",
+                                                            textAlign: TextAlign.center,
+                                                            style: Theme.of(context).textTheme
+                                                                .headline5
+                                                                .copyWith(fontWeight: FontWeight.w600, fontSize: 14)
+                                                        )
+                                                    ),
+                                                    ),
+                                                    
+                                                    
+                                                    Transform.rotate(
+                                                        angle: 90 * math.pi / 180,
+                                                        child: Icon(
+                                                            Icons.arrow_circle_up_rounded,
+                                                            size: 25,
+                                                        ),
+                                                        
+                                                    ),
+                                                ],
                                             ),
                                         ),
+                                        
                                     ],
                                 )
                             ),
@@ -537,7 +551,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
                                     
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
@@ -550,7 +564,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
@@ -563,7 +577,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
@@ -576,7 +590,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textFalse;
                                     }
 
-                                    return _labelColor(snapshot.data);
+                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
