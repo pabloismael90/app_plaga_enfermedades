@@ -414,7 +414,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             children: [
                 Expanded(child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                    child: Text('hola', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
                                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),),
                 Container(
