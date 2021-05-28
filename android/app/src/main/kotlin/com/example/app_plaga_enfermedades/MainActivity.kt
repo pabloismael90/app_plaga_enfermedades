@@ -1,4 +1,4 @@
-package ni.org.simas.app_plaga_enfermedades
+package org.rikolto.latinoamerica.app_plaga_enfermedades
 
 import io.flutter.embedding.android.FlutterActivity
 

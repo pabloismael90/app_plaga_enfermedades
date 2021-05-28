@@ -82,23 +82,27 @@ class _AgregarTestState extends State<AgregarTest> {
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
 
-                                                Padding(
-                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                    child:Text(
-                                                        '3 Estaciones',
-                                                        style: Theme.of(context).textTheme
-                                                            .headline6
-                                                            .copyWith(fontSize: 16)
-                                                    ),
+                                                Flexible(
+                                                                                                  child: Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                      child:Text(
+                                                          '3 Estaciones',
+                                                          style: Theme.of(context).textTheme
+                                                              .headline6
+                                                              .copyWith(fontSize: 16)
+                                                      ),
+                                                  ),
                                                 ),
-                                                Padding(
-                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                    child:Text(
-                                                        '10 Plantas por estaciones',
-                                                        style: Theme.of(context).textTheme
-                                                            .headline6
-                                                            .copyWith(fontSize: 16)
-                                                    ),
+                                                Flexible(
+                                                                                                  child: Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                      child:Text(
+                                                          '10 Plantas por estaciones',
+                                                          style: Theme.of(context).textTheme
+                                                              .headline6
+                                                              .copyWith(fontSize: 16)
+                                                      ),
+                                                  ),
                                                 ),
                                             ],
                                         )

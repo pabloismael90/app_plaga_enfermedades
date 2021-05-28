@@ -167,7 +167,7 @@ class _PlantaPageState extends State<PlantaPage> {
                         return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                                Container(
+                                Flexible(
                                     child: Text('Plantas: $value / 10',
                                         style: Theme.of(context).textTheme
                                                 .headline6
@@ -190,7 +190,7 @@ class _PlantaPageState extends State<PlantaPage> {
                         return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                                Container(
+                                Flexible(
                                     child: Text('Plantas: $value / 10',
                                         style: Theme.of(context).textTheme
                                                 .headline6
