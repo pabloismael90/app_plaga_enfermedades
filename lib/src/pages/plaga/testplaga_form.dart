@@ -38,7 +38,7 @@ class _AgregarTestState extends State<AgregarTest> {
     List<Testplaga>? mainlistplagas ;
 
     List? mainparcela;
-    late TextEditingController _control;
+    TextEditingController? _control;
 
     @mustCallSuper
     // ignore: must_call_super

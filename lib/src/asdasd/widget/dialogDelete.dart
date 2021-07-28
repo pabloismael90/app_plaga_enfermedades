@@ -10,11 +10,11 @@ Future<bool?> confirmacionUser(DismissDirection direction, BuildContext context)
                 title: const Text("Confirmacion"),
                 content: const Text("¿Está seguro de que quieres borrar el registro?. Se eliminaran los datos relacionados al elementos borrado."),
                 actions: <Widget>[
-                    TextButton(
+                    FlatButton(
                         onPressed: () => Navigator.of(context).pop(true),
                         child: const Text("BORRAR")
                     ),
-                    TextButton(
+                    FlatButton(
                         onPressed: () => Navigator.of(context).pop(false),
                         child: const Text("CANCELAR"),
                     ),
@@ -34,7 +34,7 @@ Widget backgroundTrash(BuildContext context){
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                     Icon(Icons.delete, color: Colors.white),
-                    Text('Eliminar', style:TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text('Eliminar', style:Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white)),
                 ],
             ),
         )

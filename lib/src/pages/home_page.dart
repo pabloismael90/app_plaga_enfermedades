@@ -2,7 +2,6 @@ import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/category_cart.dart';
 
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -18,7 +17,7 @@ class HomePage extends StatelessWidget {
                         child: Stack(
                             children:<Widget> [
                                 Container(
-                                    height: size.height * 0.25,
+                                    height: size.height * 0.3,
                                     decoration: BoxDecoration(
                                         color: kBackgroundColor,
                                         image: DecorationImage(
@@ -28,20 +27,19 @@ class HomePage extends StatelessWidget {
                                     ),
                                         
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                                    child: Text(
-                                        "Plaga y enfermedades\nde Cacao",
-                                        style: Theme.of(context).textTheme
-                                            .headline4!
-                                            .copyWith(fontWeight: FontWeight.w900, fontSize: 30)
-                                    ),
-                                ),
-                                Padding(
+                                
+                                Container(
                                     padding: EdgeInsets.symmetric(horizontal: 20),
                                     child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                            SizedBox(height: size.height * 0.18),
+                                            Container(
+                                                padding: EdgeInsets.only(left: 10, top: size.height*0.1, bottom: 20),
+                                                child: Text(
+                                                    "Plaga y enfermedades de Cacao",
+                                                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24)
+                                                ),
+                                            ),
                                             Expanded(
                                                 child:GridView.count(
                                                         crossAxisCount: 2,
@@ -76,8 +74,7 @@ class HomePage extends StatelessWidget {
                                                             
                                                             
                                                         ],
-                                                ),
-                                                
+                                                ), 
                                             
                                             ),
                                         
@@ -102,7 +99,6 @@ class HomePage extends StatelessWidget {
                                         fit: BoxFit.fitWidth
                                     )
                                 ),
-                                    
                             ),
                         ),
                     ),
@@ -113,8 +109,6 @@ class HomePage extends StatelessWidget {
     }
    
 }
-
-
 
 
 
