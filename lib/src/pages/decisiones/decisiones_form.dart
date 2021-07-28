@@ -10,13 +10,13 @@ import 'package:app_plaga_enfermedades/src/utils/constants.dart';
 import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:uuid/uuid.dart';
 
 class DesicionesPage extends StatefulWidget {
-    DesicionesPage({Key key}) : super(key: key);
+    DesicionesPage({Key? key}) : super(key: key);
 
     @override
     _DesicionesPageState createState() => _DesicionesPageState();
@@ -29,7 +29,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
     Acciones acciones = Acciones();
     List<Decisiones> listaDecisiones = [];
     List<Acciones> listaAcciones = [];
-    String idPlagaMain = "";
+    String? idPlagaMain = "";
     bool _guardando = false;
     var uuid = Uuid();
     
@@ -77,23 +77,23 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     final formKey = new GlobalKey<FormState>();
 
-    Future<double> _countPercentPlaga(String idTest, int estacion, int idPlaga) async{
+    Future<double> _countPercentPlaga(String? idTest, int estacion, int idPlaga) async{
         double countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idPlaga);         
         return countPalga*100;
     }
     
-    Future<double> _countPercentTotal(String idTest,int idPlaga) async{
+    Future<double> _countPercentTotal(String? idTest,int idPlaga) async{
         double countPalga = await DBProvider.db.countPlagaTotal(idTest, idPlaga);         
         return countPalga*100;
     }
 
 
-    Future<double> _countPercentProduccion(String idTest, int estacion, int estado) async{
+    Future<double> _countPercentProduccion(String? idTest, int estacion, int estado) async{
         double countProduccion = await DBProvider.db.countProduccion(idTest, estacion, estado);
         return countProduccion*100;
     }
 
-    Future<double> _countPercentTotalProduccion(String idTest, int estado) async{
+    Future<double> _countPercentTotalProduccion(String? idTest, int estado) async{
         double countProduccion = await DBProvider.db.countTotalProduccion(idTest, estado);
         return countProduccion*100;
     }
@@ -107,12 +107,12 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     @override
     Widget build(BuildContext context) {
-        Testplaga plagaTest = ModalRoute.of(context).settings.arguments;
+        Testplaga? plagaTest = ModalRoute.of(context)!.settings.arguments as Testplaga?;
         
        
         Future _getdataFinca() async{
-            Finca finca = await DBProvider.db.getFincaId(plagaTest.idFinca);
-            Parcela parcela = await DBProvider.db.getParcelaId(plagaTest.idLote);
+            Finca? finca = await DBProvider.db.getFincaId(plagaTest!.idFinca);
+            Parcela? parcela = await DBProvider.db.getParcelaId(plagaTest.idLote);
             List<Planta> plantas = await DBProvider.db.getTodasPlantaIdTest(plagaTest.id);
             return [finca, parcela, plantas];
         }
@@ -127,11 +127,11 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                     }
-                    List<Widget> pageItem = List<Widget>();
+                    List<Widget> pageItem = [];
                     Finca finca = snapshot.data[0];
                     Parcela parcela = snapshot.data[1];
                     
-                    pageItem.add(_principalData(finca, parcela, plagaTest.id));
+                    pageItem.add(_principalData(finca, parcela, plagaTest!.id));
                     pageItem.add(_plagasPrincipales());   
                     pageItem.add(_situacionPlaga());   
                     pageItem.add(_problemasSuelo());   
@@ -159,7 +159,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                             "Deslice hacia la derecha para continuar con el formulario",
                                                             textAlign: TextAlign.center,
                                                             style: Theme.of(context).textTheme
-                                                                .headline5
+                                                                .headline5!
                                                                 .copyWith(fontWeight: FontWeight.w600, fontSize: 14)
                                                         ),
                                                     ),
@@ -203,7 +203,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         );
     }
 
-    Widget _principalData(Finca finca, Parcela parcela, String plagaid){
+    Widget _principalData(Finca finca, Parcela parcela, String? plagaid){
     
                 return Container(
                     decoration: BoxDecoration(
@@ -231,7 +231,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                                         "Porcentaje de plantas afectadas",
                                                                         textAlign: TextAlign.center,
                                                                         style: Theme.of(context).textTheme
-                                                                            .headline5
+                                                                            .headline5!
                                                                             .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                                                                     ),
                                                                 ),
@@ -288,8 +288,8 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
 
     Widget _dataFincas( BuildContext context, Finca finca, Parcela parcela ){
-        String labelMedidaFinca;
-        String labelvariedad;
+        String? labelMedidaFinca;
+        String? labelvariedad;
 
         final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
         labelMedidaFinca  = item['label'];
@@ -414,38 +414,38 @@ class _DesicionesPageState extends State<DesicionesPage> {
             children: [
                 Expanded(child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),),
                 Container(
                     width: 50,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
                     width: 50,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
                     width: 50,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                 ),
                 Container(
                     width: 50,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
             ],
         );
     }
 
-    Widget _countPlagas(String idTest, int estacion){
-        List<Widget> lisItem = List<Widget>();
+    Widget _countPlagas(String? idTest, int estacion){
+        List<Widget> lisItem = [];
 
         for (var i = 0; i < itemPlagas.length; i++) {
-            String labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             int idplga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
             lisItem.add(
                 Row(
@@ -516,8 +516,8 @@ class _DesicionesPageState extends State<DesicionesPage> {
         return Column(children:lisItem,);
     }
 
-    Widget _countProduccion(String idTest){
-        List<Widget> lisProd= List<Widget>();
+    Widget _countProduccion(String? idTest){
+        List<Widget> lisProd= [];
 
         List<String> nameProd = ['Alta','Media','Baja'];
 
@@ -527,7 +527,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 children: [
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                 .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                     )
                 ],
@@ -619,7 +619,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
 
     Widget _plagasPrincipales(){
-        List<Widget> listPrincipales = List<Widget>();
+        List<Widget> listPrincipales = [];
 
         listPrincipales.add(
             Column(
@@ -631,7 +631,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "Plagas principales del momento",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
@@ -643,14 +643,14 @@ class _DesicionesPageState extends State<DesicionesPage> {
         );
 
         for (var i = 0; i < itemPlagas.length; i++) {
-            String labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             //print(checksPrincipales[itemPlagas[i]['value']]);
             
             listPrincipales.add(
 
                 CheckboxListTile(
                     title: Text('$labelPlaga',
-                        style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 16),
+                        style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16),
                     ),
                     value: checksPrincipales[itemPlagas[i]['value']], 
                     onChanged: (value) {
@@ -686,7 +686,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
 
     Widget _situacionPlaga(){
-        List<Widget> listSituacionPlaga = List<Widget>();
+        List<Widget> listSituacionPlaga = [];
 
         listSituacionPlaga.add(
             Column(
@@ -698,7 +698,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "Situación de las plagas en la parcela",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
@@ -711,7 +711,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
 
         for (var i = 0; i < itemSituacion.length; i++) {
-            String labelSituacion = itemSituacion.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelSituacion = itemSituacion.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             
             
             listSituacionPlaga.add(
@@ -719,7 +719,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 Container(
                     child: CheckboxListTile(
                         title: Text('$labelSituacion',
-                            style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 16),
+                            style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16),
                         ),
                         value: checksSituacion[itemSituacion[i]['value']], 
                         onChanged: (value) {
@@ -756,7 +756,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
 
     Widget _problemasSuelo(){
-        List<Widget> listProblemasSuelo = List<Widget>();
+        List<Widget> listProblemasSuelo = [];
 
         listProblemasSuelo.add(
             Column(
@@ -768,7 +768,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "¿Porqué hay problemas de plagas?  Suelo",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
@@ -781,7 +781,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
 
         for (var i = 0; i < itemProbSuelo.length; i++) {
-            String labelProblemaSuelo = itemProbSuelo.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelProblemaSuelo = itemProbSuelo.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             
             
             listProblemasSuelo.add(
@@ -824,7 +824,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
 
     Widget _problemasSombra(){
-        List<Widget> listProblemasSombra = List<Widget>();
+        List<Widget> listProblemasSombra = [];
 
         listProblemasSombra.add(
             Column(
@@ -836,7 +836,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "¿Porqué hay problemas de plagas?  Sombra",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
@@ -849,7 +849,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
 
         for (var i = 0; i < itemProbSombra.length; i++) {
-            String labelProblemaSombra = itemProbSombra.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelProblemaSombra = itemProbSombra.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             
             
             listProblemasSombra.add(
@@ -892,7 +892,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
 
     Widget _problemasManejo(){
-        List<Widget> listProblemasManejo = List<Widget>();
+        List<Widget> listProblemasManejo = [];
 
         listProblemasManejo.add(
             Column(
@@ -904,7 +904,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "¿Porqué hay problemas de plagas?  Manejo",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
@@ -917,7 +917,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
 
         for (var i = 0; i < itemProbManejo.length; i++) {
-            String labelProblemaManejo = itemProbManejo.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelProblemaManejo = itemProbManejo.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             
             
             listProblemasManejo.add(
@@ -960,7 +960,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
     Widget _accionesMeses(){
 
-        List<Widget> listaAcciones = List<Widget>();
+        List<Widget> listaAcciones = [];
         listaAcciones.add(
             
             Column(
@@ -972,7 +972,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "¿Qué acciones vamos a realizar y cuando?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
                             ),
                         )
@@ -983,14 +983,13 @@ class _DesicionesPageState extends State<DesicionesPage> {
             
         );
         for (var i = 0; i < listSoluciones.length; i++) {
-            String labelSoluciones = listSoluciones.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelSoluciones = listSoluciones.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             
             
             listaAcciones.add(
                 Container(
                     padding: EdgeInsets.all(16),
                     child: MultiSelectFormField(
-                        autovalidate: false,
                         chipBackGroundColor: Colors.deepPurple,
                         chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                         dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -1049,7 +1048,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
     }
 
 
-    Widget  _botonsubmit(String idplaga){
+    Widget  _botonsubmit(String? idplaga){
         idPlagaMain = idplaga;
         return SingleChildScrollView(
             child: Container(
@@ -1075,7 +1074,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 "¿Ha Terminado todos los formularios de toma de desición?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600)
                             ),
                         ),
@@ -1085,7 +1084,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                 icon:Icon(Icons.save),
                                 label: Text('Guardar',
                                     style: Theme.of(context).textTheme
-                                        .headline6
+                                        .headline6!
                                         .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
                                 ),
                                 padding:EdgeInsets.all(13),

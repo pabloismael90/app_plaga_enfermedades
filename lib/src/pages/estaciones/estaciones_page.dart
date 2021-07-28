@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class EstacionesPage extends StatefulWidget {
-    const EstacionesPage({Key key}) : super(key: key);
+    const EstacionesPage({Key? key}) : super(key: key);
 
   @override
   _EstacionesPageState createState() => _EstacionesPageState();
@@ -22,8 +22,8 @@ class _EstacionesPageState extends State<EstacionesPage> {
     final fincasBloc = new FincasBloc();
 
     Future _getdataFinca(Testplaga textPlaga) async{
-        Finca finca = await DBProvider.db.getFincaId(textPlaga.idFinca);
-        Parcela parcela = await DBProvider.db.getParcelaId(textPlaga.idLote);
+        Finca? finca = await DBProvider.db.getFincaId(textPlaga.idFinca);
+        Parcela? parcela = await DBProvider.db.getParcelaId(textPlaga.idLote);
         List<Decisiones> desiciones = await DBProvider.db.getDecisionesIdTest(textPlaga.id);
         
         return [finca, parcela, desiciones];
@@ -32,7 +32,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
     @override
     Widget build(BuildContext context) {
         
-        Testplaga plaga = ModalRoute.of(context).settings.arguments;
+        Testplaga plaga = ModalRoute.of(context)!.settings.arguments as Testplaga;
         fincasBloc.obtenerPlantas(plaga.id);
         
 
@@ -283,7 +283,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                     
                                     label: Text('Toma de decisiones',
                                         style: Theme.of(context).textTheme
-                                            .headline6
+                                            .headline6!
                                             .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
                                     ),
                                     padding:EdgeInsets.all(13),
@@ -304,7 +304,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                             
                                 label: Text('Consultar decisiones',
                                     style: Theme.of(context).textTheme
-                                        .headline6
+                                        .headline6!
                                         .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
                                 ),
                                 padding:EdgeInsets.all(13),
@@ -326,7 +326,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     "Complete las estaciones",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme
-                        .headline5
+                        .headline5!
                         .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
                 ),
             ),

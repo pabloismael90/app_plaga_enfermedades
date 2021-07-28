@@ -13,11 +13,11 @@ class Testplaga {
         this.fechaTest,
     });
 
-    String id;
-    String idFinca;
-    String idLote;
-    int estaciones;
-    String fechaTest;
+    String? id;
+    String? idFinca;
+    String? idLote;
+    int? estaciones;
+    String? fechaTest;
 
     factory Testplaga.fromJson(Map<String, dynamic> json) => Testplaga(
         id: json["id"],
