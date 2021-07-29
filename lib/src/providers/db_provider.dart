@@ -36,7 +36,7 @@ class DBProvider {
 
         final path = join( documentsDirectory.path, 'herramienta.db' );
 
-        //print(path);
+        print(path);
 
         return await openDatabase(
             path,
@@ -85,6 +85,9 @@ class DBProvider {
                     ' idTest TEXT,'
                     ' estacion INTEGER,'
                     ' produccion INTEGER,'
+                    ' sanas INTEGER,'
+                    ' enfermas INTEGER,'
+                    ' danadas INTEGER,'
                     ' CONSTRAINT fk_testPlaga FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
                     ')'
                 );
@@ -227,8 +230,32 @@ class DBProvider {
         final db = await (database);
         int? count = Sqflite.firstIntValue(await db!.rawQuery("SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'"));
         return count;
-    
+    }
 
+    Future<int?> countMazorcaSana(String idTest,  int estacion ) async {
+        final db = await (database);
+        String? query;
+        query =  estacion == 0 ? "SELECT SUM(sanas) FROM Planta WHERE idTest = '$idTest'" : "SELECT SUM(sanas) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        var res = await db!.rawQuery(query) ;
+        int? value = res[0]['SUM(sanas)'] as int?;
+        return value;
+    }
+    Future<int?> countMazorcaEnfermas(String idTest,  int estacion ) async {
+        final db = await (database);
+        String? query;
+        query =  estacion == 0 ? "SELECT SUM(enfermas) FROM Planta WHERE idTest = '$idTest'" : "SELECT SUM(enfermas) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        var res = await db!.rawQuery(query) ;
+        int? value = res[0]['SUM(enfermas)'] as int?;
+        return value;
+    }
+    Future<int?> countMazorcaDanadas(String idTest,  int estacion ) async {
+        final db = await (database);
+        String? query;
+        query =  estacion == 0 ? "SELECT SUM(danadas) FROM Planta WHERE idTest = '$idTest'" : "SELECT SUM(danadas) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        var res = await db!.rawQuery(query) ;
+
+        int? value = res[0]['SUM(danadas)'] as int?;
+        return value;
     }
 
     Future<List<Decisiones>> getTodasDesiciones() async {

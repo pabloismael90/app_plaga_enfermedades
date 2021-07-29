@@ -109,30 +109,50 @@ List<Map<String, dynamic>> plagasCacao(){
             },
             {
                 'value': '3', 
-                'label': 'Ardilla/Rata'
+                'label': 'Buba'
             },
             {
                 'value': '4', 
-                'label': 'Barrenador'
+                'label': 'Ardilla/Rata'
             },
             {
                 'value': '5', 
-                'label': 'Chupadores'
+                'label': 'Pájaro Carpintero'
             },
             {
                 'value': '6', 
-                'label': 'Zompopos'
+                'label': 'Barrenador'
             },
             {
                 'value': '7', 
-                'label': 'Bejuco'
+                'label': 'Chupadores/áfidos'
             },
             {
                 'value': '8', 
-                'label': 'Tanda/Planta parasitaria'
+                'label': 'Cochinillas'
             },
             {
                 'value': '9', 
+                'label': 'Zompopos'
+            },
+            {
+                'value': '10', 
+                'label': 'Hormigas'
+            },
+            {
+                'value': '11', 
+                'label': 'Bejuco'
+            },
+            {
+                'value': '12', 
+                'label': 'Tanda/Planta parasitaria'
+            },
+            {
+                'value': '13', 
+                'label': 'Musgos'
+            },
+            {
+                'value': '14', 
                 'label': 'Deficiencia de nutrientes'
             },
 

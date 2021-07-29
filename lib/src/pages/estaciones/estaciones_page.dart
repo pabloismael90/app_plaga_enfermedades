@@ -6,7 +6,8 @@ import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
-import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/button.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -65,26 +66,8 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     appBar: AppBar(),
                     body: Column(
                         children: [
-                            escabezadoEstacion( context, plaga ),
-                            InkWell(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                        TitulosPages(titulo: 'Estaciones'),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 10, top: 5),
-                                            child: Icon(
-                                                Icons.info_outline_rounded,
-                                                color: Colors.green,
-                                                size: 25.0,
-                                            ),
-                                        ),
-                                    ],
-                                ),
-                                onTap: () => _dialogText(context),
-                            ),
-                            
-                            Divider(),
+                            escabezadoSitio( context, plaga ),
+                            _textoExplicacion('Lista de sitios'),
                             Expanded(
                                 child: SingleChildScrollView(
                                     child: _listaDeEstaciones( context, plaga, countEstaciones ),
@@ -102,7 +85,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
 
 
-    Widget escabezadoEstacion( BuildContext context, Testplaga plaga ){
+    Widget escabezadoSitio( BuildContext context, Testplaga plaga ){
 
 
         return FutureBuilder(
@@ -115,56 +98,72 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 Parcela parcela = snapshot.data[1];
 
                 return Container(
-                    
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                            BoxShadow(
-                                    color: Color(0xFF3A5160)
-                                        .withOpacity(0.05),
-                                    offset: const Offset(1.1, 1.1),
-                                    blurRadius: 17.0),
-                            ],
-                    ),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    color: Colors.white,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                            
-                            Flexible(
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                    
-                                        Padding(
-                                            padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                            child: Text(
-                                                "${finca.nombreFinca}",
-                                                softWrap: true,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                style: Theme.of(context).textTheme.headline6,
-                                            ),
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only( bottom: 10.0),
-                                            child: Text(
-                                                "${parcela.nombreLote}",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(color: kLightBlackColor),
-                                            ),
-                                        ),
-                                        
-                                    ],  
-                                ),
-                            ),
+                            encabezadoCard('Área finca: ${finca.nombreFinca}','Productor: ${finca.nombreProductor}', 'assets/icons/finca.svg'),
+                            Wrap(
+                                spacing: 20,
+                                children: [
+                                    textoCardBody('Área finca: ${finca.areaFinca}'),
+                                    textoCardBody('Área parcela: ${parcela.areaLote} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'), 
+                                ],
+                            )
                         ],
                     ),
                 );
             },
         );        
     }
+
+    Widget _textoExplicacion(String? titulo){
+        return Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: InkWell(
+                child: Column(
+                    children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                                Container(                                                                    
+                                    child: Text(
+                                        titulo!,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
+                                    ),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Icon(
+                                        Icons.info_outline_rounded,
+                                        color: Colors.green,
+                                        size: 20,
+                                    ),
+                                ),
+                            ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                            children: List.generate(
+                                150~/2, (index) => Expanded(
+                                    child: Container(
+                                        color: index%2==0?Colors.transparent
+                                        :kShadowColor2,
+                                        height: 2,
+                                    ),
+                                )
+                            ),
+                        ),
+                    ],
+                ),
+                onTap: () => _explicacion(context),
+            ),
+        );
+    }
+
 
     Widget  _listaDeEstaciones( BuildContext context, Testplaga plaga, List countEstaciones){
         return ListView.builder(
@@ -191,72 +190,37 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
     }
 
-    Widget _cardTest(int estacion, int numeroPlantas, String estado){
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(13),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                        
-                        Flexible(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                        child: Text(
-                                            "Estación $estacion",
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: Theme.of(context).textTheme.headline6,
-                                        ),
-                                    ),
-                                    
-                                    
-                                    Padding(
-                                        padding: EdgeInsets.only( bottom: 10.0),
-                                        child: Text(
-                                            '$estado',
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
-                                    ),
-                                ],  
-                            ),
+    Widget _cardTest(int sitio, int numeroPlantas, String estado){
+        return cardDefault(
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                    
+                    Flexible(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                                tituloCard('Sitio $sitio'),
+                                subtituloCardBody('$estado')
+                            ],  
                         ),
-                        Container(
-                            child: CircularPercentIndicator(
-                                radius: 70.0,
-                                lineWidth: 5.0,
-                                animation: true,
-                                percent: numeroPlantas/10,
-                                center: new Text("${(numeroPlantas/10)*100}%"),
-                                progressColor: Color(0xFF498C37),
-                            ),
-                        )
-                        
-                        
-                        
-                    ],
-                ),
+                    ),
+                    Container(
+                        child: CircularPercentIndicator(
+                            radius: 65,
+                            lineWidth: 5.0,
+                            animation: true,
+                            percent: numeroPlantas/10,
+                            center: new Text("${(numeroPlantas/10)*100}%"),
+                            progressColor: Color(0xFF498C37),
+                        ),
+                    )
+                    
+                ],
+            ), 
+                
         );
     }
-   
 
     Widget  _tomarDecisiones(List countEstaciones, Testplaga plaga){
         
@@ -270,93 +234,66 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     }
                     List<Decisiones> desiciones = snapshot.data;
 
-                    //print(desiciones);
-
                     if (desiciones.length == 0){
-
                         return Container(
                             color: kBackgroundColor,
                             child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                                child: RaisedButton.icon(
-                                    icon:Icon(Icons.add_circle_outline_outlined),
-                                    
-                                    label: Text('Toma de decisiones',
-                                        style: Theme.of(context).textTheme
-                                            .headline6!
-                                            .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
-                                    ),
-                                    padding:EdgeInsets.all(13),
-                                    onPressed: () => Navigator.pushNamed(context, 'decisiones', arguments: plaga),
+                                child: ButtonMainStyle(
+                                    title: 'Toma de decisiones',
+                                    icon: Icons.post_add,
+                                    press: () => Navigator.pushNamed(context, 'decisiones', arguments: plaga),
                                 )
                             ),
                         );
                         
                     }
 
-
                     return Container(
                         color: kBackgroundColor,
                         child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                            child: RaisedButton.icon(
-                                icon:Icon(Icons.receipt_rounded),
+                            child: ButtonMainStyle(
+                                    title: 'Consultar decisiones',
+                                    icon: Icons.receipt_rounded,
+                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: plaga.id),
+                                
                             
-                                label: Text('Consultar decisiones',
-                                    style: Theme.of(context).textTheme
-                                        .headline6!
-                                        .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
-                                ),
-                                padding:EdgeInsets.all(13),
-                                onPressed: () => Navigator.pushNamed(context, 'reporte', arguments: plaga.id),
-                            )
-                        ),
+                            ),
+                        )
                     );
                                        
                 },  
             );
         }
         
-
         return Container(
             color: kBackgroundColor,
-            child: Padding(
+            child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Text(
-                    "Complete las estaciones",
+                    "Complete los sitios",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme
-                        .headline5!
-                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
+                    style: TextStyle(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 18)
                 ),
             ),
         );
     }
+
+    Future<void> _explicacion(BuildContext context){
+
+        return dialogText(
+            context,
+            Column(
+                children: [
+                    textoCardBody('•	Realizar un recorrido de la parcela SAF cacao junto con la productora o productor para identificar los 3 puntos o estaciones para las observaciones.'),
+                    textoCardBody('•	En los tres sitios identificar la primera planta para observar. Luego continuar las observaciones en el primer punto en 9 plantas más. De esta manera en cada uno de los sitios se realizan las observaciones sobre las plagas y enfermedades, número de mazorcas sanas, mazorcas enfermas y mazorcas dañadas en 10 plantas, 5 plantas seguidas sin escoger en un surco y 5 plantas seguidas en el surco vecino. '),
+                    textoCardBody('•	Para tomar y registrar los datos seguimos los pasos de la aplicación para completar los tres sitios. Una vez completado este paso, la aplicación le dirigirá a la pantalla de toma de decisiones. Seguir los pasos revelados por la aplicación, grabando los datos e información como solicita la aplicación.'),
+                    textoCardBody('•    Utilizar las observaciones sobre la prevalencia (% de plantas afectadas) y pérdida de cosecha por enfermedades y daño por animales para tomar decisiones sobre las acciones a realizar para mejorar las plagas y enfermedades.'),
+                ],
+            ),
+            'Pasos para aplicación de piso'
+        );
+    }
 }
 
-Future<void> _dialogText(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-            return AlertDialog(
-                title: Text('Titulo'),
-                content: SingleChildScrollView(
-                    child: ListBody(
-                        children: <Widget>[
-                        Text('Texto para breve explicacion'),
-                        ],
-                    ),
-                ),
-                actions: <Widget>[
-                    TextButton(
-                        child: Text('Cerrar'),
-                        onPressed: () {
-                        Navigator.of(context).pop();
-                        },
-                    ),
-                ],
-            );
-        },
-    );
-}

@@ -1,11 +1,13 @@
 import 'package:app_plaga_enfermedades/src/bloc/fincas_bloc.dart';
 import 'package:app_plaga_enfermedades/src/models/existePlaga_model.dart';
 import 'package:app_plaga_enfermedades/src/models/planta_model.dart';
-
+import 'package:app_plaga_enfermedades/src/utils/validaciones.dart' as utils;
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
-import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/button.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -54,11 +56,9 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         planta.idTest = data[1];
         planta.estacion = data[0] ;
         countPlanta = data[2]+1;
-        
-        //return Scaffold();
         return Scaffold(
             key: scaffoldKey,
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Planta $countPlanta sitio ${planta.estacion}'),),
             body: SingleChildScrollView(
                 child: Container(
                     padding: EdgeInsets.all(15.0),
@@ -66,24 +66,19 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         key: formKey,
                         child: Column(
                             children: <Widget>[
-                                TitulosPages(titulo: 'Planta $countPlanta estacion ${planta.estacion}'),
-                                Divider(),
-                                Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                Container(
+                                    padding: EdgeInsets.only(top: 10),
                                     child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                            Expanded(child: Text('Lista Plagas', style: Theme.of(context).textTheme.headline6!
-                                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
+                                            Expanded(child: textList('Lista Plagas')),
                                             Container(
-                                                width: 50,
-                                                child: Text('Si', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600,) ),
+                                                width: 60,
+                                                child: titleList('Si'),
                                             ),
                                             Container(
-                                                width: 50,
-                                                child: Text('No', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                                                width: 60,
+                                                child: titleList('No'),
                                             ),
                                         ],
                                     ),
@@ -96,31 +91,35 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                     children: [
                                         Expanded(child: Container(),),
                                         Container(
-                                            width: 50,
-                                            child: Text('Alta', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
-                                            //color: Colors.deepPurple,
+                                            width: 60,
+                                            child: titleList('Alta')
                                         ),
                                         Container(
-                                            width: 50,
-                                            child: Text('Media', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
-                                            //color: Colors.deepPurple,
+                                            width: 60,
+                                            child: titleList('Media')
                                         ),
                                         Container(
-                                            width: 50,
-                                            child: Text('Baja', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                                            width: 60,
+                                            child: titleList('Baja')
                                         ),
                                     ],
                                 ),
-                                
                                 _produccion(),
                                 Divider(),
-                                Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 30.0),
-                                    child: _botonsubmit()
-                                )
+                                SizedBox(height: 20,),
+                                textList('Número de mazorcas'),
+                                Divider(),
+                                Row(
+                                    children: [
+                                        Flexible(child: _mazorcasSanas()),
+                                        SizedBox(width: 20,),
+                                        Flexible(child: _mazorcasEnfermas()),
+
+                                    ],
+                                ),
+                                _mazorcasDanadas(),
+                                SizedBox(height: 20,),
+                                _botonsubmit()
                             ],
                         ),
                     ),
@@ -132,24 +131,21 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
 
     Widget _plagasList(){
-
         return ListView.builder(
             
             itemBuilder: (BuildContext context, int index) {
                 
                 String? labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$index', orElse: () => {"value": "1","label": "No data"})['label'];
                 int idPlaga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$index', orElse: () => {"value": "100","label": "No data"})['value']);
-                
-                
-                
+            
                 return Column(
                     children: [
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                                Expanded(child: Text('$labelPlaga', style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
-                                Transform.scale(
-                                    scale: 1.2,
+                                Expanded(child: textList('$labelPlaga')),
+                                Container(
+                                    width: 60,
                                     child: Radio(
                                         value: '1',
                                         groupValue: radios[itemPlagas[idPlaga]['value']],
@@ -161,8 +157,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                         activeColor: Colors.teal[900],
                                     ),
                                 ),
-                                Transform.scale(
-                                    scale: 1.2,
+                                Container(
+                                    width: 60,
                                     child: Radio(
                                         value:'2',
                                         groupValue: radios[itemPlagas[idPlaga]['value']],
@@ -178,7 +174,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
                             ],
                         ),
-                        Divider()
                     ],
                 );
         
@@ -186,17 +181,16 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             shrinkWrap: true,
             itemCount: itemPlagas.length,
             physics: NeverScrollableScrollPhysics(),
-        );
-        
+        ); 
     }
 
     Widget _produccion(){
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-                Expanded(child: Text('Producción', style:TextStyle(fontWeight: FontWeight.bold))),
-                Transform.scale(
-                    scale: 1.2,
+                Expanded(child: textList('Producción')),
+                Container(
+                    width: 60,
                     child: Radio(
                         value: 1,
                         groupValue: planta.produccion,
@@ -208,8 +202,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         activeColor: Colors.teal[900],
                     ),
                 ),
-                Transform.scale(
-                    scale: 1.2,
+                Container(
+                    width: 60,
                     child: Radio(
                         value: 2,
                         groupValue: planta.produccion,
@@ -221,9 +215,9 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         activeColor: Colors.orange[900],
                     ),
                 ),
-                Transform.scale(
-                    scale: 1.2,
-                        child: Radio(
+                Container(
+                    width: 60,
+                    child: Radio(
                         value: 3,
                         groupValue: planta.produccion,
                         onChanged: (dynamic value) {
@@ -234,25 +228,66 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         activeColor: Colors.red[900],
                     ),
                 ),   
-
             ],
         );
         
     }
 
-    
+    Widget _mazorcasSanas(){
+        return TextFormField(
+            initialValue: planta.sanas == null ? '' : planta.sanas.toString(),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+            ],
+            maxLength: 3,
+            decoration: InputDecoration(
+                labelText: 'Sanas'
+            ),
+            validator: (value) => utils.validateEntero(value),
+            onSaved: (value) => planta.sanas = int.parse(value!),
+        );
+    }
+
+    Widget _mazorcasEnfermas(){
+        return TextFormField(
+            initialValue: planta.enfermas == null ? '' : planta.enfermas.toString(),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+            ],
+            maxLength: 3,
+            decoration: InputDecoration(
+                labelText: 'Enfermas'
+            ),
+            validator: (value) => utils.validateEntero(value),
+            onSaved: (value) => planta.enfermas = int.parse(value!),
+        );
+    }
+
+    Widget _mazorcasDanadas(){
+        return TextFormField(
+            initialValue: planta.danadas == null ? '' : planta.danadas.toString(),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+            ],
+            maxLength: 3,
+            decoration: InputDecoration(
+                labelText: 'Dañanas'
+            ),
+            validator: (value) => utils.validateEntero(value),
+            onSaved: (value) => planta.danadas = int.parse(value!),
+        );
+    }
+
+
 
     Widget  _botonsubmit(){
-        return RaisedButton.icon(
-            icon:Icon(Icons.save, color: Colors.white,),
-            
-            label: Text('Guardar',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-            onPressed:(_guardando) ? null : _submit,
+        return ButtonMainStyle(
+            title: 'Guardar',
+            icon: Icons.save,
+            press:(_guardando) ? null : _submit,
         );
     }
 
@@ -273,6 +308,11 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     }
 
     void _submit(){
+        if  ( !formKey.currentState!.validate() ){
+            //Cuendo el form no es valido
+            return null;
+        }
+        
         variableVacias = 0;
         radios.forEach((key, value) {
             if (value == '-1') {
@@ -287,9 +327,11 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
 
         if  ( variableVacias !=  0){
-            mostrarSnackbar(variableVacias);
+            mostrarSnackbar('Hay $variableVacias Campos Vacios, Favor llene todo los campos', context);
             return null;
         }
+
+        formKey.currentState!.save();
 
         setState(() {_guardando = true;});
 
@@ -297,12 +339,13 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         if(planta.id == null){
             planta.id =  uuid.v1();
             _listaPlagas();
+            
             fincasBloc.addPlata(planta, planta.idTest, planta.estacion);
 
             listaPlagas.forEach((item) {
                 DBProvider.db.nuevoExistePlagas(item);
             });
-
+            mostrarSnackbar('Registro planta guardado', context);
         }
          
         setState(() {_guardando = false;});
@@ -313,16 +356,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     }
 
 
-    void mostrarSnackbar(int variableVacias){
-        final snackbar = SnackBar(
-            content: Text('Hay $variableVacias Campos Vacios, Favor llene todo los campos',
-                style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
-            ),
-            duration: Duration(seconds: 2),
-        );
-        setState(() {_guardando = false;});
-        scaffoldKey.currentState!.showSnackBar(snackbar);
-    }
+   
 
 
 }
