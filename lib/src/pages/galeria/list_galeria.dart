@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 class GaleriaImagenes extends StatefulWidget {
@@ -15,11 +13,9 @@ class GaleriaImagenes extends StatefulWidget {
 List? someImages;
 List? nameImages;
 Future _initImages(BuildContext context) async {
-    // >> To get paths you need these 2 lines
     final manifestContent = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
 
     final Map<String?, dynamic> manifestMap = json.decode(manifestContent);
-    // >> To get paths you need these 2 lines
     
     List imagePaths = manifestMap.keys
         .where((String? key) => key!.contains('assets/galeria/'))
@@ -37,7 +33,7 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Galería de Imágenes'),),
             body: FutureBuilder(
                 future: _initImages(context),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -55,12 +51,10 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                     }
                     
 
-                    return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                    return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Column(
                             children: [
-                                TitulosPages(titulo: 'Galería de Imágenes'),
-                                Divider(),
                                 Expanded(
                                     child: GridView.builder(
                                         itemCount: someImages!.length,

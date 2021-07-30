@@ -44,7 +44,6 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     return CircularProgressIndicator();
                 }
                 List<Planta> plantas= snapshot.data;
-                //print(plantas.length);
                 fincasBloc.obtenerDecisiones(plaga.id);
                 int estacion1 = 0;
                 int estacion2 = 0;
@@ -256,9 +255,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                             child: ButtonMainStyle(
                                     title: 'Consultar decisiones',
                                     icon: Icons.receipt_rounded,
-                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: plaga.id),
-                                
-                            
+                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: plaga),
                             ),
                         )
                     );

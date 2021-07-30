@@ -187,6 +187,10 @@ Widget titleList(String texto){
     return Text(texto, style: TextStyle(fontWeight: FontWeight.w600), textAlign: TextAlign.center);
 }
 
+Widget numberFormar(dynamic data, String unidad){
+    return Text('${data!.toStringAsFixed(0)} ${unidad== '' ? '' : unidad}', style: TextStyle(fontWeight: FontWeight.w600), textAlign: TextAlign.center);
+}
+
 Widget mensajeSwipe(String text){
     return Container(
         padding: EdgeInsets.symmetric(vertical: 15),

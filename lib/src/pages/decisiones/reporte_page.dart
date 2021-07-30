@@ -1,14 +1,12 @@
 import 'dart:convert';
-import 'dart:math' as math;
-
 import 'package:app_plaga_enfermedades/src/models/acciones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/decisiones_model.dart';
 import 'package:app_plaga_enfermedades/src/models/testplaga_model.dart';
-//import 'package:app_plaga_enfermedades/src/pages/decisiones/pdf_view.dart';
+import 'package:app_plaga_enfermedades/src/pages/pdf/pdf_api.dart';
 import 'package:app_plaga_enfermedades/src/providers/db_provider.dart';
 import 'package:app_plaga_enfermedades/src/models/selectValue.dart' as selectMap;
 import 'package:app_plaga_enfermedades/src/utils/constants.dart';
-import 'package:app_plaga_enfermedades/src/utils/widget/titulos.dart';
+import 'package:app_plaga_enfermedades/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
@@ -30,21 +28,29 @@ class _ReportePageState extends State<ReportePage> {
     
     Widget textFalse = Text('0.00%', textAlign: TextAlign.center);
 
+    Testplaga? testplaga;
     final Map checksPrincipales = {};
-
-    
     
 
-    Future getdata(String? idTest) async{
+    Future getdata(Testplaga? testplaga) async{
+        List<List> totalEstacion = [];
 
-        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(idTest);         
-        List<Acciones> listAcciones= await DBProvider.db.getAccionesIdTest(idTest);
-        Testplaga? testplaga = await (DBProvider.db.getTestId(idTest));
+        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(testplaga!.id);         
+        List<Acciones> listAcciones= await DBProvider.db.getAccionesIdTest(testplaga.id);
 
-        Finca? finca = await DBProvider.db.getFincaId(testplaga!.idFinca);
+        Finca? finca = await DBProvider.db.getFincaId(testplaga.idFinca);
         Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
+        for (var i = 0; i < 4; i++) {
+            totalEstacion.add(
+                [
+                    await _mazorcaSana(testplaga.id, i),
+                    await _mazorcaEnfermas(testplaga.id, i),
+                    await _mazorcaDanadas(testplaga.id, i),
+                ]
+            );
+        }
 
-        return [listDecisiones, listAcciones, finca, parcela];
+        return [listDecisiones, listAcciones, finca, parcela , totalEstacion];
     }
 
     Future<double> _countPercentPlaga(String? idTest, int estacion, int idPlaga) async{
@@ -68,16 +74,43 @@ class _ReportePageState extends State<ReportePage> {
         return countProduccion*100;
     }
 
+    Future<int?> _mazorcaSana(String? idTest, int estacion) async{
+        int? countSanas = await DBProvider.db.countMazorcaSana(idTest!, estacion);
+        return countSanas;
+    }
+    Future<int?> _mazorcaEnfermas(String? idTest, int estacion) async{
+        int? countSanas = await DBProvider.db.countMazorcaEnfermas(idTest!, estacion);
+        return countSanas;
+    }
+    Future<int?> _mazorcaDanadas(String? idTest, int estacion) async{
+        int? countSanas = await DBProvider.db.countMazorcaDanadas(idTest!, estacion);
+        return countSanas;
+    }
     
 
     @override
     Widget build(BuildContext context) {
-        String? idTest = ModalRoute.of(context)!.settings.arguments as String?;
+        testplaga = ModalRoute.of(context)!.settings.arguments as Testplaga?;
 
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+                title: Text('Reporte de Decisiones'),
+                actions: [
+                    TextButton(
+                        onPressed: () => _crearPdf(testplaga),
+                        child: Row(
+                            children: [
+                                Icon(Icons.download, color: kwhite, size: 16,),
+                                SizedBox(width: 5,),
+                                Text('PDF', style: TextStyle(color: Colors.white),)
+                            ],
+                        )
+                        
+                    )
+                ],
+            ),
             body: FutureBuilder(
-                future: getdata(idTest),
+                future: getdata(testplaga),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
                         return CircularProgressIndicator();
@@ -85,69 +118,36 @@ class _ReportePageState extends State<ReportePage> {
                     List<Widget> pageItem = [];
                     Finca finca = snapshot.data[2];
                     Parcela parcela = snapshot.data[3];
+                    List estacionTotal = snapshot.data[4];
 
-                    pageItem.add(_principalData(idTest,context, finca, parcela));
+                    pageItem.add(_principalData(finca, parcela, testplaga!.id));
                     
-                    pageItem.add( _plagasPrincipales(snapshot.data[0]));
-                    _plagasPDF(idTest,1);
-                    pageItem.add( _situacionPlaga(snapshot.data[0]));
-                    pageItem.add( _problemasSuelo(snapshot.data[0]));
-                    pageItem.add( _problemasSombra(snapshot.data[0]));
-                    pageItem.add( _problemasManejo(snapshot.data[0]));
+                    pageItem.add(_datosCosecha(finca, parcela, testplaga!.id, estacionTotal));
+                    pageItem.add( _generatePregunta(snapshot.data[0],'Plagas principales del momento', 1, itemPlagas));
+                    pageItem.add( _generatePregunta(snapshot.data[0],'Situación de las plagas en la parcela', 2, itemSituacion));
+                    pageItem.add( _generatePregunta(snapshot.data[0],'¿Porqué hay problemas de plagas?  Suelo', 3, itemProbSuelo));
+                    pageItem.add( _generatePregunta(snapshot.data[0],'¿Porqué hay problemas de plagas?  Sombra', 4, itemProbSombra));
+                    pageItem.add( _generatePregunta(snapshot.data[0],'¿Porqué hay problemas de plagas?  Manejo', 5, itemProbManejo));
                     pageItem.add( _accionesMeses(snapshot.data[1]));
                     
                     
                     return Column(
                         children: [
-                            Container(
-                                child: Column(
-                                    children: [
-                                        
-                                        TitulosPages(titulo: 'Reporte de Decisiones'),
-                                        Divider(),
-                                        
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Row(
-                                          
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                    Container(
-                                                        width: 200,
-                                                        child: Text(
-                                                            "Deslice hacia la derecha para continuar con el formulario",
-                                                            textAlign: TextAlign.center,
-                                                            style: Theme.of(context).textTheme
-                                                                .headline5!
-                                                                .copyWith(fontWeight: FontWeight.w600, fontSize: 14)
-                                                        ),
-                                                    ),
-                                                    
-                                                    
-                                                    Transform.rotate(
-                                                        angle: 90 * math.pi / 180,
-                                                        child: Icon(
-                                                            Icons.arrow_circle_up_rounded,
-                                                            size: 25,
-                                                        ),
-                                                        
-                                                    ),
-                                                ],
-                                            ),
-                                        ),
-                                    ],
-                                )
-                            ),
+                            mensajeSwipe('Deslice hacia la izquierda para continuar con el reporte'),
                             Expanded(
                                 
-                                child: Swiper(
-                                    itemBuilder: (BuildContext context, int index) {
-                                        return pageItem[index];
-                                    },
-                                    itemCount: pageItem.length,
-                                    viewportFraction: 1,
-                                    loop: false,
-                                    scale: 1,
+                                child: Container(
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(15),
+                                    child: Swiper(
+                                        itemBuilder: (BuildContext context, int index) {
+                                            return pageItem[index];
+                                        },
+                                        itemCount: pageItem.length,
+                                        viewportFraction: 1,
+                                        loop: false,
+                                        scale: 1,
+                                    ),
                                 ),
                             ),
                         ],
@@ -157,9 +157,8 @@ class _ReportePageState extends State<ReportePage> {
         );
     }
 
-    Widget _principalData(String? plagaid, BuildContext context, Finca finca, Parcela parcela){
-    
-         return Container(
+    Widget _principalData(Finca finca, Parcela parcela, String? plagaid){
+        return Container(
             decoration: BoxDecoration(
                 
             ),
@@ -167,215 +166,106 @@ class _ReportePageState extends State<ReportePage> {
             child: Column(
                 children: [
                     _dataFincas( context, finca, parcela),
-
                     Expanded(
                         child: SingleChildScrollView(
-                            child: Container(
-                                color: Colors.white,
-                                child: Column(
-                                    children: [
-                                        Container(
-                                            child: Padding(
-                                                padding: EdgeInsets.only(top: 20, bottom: 10),
-                                                child: Text(
-                                                    "Porcentaje de plantas afectadas",
-                                                    textAlign: TextAlign.center,
-                                                    style: Theme.of(context).textTheme
-                                                        .headline5!
-                                                        .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
-                                                ),
-                                            )
-                                        ),
-                                        Divider(),
-                                        Container(
-                                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10),
-                                                boxShadow: [
-                                                    BoxShadow(
-                                                            color: Color(0xFF3A5160)
-                                                                .withOpacity(0.05),
-                                                            offset: const Offset(1.1, 1.1),
-                                                            blurRadius: 17.0),
-                                                    ],
-                                            ),
-                                            child: Column(
+                            child: Column(
+                                children: [
+                                    Container(
+                                        padding: EdgeInsets.symmetric(vertical: 10),
+                                        child: InkWell(
+                                            child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                    _encabezadoTabla(),
-                                                    Divider(),
-                                                    _countPlagas(plagaid, 1),
-                                                    _countProduccion(plagaid),
+                                                    Container(                                                                    
+                                                        child: Text(
+                                                            "Porcentaje de plantas afectadas",
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
+                                                        ),
+                                                    ),
+                                                    Padding(
+                                                        padding: EdgeInsets.only(left: 10),
+                                                        child: Icon(
+                                                            Icons.info_outline_rounded,
+                                                            color: Colors.green,
+                                                            size: 20,
+                                                        ),
+                                                    ),
                                                 ],
                                             ),
+                                            onTap: () => _explicacion(context),
                                         ),
-                                    ],
-                                ),
+                                    ),
+                                    Divider(),
+                                    Column(
+                                        children: [
+                                            _encabezadoTabla(),
+                                            Divider(),
+                                            _countPlagas(plagaid, 1),
+                                            _countProduccion(plagaid),
+                                        ],
+                                    ),
+                                ],
                             ),
                         ),
                     )
+                    
                 ],
             ),
-        );
-
-            
+        ); 
     }
+
     Widget _dataFincas( BuildContext context, Finca finca, Parcela parcela ){
         String? labelMedidaFinca;
         String? labelvariedad;
 
-        final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
-        labelMedidaFinca  = item['label'];
+        labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
+        labelvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}')['label'];
 
-        final itemvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}');
-        labelvariedad  = itemvariedad['label'];
-
-        return Container(
-                    
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                encabezadoCard('${finca.nombreFinca}','Parcela: ${parcela.nombreLote}', ''),
+                textoCardBody('Productor: ${finca.nombreProductor}'),
+                tecnico('${finca.nombreTecnico}'),
+                textoCardBody('Variedad: $labelvariedad'),
+                Wrap(
+                    spacing: 20,
+                    children: [
+                        textoCardBody('Área Finca: ${finca.areaFinca} ($labelMedidaFinca)'),
+                        textoCardBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)'),
+                        textoCardBody('N de plantas: ${parcela.numeroPlanta}'),
                     ],
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                    
-                    Flexible(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                            
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "${finca.nombreFinca}",
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "${parcela.nombreLote}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "Productor ${finca.nombreProductor}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                ),
-
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                        Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0),
-                                                    child: Text(
-                                                        "Área Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                                    ),
-                                                ),
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0),
-                                                    child: Text(
-                                                        "N de plantas: ${parcela.numeroPlanta}",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                                    ),
-                                                ),
-                                            ],
-                                        ),
-                                        Flexible(
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0, left: 20),
-                                                        child: Text(
-                                                            "Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)",
-                                                            style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0, left: 20),
-                                                        child: Text(
-                                                            "Variedad: $labelvariedad",
-                                                            style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                ],
-                                            ),
-                                        )
-                                    ],
-                                )
-
-                                
-                            ],  
-                        ),
-                    ),
-                ],
-            ),
+                ),
+            ],  
         );
 
     }
-
+    
     Widget _encabezadoTabla(){
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-                Expanded(child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),),
+                Expanded(child: textList('Estaciones'),),
                 Container(
                     width: 50,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('1'),
                 ),
                 Container(
                     width: 50,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('2'),
                 ),
                 Container(
                     width: 50,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                    child: titleList('3')
                 ),
                 Container(
                     width: 50,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('Total'),
                 ),
             ],
         );
-
-        
     }
-
-    
 
     Widget _countPlagas(String? idTest, int estacion){
         List<Widget> lisItem = [];
@@ -385,12 +275,8 @@ class _ReportePageState extends State<ReportePage> {
             int idplga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
             lisItem.add(
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('$labelPlaga'),),
                         Container(
                             width: 50,
                             child: FutureBuilder(
@@ -399,7 +285,6 @@ class _ReportePageState extends State<ReportePage> {
                                     if (!snapshot.hasData) {
                                         return textFalse;
                                     }
-                                    
                                     return _labelColor(snapshot.data);
                                 },
                             ),
@@ -452,47 +337,19 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisItem,);
     }
 
-    Widget _labelColor(double valor){
-        if (valor >= 0 && valor <= 15) {
-            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.green[900]),);
-        } else if (valor >= 16 && valor <= 50){
-            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.orange[900]),);
-        }else{
-            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red[900]),);
-        }
-
-        
-    }
-
     Widget _countProduccion(String? idTest){
         List<Widget> lisProd= [];
 
         List<String> nameProd = ['Alta','Media','Baja'];
-
-        lisProd.add(
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                    Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
-                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                    )
-                ],
-            )
-        );
+        lisProd.add(titleList('Producción'));
         lisProd.add(Divider());
-
         for (var i = 0; i < nameProd.length; i++) {
             lisProd.add(
 
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('%${nameProd[i]}', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('%${nameProd[i]}'),),
                         Container(
                             width: 50,
                             child: FutureBuilder(
@@ -501,7 +358,6 @@ class _ReportePageState extends State<ReportePage> {
                                     if (!snapshot.hasData) {
                                         return textFalse;
                                     }
-                                    
                                     return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
@@ -514,7 +370,6 @@ class _ReportePageState extends State<ReportePage> {
                                     if (!snapshot.hasData) {
                                         return textFalse;
                                     }
-
                                     return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
@@ -527,7 +382,6 @@ class _ReportePageState extends State<ReportePage> {
                                     if (!snapshot.hasData) {
                                         return textFalse;
                                     }
-
                                     return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
@@ -540,128 +394,273 @@ class _ReportePageState extends State<ReportePage> {
                                     if (!snapshot.hasData) {
                                         return textFalse;
                                     }
-
                                     return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),);
                                 },
                             ),
                         ),
-                        
                     ],
                 )
             );
             lisProd.add(Divider());
-            
         }
         return Column(children:lisProd,);
     }
 
-    Widget _plagasPrincipales(List<Decisiones> decisionesList){
+    Widget _labelColor(double valor){
+        if (valor >= 0 && valor <= 15) {
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.green[900]),);
+        } else if (valor >= 16 && valor <= 50){
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.orange[900]),);
+        }else{
+            return Text('${valor.toStringAsFixed(0)}%', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red[900]),);
+        }
+
+        
+    }
+
+    
+    Widget _datosCosecha(Finca finca, Parcela parcela, String? plagaTest, List estacionTotal){
+        String? labelMedidaFinca;
+
+        labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
+        double? factorBaba = 5;
+        double? factorSeco = 3;
+        return SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                    // encabezadoCard('${finca.nombreFinca}','Parcela: ${parcela.nombreLote}', ''),
+                    textoCardBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)'),
+                    textoCardBody('Numero de plantas productivas: ${parcela.numeroPlanta}'),
+                    textoCardBody('Número de mazorcas para 1 lb cacao en baba: $factorBaba'),
+                    textoCardBody('QQ de baba para producir QQ de granos seco: $factorSeco'),
+                    Divider(),
+                    _tablaEstimacion(parcela, labelMedidaFinca, factorBaba, factorSeco, estacionTotal)
+                ],  
+            ),
+        );
+
+    }
+
+    Widget _tablaEstimacion(Parcela parcela, String? labelMedidaFinca, double? factorBaba, double? factorSeco, List estacionTotal){
+        
         List<Widget> listPrincipales = [];
 
         listPrincipales.add(
-            Column(
+            Row(
                 children: [
+                    Expanded(child: textList(''),),
                     Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "Plagas principales del momento",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
-                            ),
-                        )
+                        width: 70,
+                        child: titleList('Sanas'),
                     ),
-                    Divider(),
+                    Container(
+                        width: 70,
+                        child: titleList('Enfermas'),
+                    ),
+                    Container(
+                        width: 70,
+                        child: titleList('Dañadas'),
+                    ),
                 ],
-            )
-            
+            ),
         );
+        listPrincipales.add(Divider());
+
+        for (var i = 1; i < estacionTotal.length; i++) {
+            listPrincipales.add(
+                Row(
+                    children: [
+                        Expanded(child: textList('Número de mazorcas en Sitio $i'),),
+                        Container(
+                            width: 70,
+                            child: numberFormar(estacionTotal[i][0], '')
+                        ),
+                        Container(
+                            width: 70,
+                            child: numberFormar(estacionTotal[i][1], '')
+                        ),
+                        Container(
+                            width: 70,
+                            child: numberFormar(estacionTotal[i][2], '')
+                        ),
+                    ],
+                ),
+            );
+            listPrincipales.add(Divider());
+        }
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Total # de mazorcas en 3 Sitios'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(estacionTotal[0][0], '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(estacionTotal[0][1],'')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(estacionTotal[0][2], '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
         
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Promedio # mazorcas por planta'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(estacionTotal[0][0]/10, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(estacionTotal[0][1]/10, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(estacionTotal[0][2]/10, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
 
-        for (var item in decisionesList) {
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Numero de mazorcas en la parcela'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar((estacionTotal[0][0]/10)*parcela.numeroPlanta, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar((estacionTotal[0][1]/10)*parcela.numeroPlanta, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar((estacionTotal[0][2]/10)*parcela.numeroPlanta, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
+        
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Número de mazorcas por $labelMedidaFinca'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
 
-            if (item.idPregunta == 1) {
-                String? label = itemPlagas.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Peso de baba en QQ por $labelMedidaFinca'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba!*100), '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100), '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100), '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
+        double pesoGramoEstacion1 = (((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion2 = (((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion3 = (((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
 
-                listPrincipales.add(
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Peso de granos seco QQ por $labelMedidaFinca'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(pesoGramoEstacion1, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(pesoGramoEstacion2, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(pesoGramoEstacion3, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
+        
+        double totalPesoGrano = pesoGramoEstacion1 + pesoGramoEstacion2 + pesoGramoEstacion3;
+
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Pérdida'),),
+                    Container(
+                        width: 70,
+                        child: titleList('---')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar((pesoGramoEstacion2/totalPesoGrano)*100, '%')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar((pesoGramoEstacion3/totalPesoGrano)*100, '%')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
+
+        return Column(children:listPrincipales,);
+    }
+    
+
+    Widget _generatePregunta(List<Decisiones> decisionesList, String? titulo, int idPregunta, List<Map<String, dynamic>>  listaItem){
+        List<Widget> listWidget = [];
+        List<Decisiones> listDecisiones = decisionesList.where((i) => i.idPregunta == idPregunta).toList();
+        listWidget.add(tituloDivider(titulo!));
+        
+        for (var item in listDecisiones) {
+                String? label= listaItem.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+
+                listWidget.add(
 
                     Container(
                         child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
+                        title: Text('$label',
+                            style: TextStyle(fontSize: 14),
                         
-                );
-            }
-            
-            
-            
-        }
-        
-        return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
-        );
-        
-    }
-
-    Widget _situacionPlaga(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "Situación de las plagas en la parcela",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 2) {
-                String? label= itemSituacion.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
+                        ),
                             value: item.repuesta == 1 ? true : false ,
                             activeColor: Colors.teal[900], 
                             onChanged: (value) {
@@ -671,272 +670,18 @@ class _ReportePageState extends State<ReportePage> {
                     )                  
                     
                 );
-            }
-            
         }
-        
         return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
+            child: Column(
+                children: listWidget,
             ),
         );
-        
-    }
-
-    Widget _problemasSuelo(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Porqué hay problemas de plagas?  Suelo",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 3) {
-                String? label= itemProbSuelo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-            
-            
-            
-        }
-        
-        return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
-        );
-        
-    }
-
-    Widget _problemasSombra(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Porqué hay problemas de plagas?  Sombra",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 4) {
-                String? label= itemProbSombra.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-            
-            
-            
-        }
-        
-        return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
-        );
-        
-    }
-
-    Widget _problemasManejo(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
-
-        listPrincipales.add(
-            
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Porqué hay problemas de plagas? Manejo",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 5) {
-                String? label= itemProbManejo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900],
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-            
-            
-            
-        }
-        
-        return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
-        );
-        
     }
 
     Widget _accionesMeses(List<Acciones> listAcciones){
         List<Widget> listPrincipales = [];
 
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Qué acciones vamos a realizar y cuando?",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
+        listPrincipales.add(tituloDivider('¿Qué acciones vamos a realizar y cuando?'));
         
         
         for (var item in listAcciones) {
@@ -952,126 +697,65 @@ class _ReportePageState extends State<ReportePage> {
                     
                     meses.add(mes);
                 }
-                
 
                 listPrincipales.add(
 
                     ListTile(
                         title: Text('$label',
-                            style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.bold, fontSize: 16)
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(meses.join(","+" ")),
-                    )                 
-                    
+                    )
                 );
-            
-            
-            
-            
         }
         return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
+            child: Column(children:listPrincipales,),
         );
     }
+   
 
+    Future _crearPdf( Testplaga? testplaga ) async{      
 
-    Widget _plagasPDF(String? idTest, int estacion){
-        List<Widget> lisItem = [];
+        Map<String,List<double>>? listaCountPlaga = {};
 
-        for (var i = 0; i < itemPlagas.length; i++) {
-            String? labelPlaga = itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
-            int idplga = int.parse(itemPlagas.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
-            lisItem.add(
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
-                        Container(
-                            width: 50,
-                            child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 1, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-                                    
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        Container(
-                            width: 50,
-                            child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 2, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
+        for (var item in itemPlagas) {
+            String key = item['label'];
+            List<double> valueItem =[
+                await _countPercentPlaga(testplaga!.id, 1, int.parse(item['value'])),
+                await _countPercentPlaga(testplaga.id, 2, int.parse(item['value'])),
+                await _countPercentPlaga(testplaga.id, 3, int.parse(item['value'])),
+                await _countPercentTotal(testplaga.id, int.parse(item['value'])),
+            ];
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        Container(
-                            width: 50,
-                            child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 3, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        Container(
-                            width: 50,
-                            child: FutureBuilder(
-                                future: _countPercentTotal(idTest, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        
-                    ],
-                )
-            );
+            listaCountPlaga.putIfAbsent(key, () => valueItem);
+          
         }
-        return Column(children:lisItem,);
+        
+        final pdfFile = await PdfApi.generateCenteredText(testplaga, listaCountPlaga);
+        
+        PdfApi.openFile(pdfFile);
     }
 
 
+    Future<void> _explicacion(BuildContext context){
 
-   
-
-    
+        return dialogText(
+            context,
+            Column(
+                children: [
+                    textoCardBody('•	Las observaciones sobre sobre plagas, enfermedades, cosecha y pérdida se presentan en dos pantallas.'),
+                    textoCardBody('•	En la primera pantalla se indican la prevalencia de plagas y enfermedades con los siguientes datos:'),
+                    textoCardBody(' o	% plantas de cacao afectadas por enfermedades'),
+                    textoCardBody(' o	% plantas de cacao afectadas por los insectos y otras plagas'),
+                    textoCardBody(' o	% plantas con deficiencias nutricionales'),
+                    textoCardBody(' o	% plantas con alto, medio y bajo rendimiento'),
+                    textoCardBody('•	Estos datos nos ayudan a entender el grado de afectación de las parcelas por las diferentes plagas y enfermedades.'),
+                    textoCardBody('•	En la segunda pantalla se presenta datos sobre Número de mazorcas sanas, enfermas y dañadas en los tres sitios. En base de esto se estima # de mazorcas sanas, enfermas y dañadas en las parcelas. Con estos datos se estima la cosecha y pérdida en cosecha causada por las enfermedades y plagas.'),
+                ],
+            ),
+            'Explicación de la tabla de datos'
+        );
+    } 
 
 
 }

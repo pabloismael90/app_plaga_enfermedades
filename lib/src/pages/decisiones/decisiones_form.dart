@@ -513,15 +513,15 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         Expanded(child: textList('Número de mazorcas en Sitio $i'),),
                         Container(
                             width: 70,
-                            child: titleList('${estacionTotal[i][0]}')
+                            child: numberFormar(estacionTotal[i][0], '')
                         ),
                         Container(
                             width: 70,
-                            child: titleList('${estacionTotal[i][1]}')
+                            child: numberFormar(estacionTotal[i][1], '')
                         ),
                         Container(
                             width: 70,
-                            child: titleList('${estacionTotal[i][2]}')
+                            child: numberFormar(estacionTotal[i][2], '')
                         ),
                     ],
                 ),
@@ -534,15 +534,15 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     Expanded(child: textList('Total # de mazorcas en 3 Sitios'),),
                     Container(
                         width: 70,
-                        child: titleList('${estacionTotal[0][0]}')
+                        child: numberFormar(estacionTotal[0][0], '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${estacionTotal[0][1]}')
+                        child: numberFormar(estacionTotal[0][1],'')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${estacionTotal[0][2]}')
+                        child: numberFormar(estacionTotal[0][2], '')
                     ),
                 ],
             ),
@@ -555,15 +555,15 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     Expanded(child: textList('Promedio # mazorcas por planta'),),
                     Container(
                         width: 70,
-                        child: titleList('${estacionTotal[0][0]/10}')
+                        child: numberFormar(estacionTotal[0][0]/10, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${estacionTotal[0][1]/10}')
+                        child: numberFormar(estacionTotal[0][1]/10, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${estacionTotal[0][2]/10}')
+                        child: numberFormar(estacionTotal[0][2]/10, '')
                     ),
                 ],
             ),
@@ -576,15 +576,15 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     Expanded(child: textList('Numero de mazorcas en la parcela'),),
                     Container(
                         width: 70,
-                        child: titleList('${(estacionTotal[0][0]/10)*parcela.numeroPlanta}')
+                        child: numberFormar((estacionTotal[0][0]/10)*parcela.numeroPlanta, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${(estacionTotal[0][1]/10)*parcela.numeroPlanta}')
+                        child: numberFormar((estacionTotal[0][1]/10)*parcela.numeroPlanta, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${(estacionTotal[0][2]/10)*parcela.numeroPlanta}')
+                        child: numberFormar((estacionTotal[0][2]/10)*parcela.numeroPlanta, '')
                     ),
                 ],
             ),
@@ -597,15 +597,15 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     Expanded(child: textList('Número de mazorcas por $labelMedidaFinca'),),
                     Container(
                         width: 70,
-                        child: titleList('${((estacionTotal[0][0]/10)*parcela.numeroPlanta)/parcela.areaLote}')
+                        child: numberFormar(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${((estacionTotal[0][1]/10)*parcela.numeroPlanta)/parcela.areaLote}')
+                        child: numberFormar(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${((estacionTotal[0][2]/10)*parcela.numeroPlanta)/parcela.areaLote}')
+                        child: numberFormar(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
                     ),
                 ],
             ),
@@ -618,20 +618,23 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     Expanded(child: textList('Peso de baba en QQ por $labelMedidaFinca'),),
                     Container(
                         width: 70,
-                        child: titleList('${((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba!*100)}')
+                        child: numberFormar(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba!*100), '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100)}')
+                        child: numberFormar(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100), '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100)}')
+                        child: numberFormar(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100), '')
                     ),
                 ],
             ),
         );
         listPrincipales.add(Divider());
+        double pesoGramoEstacion1 = (((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion2 = (((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion3 = (((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
 
         listPrincipales.add(
             Row(
@@ -639,25 +642,45 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     Expanded(child: textList('Peso de granos seco QQ por $labelMedidaFinca'),),
                     Container(
                         width: 70,
-                        child: titleList('${(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco}')
+                        child: numberFormar(pesoGramoEstacion1, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco}')
+                        child: numberFormar(pesoGramoEstacion2, '')
                     ),
                     Container(
                         width: 70,
-                        child: titleList('${(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco}')
+                        child: numberFormar(pesoGramoEstacion3, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
+        
+        double totalPesoGrano = pesoGramoEstacion1 + pesoGramoEstacion2 + pesoGramoEstacion3;
+
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Pérdida'),),
+                    Container(
+                        width: 70,
+                        child: textList('')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar((pesoGramoEstacion2/totalPesoGrano)*100, '%')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar((pesoGramoEstacion3/totalPesoGrano)*100, '%')
                     ),
                 ],
             ),
         );
         listPrincipales.add(Divider());
 
-
-
         return Column(children:listPrincipales,);
-
     }
     
 
