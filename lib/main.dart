@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                 const Locale('es', 'ES'),
                 // const Locale('en', 'US'),
             ],
-            title: 'Cacao Plaga',
+            title: 'Cacao Plaga y Cosecha',
             initialRoute:'home',
             routes: {
                 'home' : ( BuildContext context ) => HomePage(),

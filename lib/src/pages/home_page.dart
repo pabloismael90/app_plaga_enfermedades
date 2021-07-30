@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
                                             Container(
                                                 padding: EdgeInsets.only(left: 10, top: size.height*0.1, bottom: 20),
                                                 child: Text(
-                                                    "Plaga y enfermedades de Cacao",
+                                                    "Cacao plagas y cosecha",
                                                     style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24)
                                                 ),
                                             ),
