@@ -548,6 +548,27 @@ class _DesicionesPageState extends State<DesicionesPage> {
             ),
         );
         listPrincipales.add(Divider());
+
+        listPrincipales.add(
+            Row(
+                children: [
+                    Expanded(child: textList('Número de plantas muestreadas'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(10, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(10, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(10, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
         
         listPrincipales.add(
             Row(

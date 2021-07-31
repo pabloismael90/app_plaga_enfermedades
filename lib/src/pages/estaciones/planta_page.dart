@@ -76,7 +76,7 @@ class _PlantaPageState extends State<PlantaPage> {
                                             children: [
                                                 textoCardBody('Mazorcas sanas: ${planta[index].sanas}'),
                                                 textoCardBody('Mazorcas enfermas: ${planta[index].enfermas}'),
-                                                textoCardBody('Mazorcas dañanas: ${planta[index].danadas}'),
+                                                textoCardBody('Mazorcas dañadas: ${planta[index].danadas}'),
                                             ],
                                         )
                                     ],

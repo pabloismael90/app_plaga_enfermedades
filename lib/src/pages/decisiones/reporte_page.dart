@@ -513,6 +513,27 @@ class _ReportePageState extends State<ReportePage> {
         listPrincipales.add(
             Row(
                 children: [
+                    Expanded(child: textList('Número de plantas muestreadas'),),
+                    Container(
+                        width: 70,
+                        child: numberFormar(10, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(10, '')
+                    ),
+                    Container(
+                        width: 70,
+                        child: numberFormar(10, '')
+                    ),
+                ],
+            ),
+        );
+        listPrincipales.add(Divider());
+        
+        listPrincipales.add(
+            Row(
+                children: [
                     Expanded(child: textList('Promedio # mazorcas por planta'),),
                     Container(
                         width: 70,

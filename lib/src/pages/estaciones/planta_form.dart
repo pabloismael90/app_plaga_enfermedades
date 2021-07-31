@@ -244,7 +244,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             decoration: InputDecoration(
                 labelText: 'Sanas'
             ),
-            validator: (value) => utils.validateEntero(value),
+            validator: (value) => utils.enteroSiCEro(value),
             onSaved: (value) => planta.sanas = int.parse(value!),
         );
     }
@@ -260,7 +260,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             decoration: InputDecoration(
                 labelText: 'Enfermas'
             ),
-            validator: (value) => utils.validateEntero(value),
+            validator: (value) => utils.enteroSiCEro(value),
             onSaved: (value) => planta.enfermas = int.parse(value!),
         );
     }
@@ -274,9 +274,9 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             ],
             maxLength: 3,
             decoration: InputDecoration(
-                labelText: 'Dañanas'
+                labelText: 'Dañadas'
             ),
-            validator: (value) => utils.validateEntero(value),
+            validator: (value) => utils.enteroSiCEro(value),
             onSaved: (value) => planta.danadas = int.parse(value!),
         );
     }
