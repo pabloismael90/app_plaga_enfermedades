@@ -222,18 +222,16 @@ class PdfApi {
         String? labelMedidaFinca;
 
         labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
-        double? factorBaba = 5;
-        double? factorSeco = 3;
         return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                     _encabezado('Estimación de cosecha', font),
                     _textoBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)', font),
                     _textoBody('Numero de plantas productivas: ${parcela.numeroPlanta}', font),
-                    _textoBody('Número de mazorcas para 1 lb cacao en baba: $factorBaba', font),
-                    _textoBody('QQ de baba para producir QQ de granos seco: $factorSeco', font),
+                    _textoBody('Número de mazorcas para 1 lb cacao en baba: ${finca.factorBaba}', font),
+                    _textoBody('QQ de baba para producir QQ de granos seco: ${finca.factorSeco}', font),
                     pw.SizedBox(height: 10),
-                    _tablaEstimacion(parcela, labelMedidaFinca, factorBaba, factorSeco, estacionTotal, font)
+                    _tablaEstimacion(parcela, labelMedidaFinca, finca.factorBaba, finca.factorSeco, estacionTotal, font)
                 ],  
             );
 

@@ -51,6 +51,8 @@ class DBProvider {
                     ' nombreProductor TEXT,'
                     ' areaFinca REAL,'
                     ' tipoMedida INTEGER,'
+                    ' factorBaba REAL,'
+                    ' factorSeco REAL,'
                     ' nombreTecnico TEXT'
                     ')'
                 );

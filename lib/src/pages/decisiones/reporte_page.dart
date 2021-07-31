@@ -423,8 +423,7 @@ class _ReportePageState extends State<ReportePage> {
         String? labelMedidaFinca;
 
         labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
-        double? factorBaba = 5;
-        double? factorSeco = 3;
+
         return SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -432,10 +431,10 @@ class _ReportePageState extends State<ReportePage> {
                     // encabezadoCard('${finca.nombreFinca}','Parcela: ${parcela.nombreLote}', ''),
                     textoCardBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)'),
                     textoCardBody('Numero de plantas productivas: ${parcela.numeroPlanta}'),
-                    textoCardBody('Número de mazorcas para 1 lb cacao en baba: $factorBaba'),
-                    textoCardBody('QQ de baba para producir QQ de granos seco: $factorSeco'),
+                    textoCardBody('Número de mazorcas para 1 lb cacao en baba: ${finca.factorBaba}'),
+                    textoCardBody('QQ de baba para producir QQ de granos seco: ${finca.factorSeco}'),
                     Divider(),
-                    _tablaEstimacion(parcela, labelMedidaFinca, factorBaba, factorSeco, estacionTotal)
+                    _tablaEstimacion(parcela, labelMedidaFinca, finca.factorBaba, finca.factorSeco, estacionTotal)
                 ],  
             ),
         );

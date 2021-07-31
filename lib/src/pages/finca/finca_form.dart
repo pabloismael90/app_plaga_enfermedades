@@ -61,7 +61,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                                 child: Column(
                                     children: <Widget>[
                                         _nombreFinca(),
-                                        SizedBox(height: 40.0,),
+                                        SizedBox(height: 20.0,),
                                         Row(
                                             children: <Widget>[
                                                 Flexible(
@@ -73,9 +73,13 @@ class _AgregarFincaState extends State<AgregarFinca> {
                                                 ),
                                             ],
                                         ),
-                                        SizedBox(height: 40.0,),
+                                        SizedBox(height: 20.0,),
+                                        _factorBaba(),
+                                        SizedBox(height: 20.0,),
+                                        _factorSeco(),
+                                        SizedBox(height: 20.0,),
                                         _nombreProductor(),
-                                        SizedBox(height: 40.0,),
+                                        SizedBox(height: 20.0,),
                                         _nombreTecnico(),
                                     ],
                                 ),
@@ -152,6 +156,38 @@ class _AgregarFincaState extends State<AgregarFinca> {
             items: selectMap.dimenciones(),
             validator: (value) => utils.validateSelect(value),
             onSaved: (value) => finca.tipoMedida = int.parse(value!),
+        );
+    }
+
+    Widget _factorBaba(){
+
+        return TextFormField(
+            initialValue: finca.factorBaba == null ? '' : finca.factorBaba.toString(),
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            maxLength: 5,
+            decoration: InputDecoration(
+                labelText: 'Número de mazorca para producir 1 lb de cacao en baba',
+                hintText: 'ejem: 5',
+                
+            ),
+            validator: (value) => utils.floatPositivo(value),
+            onSaved: (value) => finca.factorBaba = double.parse(value!),
+        );
+    }
+
+     Widget _factorSeco(){
+
+        return TextFormField(
+            initialValue: finca.factorSeco == null ? '' : finca.factorSeco.toString(),
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            maxLength: 5,
+            decoration: InputDecoration(
+                labelText: 'QQ de baba para producir 1 QQ de granos fermentado seco',
+                hintText: 'ejem: 5',
+                
+            ),
+            validator: (value) => utils.floatPositivo(value),
+            onSaved: (value) => finca.factorSeco = double.parse(value!),
         );
     }
 

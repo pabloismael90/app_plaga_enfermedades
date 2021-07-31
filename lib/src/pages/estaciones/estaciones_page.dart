@@ -108,7 +108,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                 spacing: 20,
                                 children: [
                                     textoCardBody('Área finca: ${finca.areaFinca}'),
-                                    textoCardBody('Área parcela: ${parcela.areaLote} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'), 
+                                    textoCardBody('Área parcela: ${parcela.areaLote} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'),
                                 ],
                             )
                         ],
