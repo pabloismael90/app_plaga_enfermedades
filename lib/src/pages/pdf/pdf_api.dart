@@ -379,7 +379,7 @@ class PdfApi {
         double totalPesoGrano = pesoGramoEstacion1 + pesoGramoEstacion2 + pesoGramoEstacion3;
         listPrincipales.add( 
             _crearFila(
-                ['Peso de granos seco QQ por $labelMedidaFinca',
+                ['Pérdida',
                 '---',
                 '${((pesoGramoEstacion2/totalPesoGrano)*100).toStringAsFixed(1)} %',
                 '${((pesoGramoEstacion3/totalPesoGrano)*100).toStringAsFixed(1)} %'],
