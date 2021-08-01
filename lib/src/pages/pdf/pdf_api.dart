@@ -308,9 +308,9 @@ class PdfApi {
         listPrincipales.add( 
             _crearFila(
                 ['Número de plantas muestreadas en 3 sitios',
-                10,
-                10,
-                10],
+                30,
+                30,
+                30],
                 font, 
                 false
             )
@@ -319,9 +319,9 @@ class PdfApi {
         listPrincipales.add( 
             _crearFila(
                 ['Promedio # mazorcas por planta',
-                (estacionTotal[0][0]/10).toStringAsFixed(1),
-                (estacionTotal[0][1]/10).toStringAsFixed(1),
-                (estacionTotal[0][2]/10).toStringAsFixed(1),],
+                (estacionTotal[0][0]/30).toStringAsFixed(1),
+                (estacionTotal[0][1]/30).toStringAsFixed(1),
+                (estacionTotal[0][2]/30).toStringAsFixed(1),],
                 font, 
                 false
             )
@@ -330,9 +330,9 @@ class PdfApi {
         listPrincipales.add( 
             _crearFila(
                 ['Numero de mazorcas en la parcela',
-                ((estacionTotal[0][0]/10)*parcela.numeroPlanta).toStringAsFixed(1),
-                ((estacionTotal[0][1]/10)*parcela.numeroPlanta).toStringAsFixed(1),
-                ((estacionTotal[0][2]/10)*parcela.numeroPlanta).toStringAsFixed(1),],
+                ((estacionTotal[0][0]/30)*parcela.numeroPlanta).toStringAsFixed(0),
+                ((estacionTotal[0][1]/30)*parcela.numeroPlanta).toStringAsFixed(0),
+                ((estacionTotal[0][2]/30)*parcela.numeroPlanta).toStringAsFixed(0),],
                 font, 
                 false
             )
@@ -341,9 +341,9 @@ class PdfApi {
         listPrincipales.add( 
             _crearFila(
                 ['Número de mazorcas por $labelMedidaFinca',
-                (((estacionTotal[0][0]/10)*parcela.numeroPlanta)/parcela.areaLote).toStringAsFixed(1),
-                (((estacionTotal[0][1]/10)*parcela.numeroPlanta)/parcela.areaLote).toStringAsFixed(1),
-                (((estacionTotal[0][2]/10)*parcela.numeroPlanta)/parcela.areaLote).toStringAsFixed(1),],
+                (((estacionTotal[0][0]/30)*parcela.numeroPlanta)/parcela.areaLote).toStringAsFixed(0),
+                (((estacionTotal[0][1]/30)*parcela.numeroPlanta)/parcela.areaLote).toStringAsFixed(0),
+                (((estacionTotal[0][2]/30)*parcela.numeroPlanta)/parcela.areaLote).toStringAsFixed(0),],
                 font, 
                 false
             )
@@ -352,18 +352,18 @@ class PdfApi {
         listPrincipales.add( 
             _crearFila(
                 ['Peso de baba en QQ por $labelMedidaFinca',
-                (((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba!*100)).toStringAsFixed(1),
-                (((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100)).toStringAsFixed(1),
-                (((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100)).toStringAsFixed(1),],
+                (((estacionTotal[0][0]/30)*parcela.numeroPlanta)/(factorBaba!*100)).toStringAsFixed(2),
+                (((estacionTotal[0][1]/30)*parcela.numeroPlanta)/(factorBaba*100)).toStringAsFixed(2),
+                (((estacionTotal[0][2]/30)*parcela.numeroPlanta)/(factorBaba*100)).toStringAsFixed(2),],
                 font, 
                 false
             )
         );
         
 
-        double pesoGramoEstacion1 = (((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
-        double pesoGramoEstacion2 = (((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
-        double pesoGramoEstacion3 = (((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion1 = (((estacionTotal[0][0]/30)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion2 = (((estacionTotal[0][1]/30)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion3 = (((estacionTotal[0][2]/30)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
 
         listPrincipales.add( 
             _crearFila(

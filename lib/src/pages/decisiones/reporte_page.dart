@@ -442,7 +442,6 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _tablaEstimacion(Parcela parcela, String? labelMedidaFinca, double? factorBaba, double? factorSeco, List estacionTotal){
-        
         List<Widget> listPrincipales = [];
 
         listPrincipales.add(
@@ -473,15 +472,15 @@ class _ReportePageState extends State<ReportePage> {
                         Expanded(child: textList('Número de mazorcas en Sitio $i'),),
                         Container(
                             width: 70,
-                            child: numberFormar(estacionTotal[i][0], '')
+                            child: numberFormar(estacionTotal[i][0], '', 0)
                         ),
                         Container(
                             width: 70,
-                            child: numberFormar(estacionTotal[i][1], '')
+                            child: numberFormar(estacionTotal[i][1], '',0)
                         ),
                         Container(
                             width: 70,
-                            child: numberFormar(estacionTotal[i][2], '')
+                            child: numberFormar(estacionTotal[i][2], '',0)
                         ),
                     ],
                 ),
@@ -494,36 +493,36 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Total # de mazorcas en 3 Sitios'),),
                     Container(
                         width: 70,
-                        child: numberFormar(estacionTotal[0][0], '')
+                        child: numberFormar(estacionTotal[0][0], '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(estacionTotal[0][1],'')
+                        child: numberFormar(estacionTotal[0][1],'',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(estacionTotal[0][2], '')
+                        child: numberFormar(estacionTotal[0][2], '',0)
                     ),
                 ],
             ),
         );
         listPrincipales.add(Divider());
-        
+
         listPrincipales.add(
             Row(
                 children: [
                     Expanded(child: textList('Número de plantas muestreadas'),),
                     Container(
                         width: 70,
-                        child: numberFormar(10, '')
+                        child: numberFormar(30, '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(10, '')
+                        child: numberFormar(30, '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(10, '')
+                        child: numberFormar(30, '',0)
                     ),
                 ],
             ),
@@ -536,15 +535,15 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Promedio # mazorcas por planta'),),
                     Container(
                         width: 70,
-                        child: numberFormar(estacionTotal[0][0]/10, '')
+                        child: numberFormar(estacionTotal[0][0]/30, '',1)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(estacionTotal[0][1]/10, '')
+                        child: numberFormar(estacionTotal[0][1]/30, '',1)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(estacionTotal[0][2]/10, '')
+                        child: numberFormar(estacionTotal[0][2]/30, '',1)
                     ),
                 ],
             ),
@@ -557,15 +556,15 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Numero de mazorcas en la parcela'),),
                     Container(
                         width: 70,
-                        child: numberFormar((estacionTotal[0][0]/10)*parcela.numeroPlanta, '')
+                        child: numberFormar((estacionTotal[0][0]/30)*parcela.numeroPlanta, '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar((estacionTotal[0][1]/10)*parcela.numeroPlanta, '')
+                        child: numberFormar((estacionTotal[0][1]/30)*parcela.numeroPlanta, '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar((estacionTotal[0][2]/10)*parcela.numeroPlanta, '')
+                        child: numberFormar((estacionTotal[0][2]/30)*parcela.numeroPlanta, '',0)
                     ),
                 ],
             ),
@@ -578,15 +577,15 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Número de mazorcas por $labelMedidaFinca'),),
                     Container(
                         width: 70,
-                        child: numberFormar(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
+                        child: numberFormar(((estacionTotal[0][0]/30)*parcela.numeroPlanta)/parcela.areaLote, '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
+                        child: numberFormar(((estacionTotal[0][1]/30)*parcela.numeroPlanta)/parcela.areaLote, '',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/parcela.areaLote, '')
+                        child: numberFormar(((estacionTotal[0][2]/30)*parcela.numeroPlanta)/parcela.areaLote, '',0)
                     ),
                 ],
             ),
@@ -599,23 +598,23 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Peso de baba en QQ por $labelMedidaFinca'),),
                     Container(
                         width: 70,
-                        child: numberFormar(((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba!*100), '')
+                        child: numberFormar(((estacionTotal[0][0]/30)*parcela.numeroPlanta)/(factorBaba!*100), '',2)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100), '')
+                        child: numberFormar(((estacionTotal[0][1]/30)*parcela.numeroPlanta)/(factorBaba*100), '',2)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100), '')
+                        child: numberFormar(((estacionTotal[0][2]/30)*parcela.numeroPlanta)/(factorBaba*100), '',2)
                     ),
                 ],
             ),
         );
         listPrincipales.add(Divider());
-        double pesoGramoEstacion1 = (((estacionTotal[0][0]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
-        double pesoGramoEstacion2 = (((estacionTotal[0][1]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
-        double pesoGramoEstacion3 = (((estacionTotal[0][2]/10)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion1 = (((estacionTotal[0][0]/30)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion2 = (((estacionTotal[0][1]/30)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
+        double pesoGramoEstacion3 = (((estacionTotal[0][2]/30)*parcela.numeroPlanta)/(factorBaba*100))/factorSeco;
 
         listPrincipales.add(
             Row(
@@ -623,15 +622,15 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Peso de granos seco QQ por $labelMedidaFinca'),),
                     Container(
                         width: 70,
-                        child: numberFormar(pesoGramoEstacion1, '')
+                        child: numberFormar(pesoGramoEstacion1, '',1)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(pesoGramoEstacion2, '')
+                        child: numberFormar(pesoGramoEstacion2, '',1)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar(pesoGramoEstacion3, '')
+                        child: numberFormar(pesoGramoEstacion3, '',1)
                     ),
                 ],
             ),
@@ -646,15 +645,15 @@ class _ReportePageState extends State<ReportePage> {
                     Expanded(child: textList('Pérdida'),),
                     Container(
                         width: 70,
-                        child: titleList('---')
+                        child: textList('')
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar((pesoGramoEstacion2/totalPesoGrano)*100, '%')
+                        child: numberFormar((pesoGramoEstacion2/totalPesoGrano)*100, '%',0)
                     ),
                     Container(
                         width: 70,
-                        child: numberFormar((pesoGramoEstacion3/totalPesoGrano)*100, '%')
+                        child: numberFormar((pesoGramoEstacion3/totalPesoGrano)*100, '%',0)
                     ),
                 ],
             ),
