@@ -152,6 +152,8 @@ class _ParcelaPageState extends State<ParcelaPage> {
                         ],
                     ),
                     textoCardBody('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'),
+                    textoCardBody('Número de mazorca para producir 1 lb de cacao en baba: ${finca.factorBaba}'),
+                    textoCardBody('QQ de baba para producir 1 QQ de granos fermentado seco: ${finca.factorSeco}'),
                     textoCardBody('${finca.nombreTecnico}'),           
 
                 ],
