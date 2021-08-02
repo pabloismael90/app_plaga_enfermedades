@@ -57,12 +57,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.9.1
 
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/icon.png"
+  image_path: "assets/icons/plaga.jpg"
   adaptive_icon_background: "assets/icons/icon.png"
 
 # For information on the generic Dart part of this file, see the
