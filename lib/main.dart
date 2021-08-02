@@ -1,4 +1,4 @@
-import 'package:app_plaga_enfermedades/src/pages/PDFView.dart';
+
 import 'package:app_plaga_enfermedades/src/pages/decisiones/decisiones_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/decisiones/decisiones_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/decisiones/reporte_page.dart';
@@ -9,6 +9,7 @@ import 'package:app_plaga_enfermedades/src/pages/galeria/image.dart';
 import 'package:app_plaga_enfermedades/src/pages/galeria/list_galeria.dart';
 import 'package:app_plaga_enfermedades/src/pages/parcelas/parcela_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/parcelas/parcelas_page.dart';
+import 'package:app_plaga_enfermedades/src/pages/pdf/PDFView.dart';
 import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_page.dart';
 import 'package:app_plaga_enfermedades/src/pages/estaciones/planta_form.dart';
