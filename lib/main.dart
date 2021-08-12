@@ -9,6 +9,7 @@ import 'package:app_plaga_enfermedades/src/pages/galeria/image.dart';
 import 'package:app_plaga_enfermedades/src/pages/galeria/list_galeria.dart';
 import 'package:app_plaga_enfermedades/src/pages/parcelas/parcela_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/parcelas/parcelas_page.dart';
+import 'package:app_plaga_enfermedades/src/pages/pdf/Manuales.dart';
 import 'package:app_plaga_enfermedades/src/pages/pdf/PDFView.dart';
 import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_form.dart';
 import 'package:app_plaga_enfermedades/src/pages/plaga/testplaga_page.dart';
@@ -69,10 +70,14 @@ class MyApp extends StatelessWidget {
                 'decisiones' : ( BuildContext context ) => DesicionesPage(),
                 'registros' : ( BuildContext context ) => DesicionesList(),
                 'reporte' : ( BuildContext context ) => ReportePage(),
+
+                //PDFs
+                'Manuales' : ( BuildContext context ) => Manuales(),
+                'PDFview' : ( BuildContext context ) => PDFView(),
+                
                 //Galeria de imagenes
                 'galeria' : ( BuildContext context ) => GaleriaImagenes(),
                 'viewImg' : ( BuildContext context ) => ViewImage(),
-                'PDFview' : ( BuildContext context ) => PDFView(),
                 
 
             },
